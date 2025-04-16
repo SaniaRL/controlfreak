@@ -1,13 +1,18 @@
+import ActivityItem from "./activityItem";
+import '../../App.css'
+
 function ActivityfeedComponent() {
     return(
         <div className="activityfeed">
-            <p>blabla</p>
-            <p>blabla</p>
-            <p>blabla</p>
-            <p>blabla</p>
-            <p>blabla</p>
-            <p>blabla</p>
-            <p>blabla</p>
+            <ActivityItem />
+            <ActivityItem />
+            <ActivityItem />
+            <ActivityItem />
+            <ActivityItem />
+            <ActivityItem />
+            <ActivityItem />
+            <ActivityItem />
+            <ActivityItem />
         </div>
     );
 }
