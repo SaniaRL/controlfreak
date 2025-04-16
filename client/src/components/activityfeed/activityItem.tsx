@@ -1,11 +1,11 @@
 import { Card, Form } from "react-bootstrap"
 import '../../App.css'
 
-function ActivityItem() {
+function ActivityItem({ description, isCompleted }: { description: string; isCompleted: boolean }) {
     return(
         <Card className="activity-item">
-            <p>This is an Activity</p>
-            <Form.Check type="checkbox" label="Done"/> 
+            <p>{description}</p>
+            <Form.Check type="checkbox" label="Done" checked={isCompleted} /> 
         </Card>
     );
 }
