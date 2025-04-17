@@ -31,7 +31,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 220px);
   overflow-y: scroll;
 }
 
@@ -51,7 +51,7 @@ body {
 .activity-item p {
   margin-left: 20px;
   /*Ändra detta för att centrera text vertikalt*/
-  padding-top: 14px;
+  padding-top: 15px;
   width: 100%;
   font-size: large;
 }
@@ -79,4 +79,28 @@ body {
   width: calc(100% - 15px);
   padding: 20px 40px 30px 40px;
   box-shadow: 1px 2px 14px -10px rgba(0, 0, 0, 0.75);
+}
+
+.activity-filter-panel {
+  width: calc(100% - 15px);
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.activity-filter-panel .item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.activity-filter-panel .form-control {
+  width: 200px;
+}
+
+.activity-filter-panel .dropdown-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

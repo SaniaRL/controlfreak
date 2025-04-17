@@ -3,6 +3,7 @@ import "../../App.css"
 import { useEffect, useState } from "react";
 import { Post } from "../../types/Post.ts"
 import CreateActivity from "./createActivity.tsx";
+import ActivityFilterPanel from "./activityFilterPanel.tsx";
 
 const BASE_URL = 'https://localhost:7159';
 
@@ -43,7 +44,7 @@ export default function ActivityfeedComponent() {
     
     return (
         <div className="activityfeed">
-            <div>Search filter options</div>
+            <ActivityFilterPanel />
             <CreateActivity />
             <div className="activity-container">
                 {posts.map((post) => (
