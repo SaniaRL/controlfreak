@@ -40,9 +40,36 @@ namespace API.Controllers
         }
 
 
-        [HttpPut("/{id}/completion")]
+        [HttpPost("new")]
+        public async Task<ActionResult<Task>> CreateTask([FromBody] string description)
+        {
+            var task = new TaskItem(description);
+
+            _context.Add(task);
+            await _context.SaveChangesAsync();
+
+            return Ok(task);
+        }
+
+        [HttpDelete("{id}/delete")]
+        public async Task<ActionResult<Task>> DeleteTask(int id)
+        {
+            var task = await _context.Tasks.FindAsync(id);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            _context.Tasks.Remove(task);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpPut("{id}/complete")]
         public async Task<ActionResult<Task>> UpdateCompletionStatus(int id,
-        [FromBody] bool isCompleted)
+            [FromBody] bool isCompleted)
         {
             var task = _context.Tasks.FirstOrDefault(x => x.Id == id);
 
@@ -53,7 +80,6 @@ namespace API.Controllers
 
             task.SetCompleted(isCompleted);
 
-            //_context.Tasks.Update(task);
             await _context.SaveChangesAsync();
 
             return Ok(task);

@@ -18,7 +18,7 @@ export default function ActivityfeedComponent() {
             setIsLoading(true);
 
             try {
-                const response = await fetch(`${BASE_URL}/posts?includeCompletedTasks=true`)
+                const response = await fetch(`${BASE_URL}/posts?includeCompletedTasks=false`)
                 const posts = (await response.json()) as Post[]; 
 
                 setPosts(posts);
@@ -47,7 +47,7 @@ export default function ActivityfeedComponent() {
             <CreateActivity />
             <div className="activity-container">
                 {posts.map((post) => (
-                    <ActivityItem key={post.id} /*id={post.id}*/ description={post.description} isCompleted={post.completed} />
+                    <ActivityItem key={post.id} id={post.id} description={post.description} isCompleted={post.completed} />
                 ))}
             </div>
         </div>
