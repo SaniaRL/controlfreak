@@ -1,3 +1,7 @@
+body {
+  overflow-y: hidden;
+}
+
 .main-content {
   display: flex;
   top: 42px;
@@ -15,5 +19,88 @@
 }
 
 .activityfeed {
+  width: 900px;
+  /* Hur ska den scrolla bra oh no */
   padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.activity-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: calc(100vh - 220px);
+  overflow-y: scroll;
+}
+
+.activity-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  box-shadow: 1px 2px 14px -10px rgba(0,0,0,0.75);
+}
+
+.activity-item:hover {
+  background: #f8f9fa;
+}
+
+.activity-item p {
+  margin-left: 20px;
+  /*Ändra detta för att centrera text vertikalt*/
+  padding-top: 15px;
+  width: 100%;
+  font-size: large;
+}
+
+.activity-item-options {
+  display: flex;
+  width: 100px;
+  justify-content: space-around;
+}
+
+.edit-post-button {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+}
+
+.edit-post-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.create-activity {
+  width: calc(100% - 15px);
+  padding: 20px 40px 30px 40px;
+  box-shadow: 1px 2px 14px -10px rgba(0, 0, 0, 0.75);
+}
+
+.activity-filter-panel {
+  width: calc(100% - 15px);
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.activity-filter-panel .item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.activity-filter-panel .form-control {
+  width: 200px;
+}
+
+.activity-filter-panel .dropdown-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
