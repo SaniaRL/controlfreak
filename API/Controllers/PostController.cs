@@ -14,7 +14,7 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet/*(Name = "GetPosts")*/]
+        [HttpGet]
         public ActionResult<List<TaskItem>> GetAll(
             [FromQuery] bool includeCompletedTasks = false)
         {
@@ -37,6 +37,26 @@ namespace API.Controllers
             }
 
             return Ok(tasks);
+        }
+
+
+        [HttpPut("/{id}/completion")]
+        public async Task<ActionResult<Task>> UpdateCompletionStatus(int id,
+        [FromBody] bool isCompleted)
+        {
+            var task = _context.Tasks.FirstOrDefault(x => x.Id == id);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            task.SetCompleted(isCompleted);
+
+            //_context.Tasks.Update(task);
+            await _context.SaveChangesAsync();
+
+            return Ok(task);
         }
     }
 }

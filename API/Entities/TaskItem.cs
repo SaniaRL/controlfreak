@@ -1,4 +1,5 @@
 ﻿using API.Interfaces;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace API.Entities
 {
@@ -9,9 +10,9 @@ namespace API.Entities
 
         public TaskItem(string description) : base(description) { }
 
-        public void SetCompleted()
+        public void SetCompleted(bool completed)
         {
-            Completed = !Completed;
+            Completed = completed;
 
             CompletedWhen = Completed ? DateTime.Now : null;
 

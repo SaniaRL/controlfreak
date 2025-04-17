@@ -4,6 +4,6 @@
     {
         bool Completed { get; }
         DateTime? CompletedWhen { get; }
-        void SetCompleted();
+        void SetCompleted(bool completed);
     }
 }

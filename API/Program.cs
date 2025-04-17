@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add CORS so we can access
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowMyApp", policy =>
@@ -29,18 +30,19 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseCors("AllowMyApp");
-
 app.UseAuthorization();
-
 app.MapControllers();
+
+//Detta gjorde att det inte ens gick att komma åt porten i webläsare alls
 
 //using (var scope = app.Services.CreateScope())
 //{
 //    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 //    db.Database.Migrate();
-//    //db.CreateTasks();
+//    db.CreateTasks();
 //}
 
+
 app.Run();
+

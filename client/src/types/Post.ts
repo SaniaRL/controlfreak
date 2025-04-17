@@ -1,5 +1,5 @@
 export interface Post {
     id: number;
     description: string;
-    isCompleted: boolean;
+    completed: boolean;
 }

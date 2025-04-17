@@ -2,6 +2,7 @@ import ActivityItem from "./activityItem";
 import "../../App.css"
 import { useEffect, useState } from "react";
 import { Post } from "../../types/Post.ts"
+import CreateActivity from "./createActivity.tsx";
 
 const BASE_URL = 'https://localhost:7159';
 
@@ -42,10 +43,11 @@ export default function ActivityfeedComponent() {
     
     return (
         <div className="activityfeed">
-            //Ändra detta till att mappa poster
-            <div className="post-container">
+            <div>Search filter options</div>
+            <CreateActivity />
+            <div className="activity-container">
                 {posts.map((post) => (
-                    <ActivityItem key={post.id} description={post.description} isCompleted={post.isCompleted} />
+                    <ActivityItem key={post.id} /*id={post.id}*/ description={post.description} isCompleted={post.completed} />
                 ))}
             </div>
         </div>
