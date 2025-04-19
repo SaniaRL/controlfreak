@@ -36,12 +36,15 @@ app.MapControllers();
 
 //Detta gjorde att det inte ens gick att komma åt porten i webläsare alls
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-//    db.Database.Migrate();
-//    db.CreateTasks();
-//}
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+    if (!db.Categories.Any())
+    {
+        db.CreateBaseCategory();
+    }
+}
 
 
 app.Run();

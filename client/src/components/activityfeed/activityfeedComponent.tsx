@@ -35,11 +35,27 @@ export default function ActivityfeedComponent() {
     }, [])
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="activityfeed">
+            <ActivityFilterPanel />
+            <CreateActivity />
+            <div className="activity-container">
+                <div>Loading...</div>;
+            </div>
+        </div>
+        )
     }
 
     if (error) {
-        return <div>Something went wrong!</div>
+        return (
+            <div className="activityfeed">
+            <ActivityFilterPanel />
+            <CreateActivity />
+            <div className="activity-container">
+                <div>Something went wrong...</div>;
+            </div>
+        </div>
+        )
     }
     
     return (

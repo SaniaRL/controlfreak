@@ -6,6 +6,8 @@ namespace API
     public class AppDbContext : DbContext
     {
         public DbSet<TaskItem> Tasks { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public string DbPath { get; }
 
@@ -18,31 +20,17 @@ namespace API
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite($"Data Source={DbPath}");
 
-        //public void CreateTasks()
-        //{
-        //    List<TaskItem> taskList = 
-        //    [
-        //        new("Boka tvättid"),
-        //        new("Ta ut soporna"),
-        //        new("Diska"),
-        //        new("Ring Terese"),
-        //        new("Tömma kattlådan"),
-        //        new("Torka köksytor"),
-        //        new("Ta undan tvätt"),
-        //        new("Vattna blommorna"),
-        //        new("Skura köket"),
-        //        new("Rensa kylskåpet"),
-        //        new("Skura sovrummet"),
-        //        new("Panta"),
-        //        new("Promenad"),
-        //        new("Ring mormor och morfar"),
-        //        new("Ring Madelene"),
-        //        new("Lägg in hyran"),
-        //        new("Skura hallen")
-        //    ];
+        public void CreateBaseCategory()
+        {
+            List<Category> categoryList =
+            [
+                new("Post", "585858", "ffffff")
+            ];
 
-        //    Tasks.AddRange(taskList);
-        //    SaveChanges();
-        //}
+            Categories.AddRange(categoryList);
+            SaveChanges();
+        }
+
+
     }
 }
