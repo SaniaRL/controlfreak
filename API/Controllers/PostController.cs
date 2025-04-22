@@ -1,10 +1,12 @@
-﻿using API.Entities;
+﻿using API.DTO;
+using API.Entities;
+using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [ApiController]
-    [Route("posts")]
+    [Route("APIv1/posts")]
     public class PostController : ControllerBase
     {
         public readonly AppDbContext _context;
@@ -14,21 +16,17 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public ActionResult<List<TaskItem>> GetAll(
-            [FromQuery] bool includeCompletedTasks = false)
+        [HttpGet("events")]
+        public ActionResult<List<TaskItem>> GetEvents()
         {
-            List<TaskItem> tasks = null;
-
             try
             {
-                tasks = includeCompletedTasks
-                    ? _context.Tasks.ToList()
-                    : _context.Tasks.Where(x => !(x.Completed)).ToList();
+                var  events = _context.Events.ToList();
 
-                if (tasks == null || tasks.Count == 0)
+
+                if (events.Count > 0)
                 {
-                    return NotFound("No tasks found.");
+                    return Ok(events);
                 }
             }
             catch (Exception ex)
@@ -36,19 +34,54 @@ namespace API.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
 
-            return Ok(tasks);
+            return NotFound("No events found.");
         }
 
-
-        [HttpPost("new")]
-        public async Task<ActionResult<Task>> CreateTask([FromBody] string description)
+        [HttpGet("tasks")]
+        public ActionResult<List<TaskItem>> GetTasks(
+            [FromQuery] bool includeCompletedTasks = false)
         {
-            var task = new TaskItem(description);
+            try
+            {
+                var tasks = includeCompletedTasks
+                    ? _context.Tasks.ToList()
+                    : _context.Tasks.Where(x => !(x.Completed)).ToList();
+
+
+                if (tasks.Count > 0)
+                {
+                    return Ok(tasks);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+
+            return NotFound("No tasks found.");
+        }
+
+        [HttpPost("task")]
+        public async Task<ActionResult<Task>> CreateTask([FromBody] CreateTask taskData)
+        {
+            var task = new TaskItem(taskData.Description, taskData.DeadLine, taskData.Recurrence);
 
             _context.Add(task);
             await _context.SaveChangesAsync();
 
             return Ok(task);
+        }
+
+        [HttpPost("event")]
+        public async Task<ActionResult<Task>> CreateEvent([FromBody] CreateEvent eventData)
+        {  
+            var newEvent = new EventItem(eventData.Description, eventData.Content, eventData.StartTime
+                , eventData.EndTime, 1, RecurrenceInterval.Never);
+
+            _context.Add(newEvent);
+            await _context.SaveChangesAsync();
+
+            return Ok(newEvent);
         }
 
         [HttpDelete("{id}/delete")]
