@@ -3,7 +3,7 @@ using API.Interfaces;
 
 namespace API.Entities
 {
-    public class Event : Post
+    public class EventItem : Post
     {
         public string Content { get; set; }
         public DateTime StartTime { get; set; }
@@ -14,7 +14,7 @@ namespace API.Entities
 
         public Category Category { get; set; } = null!;
 
-        public Event(string description, string content, DateTime startTime, DateTime endTime, int categoryId, RecurrenceInterval recurrence) 
+        public EventItem(string description, string content, DateTime startTime, DateTime endTime, int categoryId, RecurrenceInterval recurrence) 
             : base(description, recurrence)
         {
             Content = content;

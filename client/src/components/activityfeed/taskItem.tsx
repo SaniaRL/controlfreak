@@ -4,7 +4,7 @@ import '../../App.css'
 import DeleteButton from  '../../shared/deleteButton.tsx'
 import UpdateButton from '../../shared/updateButton.tsx'
 
-function ActivityItem({ id, description, isCompleted }: { id: number, description: string; isCompleted: boolean }) {
+function TaskItem({ id, description, isCompleted }: { id: number, description: string; isCompleted: boolean }) {
     const [ completed, setCompleted ] = useState(isCompleted);
 
     const changeCheckbox = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -13,7 +13,7 @@ function ActivityItem({ id, description, isCompleted }: { id: number, descriptio
         setCompleted(newCompleted);
 
         try {
-            await fetch(`https://localhost:7159/posts/${id}/complete`, {
+            await fetch(`https://localhost:7159/APIv1/posts/${id}/complete`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -53,4 +53,4 @@ function ActivityItem({ id, description, isCompleted }: { id: number, descriptio
     );
 }
 
-export default ActivityItem
+export default TaskItem

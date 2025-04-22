@@ -7,10 +7,10 @@ namespace API.Entities
     {
         public bool Completed { get; private set; } = false;
         public DateTime? CompletedWhen { get; private set; }
-        public DateTime? DeadLine { get; set; }
+        public DateOnly? DeadLine { get; set; }
         public TaskItem(string description, RecurrenceInterval recurrence) : base(description, recurrence) { }
 
-        public TaskItem(string description, DateTime? deadLine, RecurrenceInterval recurrence) : base(description, recurrence)
+        public TaskItem(string description, DateOnly? deadLine, RecurrenceInterval recurrence) : base(description, recurrence)
         {
             DeadLine = deadLine;
         }

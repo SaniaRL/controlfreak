@@ -2,6 +2,6 @@
 {
     public interface IHasDeadline
     {
-        DateTime? DeadLine { get; set; }
+        DateOnly? DeadLine { get; set; }
     }
 }

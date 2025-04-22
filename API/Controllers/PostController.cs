@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("posts")]
+    [Route("APIv1/posts")]
     public class PostController : ControllerBase
     {
         public readonly AppDbContext _context;
@@ -16,8 +16,29 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public ActionResult<List<TaskItem>> GetAll(
+        [HttpGet("events")]
+        public ActionResult<List<TaskItem>> GetEvents()
+        {
+            try
+            {
+                var  events = _context.Events.ToList();
+
+
+                if (events.Count > 0)
+                {
+                    return Ok(events);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+
+            return NotFound("No events found.");
+        }
+
+        [HttpGet("tasks")]
+        public ActionResult<List<TaskItem>> GetTasks(
             [FromQuery] bool includeCompletedTasks = false)
         {
             try
@@ -40,16 +61,27 @@ namespace API.Controllers
             return NotFound("No tasks found.");
         }
 
-
-        [HttpPost("new")]
+        [HttpPost("task")]
         public async Task<ActionResult<Task>> CreateTask([FromBody] CreateTask taskData)
         {
-            var task = new TaskItem(taskData.Description, taskData.DeadLine, taskData.Recurrence.Recurrence);
+            var task = new TaskItem(taskData.Description, taskData.DeadLine, taskData.Recurrence);
 
             _context.Add(task);
             await _context.SaveChangesAsync();
 
             return Ok(task);
+        }
+
+        [HttpPost("event")]
+        public async Task<ActionResult<Task>> CreateEvent([FromBody] CreateEvent eventData)
+        {  
+            var newEvent = new EventItem(eventData.Description, eventData.Content, eventData.StartTime
+                , eventData.EndTime, 1, RecurrenceInterval.Never);
+
+            _context.Add(newEvent);
+            await _context.SaveChangesAsync();
+
+            return Ok(newEvent);
         }
 
         [HttpDelete("{id}/delete")]
