@@ -6,20 +6,20 @@ namespace API.Entities
     public class EventItem : Post
     {
         public string Content { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
 
         [Required]
         public int CategoryId { get; set; }
 
         public Category Category { get; set; } = null!;
 
-        public EventItem(string description, string content, DateTime startTime, DateTime endTime, int categoryId, RecurrenceInterval recurrence) 
-            : base(description, recurrence)
+        public EventItem(string title, string content, DateTime start, DateTime end, int categoryId, RecurrenceInterval recurrence) 
+            : base(title, recurrence)
         {
             Content = content;
-            StartTime = startTime;
-            EndTime = endTime;
+            Start = start;
+            End = end;
             CategoryId = categoryId;
         }
     }

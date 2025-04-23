@@ -64,7 +64,7 @@ namespace API.Controllers
         [HttpPost("task")]
         public async Task<ActionResult<Task>> CreateTask([FromBody] CreateTask taskData)
         {
-            var task = new TaskItem(taskData.Description, taskData.DeadLine, taskData.Recurrence);
+            var task = new TaskItem(taskData.Title, taskData.DeadLine, taskData.Recurrence);
 
             _context.Add(task);
             await _context.SaveChangesAsync();
@@ -75,8 +75,8 @@ namespace API.Controllers
         [HttpPost("event")]
         public async Task<ActionResult<Task>> CreateEvent([FromBody] CreateEvent eventData)
         {  
-            var newEvent = new EventItem(eventData.Description, eventData.Content, eventData.StartTime
-                , eventData.EndTime, 1, RecurrenceInterval.Never);
+            var newEvent = new EventItem(eventData.Title, eventData.Content, eventData.Start
+                , eventData.End, 1, RecurrenceInterval.Never);
 
             _context.Add(newEvent);
             await _context.SaveChangesAsync();

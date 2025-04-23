@@ -82,10 +82,10 @@ export default function ActivityfeedComponent() {
             <div className="activity-container">
                 {combined.map((post) => (
                     post.type === 'event' ? (
-                        <EventItem key={post.id} id={post.id} description={post.description} content={post.content} />                        
+                        <EventItem key={post.id} id={post.id} description={post.title} content={post.content} />                        
                     ) : (
 
-                        <TaskItem key={post.id} id={post.id} description={post.description} isCompleted={post.completed} />                        
+                        <TaskItem key={post.id} id={post.id} description={post.title} isCompleted={post.completed} />                        
                     )
                 ))}
             </div>

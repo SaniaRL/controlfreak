@@ -7,14 +7,14 @@ namespace API.Entities
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Description { get; private set; }
+        public string Title { get; private set; }
         public DateTime CreatedWhen { get; set; } = DateTime.Now;
         public DateTime UpdatedWhen { get; private set; }
         public RecurrenceInterval Recurrence { get; set; }
 
-        public Post(string description, RecurrenceInterval recurrence)
+        public Post(string title, RecurrenceInterval recurrence)
         {
-            Description = description;
+            Title = title;
             Recurrence = recurrence;
         }
         public void Update()
@@ -22,9 +22,9 @@ namespace API.Entities
             UpdatedWhen = DateTime.Now;
         }
 
-        public void SetDescription(string description)
+        public void SetDescription(string title)
         {
-            Description = description;
+            Title = title;
 
             Update();
         }

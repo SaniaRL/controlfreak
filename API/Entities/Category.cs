@@ -7,16 +7,16 @@ namespace API.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Background { get; set; }
-        public string Foreground { get; set; }
+        public string BackgroundColor { get; set; }
+        public string TextColor { get; set; }
 
         List<EventItem> Events { get; set; }
 
-        public Category(string name, string background, string foreground)
+        public Category(string name, string backgroundColor, string textColor)
         {
             Name = name;
-            Background = background;
-            Foreground = foreground;
+            BackgroundColor = backgroundColor;
+            TextColor = textColor;
             Events = new List<EventItem>();
         }
     }
