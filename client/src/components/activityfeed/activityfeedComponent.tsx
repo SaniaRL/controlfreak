@@ -38,17 +38,17 @@ export default function ActivityfeedComponent() {
                 const eventResponse = await fetch(`${BASE_URL}/APIv1/posts/events`)
                 const events = (await eventResponse.json()) as EventData[]; 
 
-                setEvents(events);
+                setEvents(events)
 
-                console.log(posts);
-                console.log(events);
+                console.log(posts)
+                console.log(events)
             } catch (e: any) {
-                setError(e);
+                setError(e)
             } finally {
-                setIsLoading(false);
+                setIsLoading(false)
             }
-        };
-        fetchPosts();
+        }
+        fetchPosts()
     }, [])
 
     if (isLoading) {

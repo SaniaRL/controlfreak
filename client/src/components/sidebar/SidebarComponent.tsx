@@ -1,6 +1,7 @@
 import SidebarCalendar from "./SidebarCalendar"
 import SidebarHealthComponent from "./SidebarHealthComponent"
 import SidebarBudgetComponent from "./SidebarBudgetComponent";
+// import Calendar from "../calendar/calendar";
 
 function SidebarComponent() {
     return (

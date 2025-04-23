@@ -3,7 +3,7 @@ import UpdateButton from "../../shared/updateButton";
 import DeleteButton from "../../shared/deleteButton";
 
 
-function EventItem({id, description, content}: {id: number, description: string, content: string}) {
+function EventItem({id, description, content}: {id: string, description: string, content: string}) {
 
 
 	const deletePost = async (id: number) => {
@@ -25,7 +25,7 @@ function EventItem({id, description, content}: {id: number, description: string,
 			<p>{content}</p>
 			<div className='activity-item-options'>
 					<UpdateButton />
-					<DeleteButton id={id} onDelete={deletePost} />
+					<DeleteButton id={Number(id)} onDelete={deletePost} />
 			</div>
 		</Card>
 	);

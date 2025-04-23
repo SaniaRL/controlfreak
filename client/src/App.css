@@ -14,12 +14,13 @@ body {
 }
 
 .sidebar {
-  width: 280px;
+  width: 20vw;
+  min-width: 250px;
   padding: 1.5rem;
 }
 
 .activityfeed {
-  width: 900px;
+  width: 60vw;
   /* Hur ska den scrolla bra oh no */
   padding: 10px 20px;
   display: flex;
