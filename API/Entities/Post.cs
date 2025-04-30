@@ -12,6 +12,8 @@ namespace API.Entities
         public DateTime UpdatedWhen { get; private set; }
         public RecurrenceInterval Recurrence { get; set; }
 
+        //TODO fixa private set med update
+
         public Post(string title, RecurrenceInterval recurrence)
         {
             Title = title;

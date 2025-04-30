@@ -2,11 +2,11 @@
 
 namespace API.DTO
 {
-    public class CreateTask : IHasDeadline, IAmRecurring
+    public class CreateTask : IAmRecurring, IHasDeadline
     {
         public required string Title { get; set; }
-        public DateOnly? DeadLine { get; set; }
-
+        public DateTime? Start { get; set; }
+        public DateTime? DeadLine { get; set; }
         public RecurrenceInterval Recurrence { get; set; }
     }
 }

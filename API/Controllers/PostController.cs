@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("APIv1/posts")]
+    [Route("APIv1/tasks")]
     public class PostController : ControllerBase
     {
         public readonly AppDbContext _context;
@@ -16,41 +16,19 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet("events")]
-        public ActionResult<List<TaskItem>> GetEvents()
+        [HttpGet("calendar")]
+        public ActionResult<List<CalendarTaskDTO>> CalendarGetTasks()
         {
             try
             {
-                var  events = _context.Events.ToList();
-
-
-                if (events.Count > 0)
-                {
-                    return Ok(events);
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-
-            return NotFound("No events found.");
-        }
-
-        [HttpGet("tasks")]
-        public ActionResult<List<TaskItem>> GetTasks(
-            [FromQuery] bool includeCompletedTasks = false)
-        {
-            try
-            {
-                var tasks = includeCompletedTasks
-                    ? _context.Tasks.ToList()
-                    : _context.Tasks.Where(x => !(x.Completed)).ToList();
+                var  tasks = _context.Tasks.ToList();
 
 
                 if (tasks.Count > 0)
                 {
-                    return Ok(tasks);
+                    var taskVMs = tasks.Select(x => new CalendarTaskDTO(x.Id, x.Title, x.Completed, x.CompletedWhen, x.DeadLine, x.Recurrence)).ToList();
+
+                    return Ok(taskVMs);
                 }
             }
             catch (Exception ex)
@@ -61,61 +39,85 @@ namespace API.Controllers
             return NotFound("No tasks found.");
         }
 
-        [HttpPost("task")]
-        public async Task<ActionResult<Task>> CreateTask([FromBody] CreateTask taskData)
-        {
-            var task = new TaskItem(taskData.Title, taskData.DeadLine, taskData.Recurrence);
+        //[HttpGet("tasks")]
+        //public ActionResult<List<TaskItem>> GetTasks(
+        //    [FromQuery] bool includeCompletedTasks = false)
+        //{
+        //    try
+        //    {
+        //        var tasks = includeCompletedTasks
+        //            ? _context.Tasks.ToList()
+        //            : _context.Tasks.Where(x => !(x.Completed)).ToList();
 
-            _context.Add(task);
-            await _context.SaveChangesAsync();
 
-            return Ok(task);
-        }
+        //        if (tasks.Count > 0)
+        //        {
+        //            return Ok(tasks);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, $"Internal server error: {ex.Message}");
+        //    }
 
-        [HttpPost("event")]
-        public async Task<ActionResult<Task>> CreateEvent([FromBody] CreateEvent eventData)
-        {  
-            var newEvent = new EventItem(eventData.Title, eventData.Content, eventData.Start
-                , eventData.End, 1, RecurrenceInterval.Never);
+        //    return NotFound("No tasks found.");
+        //}
 
-            _context.Add(newEvent);
-            await _context.SaveChangesAsync();
+        //[HttpPost("task")]
+        //public async Task<ActionResult<Task>> CreateTask([FromBody] CreateTask taskData)
+        //{
+        //    var task = new TaskItem(taskData.Title, taskData.DeadLine, taskData.Recurrence);
 
-            return Ok(newEvent);
-        }
+        //    _context.Add(task);
+        //    await _context.SaveChangesAsync();
 
-        [HttpDelete("{id}/delete")]
-        public async Task<ActionResult<Task>> DeleteTask(int id)
-        {
-            var task = await _context.Tasks.FindAsync(id);
+        //    return Ok(task);
+        //}
 
-            if (task == null)
-            {
-                return NotFound();
-            }
+        //[HttpPost("event")]
+        //public async Task<ActionResult<Task>> CreateEvent([FromBody] CreateEvent eventData)
+        //{  
+        //    var newEvent = new EventItem(eventData.Title, eventData.Content, eventData.Start
+        //        , eventData.End, 1, RecurrenceInterval.Never);
 
-            _context.Tasks.Remove(task);
-            await _context.SaveChangesAsync();
+        //    _context.Add(newEvent);
+        //    await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //    return Ok(newEvent);
+        //}
 
-        [HttpPut("{id}/complete")]
-        public async Task<ActionResult<Task>> UpdateCompletionStatus(int id,
-            [FromBody] bool isCompleted)
-        {
-            var task = _context.Tasks.FirstOrDefault(x => x.Id == id);
+        //[HttpDelete("{id}/delete")]
+        //public async Task<ActionResult<Task>> DeleteTask(int id)
+        //{
+        //    var task = await _context.Tasks.FindAsync(id);
 
-            if (task == null)
-            {
-                return NotFound();
-            }
+        //    if (task == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            task.SetCompleted(isCompleted);
+        //    _context.Tasks.Remove(task);
+        //    await _context.SaveChangesAsync();
 
-            await _context.SaveChangesAsync();
+        //    return NoContent();
+        //}
 
-            return Ok(task);
-        }
+        //[HttpPut("{id}/complete")]
+        //public async Task<ActionResult<Task>> UpdateCompletionStatus(int id,
+        //    [FromBody] bool isCompleted)
+        //{
+        //    var task = _context.Tasks.FirstOrDefault(x => x.Id == id);
+
+        //    if (task == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    task.SetCompleted(isCompleted);
+
+        //    await _context.SaveChangesAsync();
+
+        //    return Ok(task);
+        //}
     }
 }

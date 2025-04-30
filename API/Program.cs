@@ -44,6 +44,14 @@ using (var scope = app.Services.CreateScope())
     {
         db.CreateBaseCategory();
     }
+    if (!db.Tasks.Any())
+    {
+        db.CreateBaseTasks();
+    }
+    if (!db.Events.Any())
+    {
+        db.CreateBaseEvents();
+    }
 }
 
 

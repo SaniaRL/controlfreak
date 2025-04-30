@@ -1,3 +1,18 @@
 .calendar-container {
     padding: 1rem 2rem;
 }
+
+.fc .fc-daygrid-day-number {
+    text-decoration: none;
+    color: #919191;
+}
+
+.fc-day-today {
+    font-weight: 600;
+    color: #1b1b1b;
+}
+
+.fc-col-header-cell-cushion {
+    text-decoration: none;
+    color: #6a6a6a;
+}
