@@ -1,5 +1,8 @@
 .calendar-container {
     padding: 1rem 2rem;
+    width: 100%;
+    max-width: 100%;
+    flex: 1;
 }
 
 .fc .fc-daygrid-day-number {

@@ -1,13 +1,15 @@
 import ActivityfeedComponent from "./activityfeed/activityfeedComponent";
 import Calendar from "./calendar/calendar";
-import SidebarComponent from "./sidebar/SidebarComponent";
+import LSidebarComponent from "./sidebar-left/LSidebarComponent";
+import RSidebarComponent from "./sidebar-right/RSidebarComponent";
 
 
 function MainContent({ view }: { view: string }) {
     return(
       <div className="main-content">
-      <SidebarComponent />
+      <LSidebarComponent />
       { view === 'activity' ? <ActivityfeedComponent /> : <Calendar />}
+      <RSidebarComponent />
       </div>
     );
 }

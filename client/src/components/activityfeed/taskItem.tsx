@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Card, Form } from 'react-bootstrap'
 import '../../App.css'
-import DeleteButton from  '../../shared/deleteButton.tsx'
-import UpdateButton from '../../shared/updateButton.tsx'
+import UpdateButton from '../../shared/updateButton'
+import DeleteButton from '../../shared/DeleteButton'
+
 
 function TaskItem({ id, description, isCompleted }: { id: string, description: string; isCompleted: boolean }) {
     const [ completed, setCompleted ] = useState(isCompleted);
@@ -13,7 +14,7 @@ function TaskItem({ id, description, isCompleted }: { id: string, description: s
         setCompleted(newCompleted);
 
         try {
-            await fetch(`https://localhost:7159/APIv1/posts/${id}/complete`, {
+            await fetch(`https://localhost:7159/APIv1/tasks/${id}/complete`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -28,7 +29,7 @@ function TaskItem({ id, description, isCompleted }: { id: string, description: s
     const deletePost = async (id: number) => {
 
         try {
-            await fetch(`https://localhost:7159/posts/${id}/delete`, {
+            await fetch(`https://localhost:7159/APIv1/tasks/${id}/delete`, {
                 method: 'DELETE',
             });
         } catch (error) {

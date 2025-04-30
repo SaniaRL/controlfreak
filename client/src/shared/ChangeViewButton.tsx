@@ -4,9 +4,9 @@ function ChangeViewButton({ icon, view, alt, isActive, setView }
     : { icon: string, view: string, alt: string, isActive: boolean, setView: (view: string) => void }) {
     return(
         <Button 
-        className={`view-button ${isActive ? 'active-view' : ''}`}
+        className='view-button'
         onClick={() => setView(view)}>
-            <img src={ icon } alt={ alt }/>
+            <img className={ isActive ? 'active-view' : '' } src={ icon } alt={ alt }/>
         </Button>
     );
 }

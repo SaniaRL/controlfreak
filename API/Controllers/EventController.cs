@@ -51,27 +51,31 @@ namespace API.Controllers
             return NotFound("No events found.");
         }
 
-        [HttpGet("activityfeed")]
-        public ActionResult<List<EventVM>> GetAllActivityfeed()
+        [HttpGet("search/{input}")]
+        public ActionResult<List<CalendarEventVM>> SearchEvent(string input)
         {
             try
             {
-                var events = _context.Events.ToList();
+                var events = _context.Events
+                    .Where(x => x.Title
+                        .ToLower()
+                        .Contains(input
+                            .ToLower()))
+                    .ToList();
 
 
                 if (events.Count > 0)
                 {
-                    var eventVMs = events.Select(x => new EventVM
+                    var eventVMs = events.Select(x => new CalendarEventVM
                     {
                         Id = x.Id,
                         Title = x.Title,
-                        Content = x.Content,
                         Start = x.Start,
                         End = x.End,
-                        BackgroundColor = x.Category.BackgroundColor,
-                        TextColor = x.Category.TextColor,
+                        AllDay = x.AllDay,
+                        BackgroundColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.BackgroundColor).First(),
+                        TextColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.TextColor).First(),
                         Recurrence = x.Recurrence
-
                     }).ToList();
 
                     return Ok(eventVMs);

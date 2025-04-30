@@ -1,13 +1,10 @@
-import { ButtonGroup, Dropdown, DropdownButton, Form } from 'react-bootstrap';
+import { ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap';
+import Searchbar from './Searchbar';
 
-function ActivityFilterPanel() {
+function ActivityFilterPanel({ updateSearchResults }: { updateSearchResults: React.Dispatch<React.SetStateAction<any[]>> }) {
   return(
     <div className='activity-filter-panel'>
-      <Form.Control
-      className='item'
-      type='search'
-      placeholder='search'>
-      </Form.Control>
+      <Searchbar updateSearchResults={updateSearchResults}/>
 
       <DropdownButton
       className='item'

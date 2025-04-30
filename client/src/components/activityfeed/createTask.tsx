@@ -15,7 +15,7 @@ function CreateTask() {
     let data: CreateTaskData = { title: description, deadline, recurrence }
   
     try {
-      await fetch(`https://localhost:7159/APIv1/posts/task`, {
+      await fetch(`https://localhost:7159/APIv1/tasks/new`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',

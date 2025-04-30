@@ -1,6 +1,6 @@
-import { Card } from "react-bootstrap";
-import UpdateButton from "../../shared/updateButton";
-import DeleteButton from "../../shared/deleteButton";
+import { Card } from "react-bootstrap"
+import UpdateButton from "../../shared/updateButton"
+import DeleteButton from "../../shared/DeleteButton"
 
 
 function EventItem({id, description, content}: {id: string, description: string, content: string}) {

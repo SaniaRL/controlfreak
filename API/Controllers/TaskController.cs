@@ -7,11 +7,11 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("APIv1/tasks")]
-    public class PostController : ControllerBase
+    public class TaskController : ControllerBase
     {
         public readonly AppDbContext _context;
 
-        public PostController(AppDbContext context)
+        public TaskController(AppDbContext context)
         {
             _context = context;
         }
@@ -63,16 +63,16 @@ namespace API.Controllers
         //    return NotFound("No tasks found.");
         //}
 
-        //[HttpPost("task")]
-        //public async Task<ActionResult<Task>> CreateTask([FromBody] CreateTask taskData)
-        //{
-        //    var task = new TaskItem(taskData.Title, taskData.DeadLine, taskData.Recurrence);
+        [HttpPost("new")]
+        public async Task<ActionResult<Task>> CreateTask([FromBody] CreateTask taskData)
+        {
+            var task = new TaskItem(taskData.Title, taskData.DeadLine, taskData.Recurrence);
 
-        //    _context.Add(task);
-        //    await _context.SaveChangesAsync();
+            _context.Add(task);
+            await _context.SaveChangesAsync();
 
-        //    return Ok(task);
-        //}
+            return Ok(task);
+        }
 
         //[HttpPost("event")]
         //public async Task<ActionResult<Task>> CreateEvent([FromBody] CreateEvent eventData)
@@ -86,21 +86,21 @@ namespace API.Controllers
         //    return Ok(newEvent);
         //}
 
-        //[HttpDelete("{id}/delete")]
-        //public async Task<ActionResult<Task>> DeleteTask(int id)
-        //{
-        //    var task = await _context.Tasks.FindAsync(id);
+        [HttpDelete("{id}/delete")]
+        public async Task<ActionResult<Task>> DeleteTask(int id)
+        {
+            var task = await _context.Tasks.FindAsync(id);
 
-        //    if (task == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (task == null)
+            {
+                return NotFound();
+            }
 
-        //    _context.Tasks.Remove(task);
-        //    await _context.SaveChangesAsync();
+            _context.Tasks.Remove(task);
+            await _context.SaveChangesAsync();
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
         [HttpPut("{id}/complete")]
         public async Task<ActionResult<Task>> UpdateCompletionStatus(int id,

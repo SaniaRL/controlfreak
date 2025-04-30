@@ -98,7 +98,7 @@ function Calendar(){
 			initialView="dayGridMonth"
 			firstDay={1}
 			height={"90vh"}
-			aspectRatio={1.5}
+			// aspectRatio={1.5}
 			headerToolbar={{
 				start:"today, prev, next",
 				center:"title",
