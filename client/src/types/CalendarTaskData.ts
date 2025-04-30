@@ -1,9 +1,12 @@
-export interface EventData {
+export interface CalendarTaskData {
     id: string,
     title: string,
-    content: string,
     start: string,
     end: string,
+    completed: boolean,
+    completedWhen: string,
+    deadline: string,
+    allDay: boolean,
     backgroundColor: string,
     textColor: string
 }

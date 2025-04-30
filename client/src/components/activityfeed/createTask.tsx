@@ -12,7 +12,7 @@ function CreateTask() {
     e.preventDefault();
     console.log(description);
 
-    let data: CreateTaskData = { description, deadline, recurrence }
+    let data: CreateTaskData = { title: description, deadline, recurrence }
   
     try {
       await fetch(`https://localhost:7159/APIv1/posts/task`, {

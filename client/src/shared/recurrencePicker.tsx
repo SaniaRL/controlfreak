@@ -1,5 +1,5 @@
-import { ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
-import { RecurrenceInterval } from "../enums/RecurrenceInterval";
+import { ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap"
+import { RecurrenceInterval } from "../enums/recurrenceInterval"
 
 function RecurrencePicker({ setRecurrence } : { setRecurrence: React.Dispatch<React.SetStateAction<number>> }) {
   return (

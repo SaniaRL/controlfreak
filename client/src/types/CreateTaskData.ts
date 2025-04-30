@@ -1,7 +1,7 @@
-import { RecurrenceInterval } from "../enums/RecurrenceInterval";
+import { RecurrenceInterval } from "../enums/recurrenceInterval"
 
 export interface CreateTaskData {
-    description: string,
+    title: string,
     deadline: Date | null,
     recurrence: RecurrenceInterval
 }

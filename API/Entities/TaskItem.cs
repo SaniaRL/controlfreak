@@ -1,19 +1,18 @@
 ﻿using API.Interfaces;
-using Microsoft.AspNetCore.Components.Web;
 
 namespace API.Entities
 {
     public class TaskItem : Post, ICanComplete, IHasDeadline
     {
         public bool Completed { get; private set; } = false;
-        public DateTime? CompletedWhen { get; private set; }
-        public DateOnly? DeadLine { get; set; }
-        public TaskItem(string description, RecurrenceInterval recurrence) : base(description, recurrence) { }
 
-        public TaskItem(string description, DateOnly? deadLine, RecurrenceInterval recurrence) : base(description, recurrence)
+        public DateTime? CompletedWhen { get; private set; }
+        public DateTime? DeadLine { get; set; }
+        public TaskItem(string title, DateTime? deadline, RecurrenceInterval recurrence) : base(title, recurrence)
         {
-            DeadLine = deadLine;
+            DeadLine = deadline;
         }
+        public TaskItem(string title, RecurrenceInterval recurrence) : base(title, recurrence) { }
 
         public void SetCompleted(bool completed)
         {
