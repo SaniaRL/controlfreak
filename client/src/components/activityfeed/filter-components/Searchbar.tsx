@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Form } from 'react-bootstrap';
 
 const BASE_URL = 'https://localhost:7159';
 
@@ -25,19 +26,17 @@ function Searchbar({ updateSearchResults }: { updateSearchResults: React.Dispatc
 	}, [search]) 
 
 	return(
-		<section className='search-section'>
-			<div className='search-input-div'>
-				<input
-					className='search-input'
-					type='text'
-					placeholder='Search...'
-					autoComplete='off'
-					onChange={handleChange}
-					value={search}
-				/>
-			</div>
+		<section>
+			<Form.Control
+				className='search-input'
+				type='text'
+				placeholder='Search...'
+				autoComplete='off'
+				onChange={handleChange}
+				value={search}
+			/>
 		</section>
-	);
+	)
 }
 
 export default Searchbar
