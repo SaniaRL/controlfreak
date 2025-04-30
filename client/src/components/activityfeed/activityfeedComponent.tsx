@@ -3,18 +3,18 @@ import "../../App.css"
 import { useEffect, useState } from "react";
 import CreateActivity from "./createActivity.tsx";
 import ActivityFilterPanel from "./activityFilterPanel.tsx";
-import { TaskData } from "../../types/TaskData.ts";
-import { EventData } from "../../types/EventData.ts";
 import EventItem from "./eventItem.tsx";
+import { CalendarTaskData } from "../../types/CalendarTaskData.ts";
+import { CalendarEvent } from "../../types/CalendarEvent.ts";
 
 const BASE_URL = 'https://localhost:7159';
 
 export default function ActivityfeedComponent() {
     const [error, setError] = useState();
     const [isLoading, setIsLoading] = useState(false)
-    const [tasks, setTasks] = useState<TaskData[]>([])
-    const [events, setEvents] = useState<EventData[]>([])
-    type Activity = (TaskData & { type: 'task' }) | (EventData & { type: 'event' })
+    const [tasks, setTasks] = useState<CalendarTaskData[]>([])
+    const [events, setEvents] = useState<CalendarEvent[]>([])
+    type Activity = (CalendarTaskData & { type: 'task' }) | (CalendarEvent & { type: 'event' })
 
     const combined: Activity[] = [
       ...tasks.map(t => ({ ...t, type: 'task' as const })),
@@ -30,13 +30,13 @@ export default function ActivityfeedComponent() {
             setIsLoading(true);
 
             try {
-                const taskResponse = await fetch(`${BASE_URL}/APIv1/posts/tasks?includeCompletedTasks=true`)
-                const posts = (await taskResponse.json()) as TaskData[]; 
+                const taskResponse = await fetch(`${BASE_URL}/APIv1/tasks/calendar?includeCompletedTasks=true`)
+                const posts = (await taskResponse.json()) as CalendarTaskData[]; 
 
                 setTasks(posts);
 
-                const eventResponse = await fetch(`${BASE_URL}/APIv1/posts/events`)
-                const events = (await eventResponse.json()) as EventData[]; 
+                const eventResponse = await fetch(`${BASE_URL}/APIv1/events/calendar`)
+                const events = (await eventResponse.json()) as CalendarEvent[]; 
 
                 setEvents(events)
 
@@ -82,10 +82,10 @@ export default function ActivityfeedComponent() {
             <div className="activity-container">
                 {combined.map((post) => (
                     post.type === 'event' ? (
-                        <EventItem key={post.id} id={post.id} description={post.title} content={post.content} />                        
+                        <EventItem key={`${post.id}`+`${post.type}`} id={post.id} description={post.title} content={post.content} />                        
                     ) : (
 
-                        <TaskItem key={post.id} id={post.id} description={post.title} isCompleted={post.completed} />                        
+                        <TaskItem key={`${post.id}`+`${post.type}`} id={post.id} description={post.title} isCompleted={post.completed} />                        
                     )
                 ))}
             </div>

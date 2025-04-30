@@ -4,7 +4,7 @@ import '../../App.css'
 import DeleteButton from  '../../shared/deleteButton.tsx'
 import UpdateButton from '../../shared/updateButton.tsx'
 
-function TaskItem({ id, description, isCompleted }: { id: number, description: string; isCompleted: boolean }) {
+function TaskItem({ id, description, isCompleted }: { id: string, description: string; isCompleted: boolean }) {
     const [ completed, setCompleted ] = useState(isCompleted);
 
     const changeCheckbox = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +47,7 @@ function TaskItem({ id, description, isCompleted }: { id: number, description: s
             <p>{description}</p>
             <div className='activity-item-options'>
                 <UpdateButton />
-                <DeleteButton id={id} onDelete={deletePost} />
+                <DeleteButton id={Number(id)} onDelete={deletePost} />
             </div>
         </Card>
     );

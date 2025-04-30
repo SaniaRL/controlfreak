@@ -1,17 +1,14 @@
-import Calendar from "./components/calendar/calendar"
+import { useState } from "react"
+import MainContent from "./components/MainContent"
 import NavbarComponent from "./components/navbar/NavbarComponent"
-// import SidebarComponent from "./components/sidebar/SidebarComponent"
-// import ActivityfeedComponent from "./components/activityfeed/activityfeedComponent"
 
 function App() {
+  const [view, setView] = useState('activity')
+
   return (
     <>
-      <NavbarComponent />
-      <Calendar />
-      {/* <div className="main-content">
-        <SidebarComponent />
-          <ActivityfeedComponent />
-        </div> */}
+      <NavbarComponent currentView={view} setView={setView} />
+      <MainContent view={view} />
     </>
   )
 }
