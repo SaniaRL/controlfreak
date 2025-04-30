@@ -29,7 +29,7 @@ function Calendar(){
 				setEvents(events)
 				console.log(events)
 
-				const taskResponse = await fetch(`${BASE_URL}/APIv1/tasks/calendar`)
+				const taskResponse = await fetch(`${BASE_URL}/APIv1/tasks`)
 				const tasks = (await taskResponse.json()) as CalendarTaskData[]
 
 				setTasks(mapTasks(tasks))

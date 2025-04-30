@@ -16,12 +16,14 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet("calendar")]
-        public ActionResult<List<CalendarTaskDTO>> CalendarGetTasks()
+        [HttpGet]
+        public ActionResult<List<CalendarTaskDTO>> GetTasks([FromQuery] bool includeCompletedTasks = false)
         {
             try
             {
-                var  tasks = _context.Tasks.ToList();
+                var tasks = includeCompletedTasks
+                    ? _context.Tasks.ToList()
+                    : _context.Tasks.Where(x => !(x.Completed)).ToList();
 
 
                 if (tasks.Count > 0)
