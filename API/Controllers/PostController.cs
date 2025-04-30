@@ -102,22 +102,22 @@ namespace API.Controllers
         //    return NoContent();
         //}
 
-        //[HttpPut("{id}/complete")]
-        //public async Task<ActionResult<Task>> UpdateCompletionStatus(int id,
-        //    [FromBody] bool isCompleted)
-        //{
-        //    var task = _context.Tasks.FirstOrDefault(x => x.Id == id);
+        [HttpPut("{id}/complete")]
+        public async Task<ActionResult<Task>> UpdateCompletionStatus(int id,
+            [FromBody] bool isCompleted)
+        {
+            var task = _context.Tasks.FirstOrDefault(x => x.Id == id);
 
-        //    if (task == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (task == null)
+            {
+                return NotFound();
+            }
 
-        //    task.SetCompleted(isCompleted);
+            task.SetCompleted(isCompleted);
 
-        //    await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-        //    return Ok(task);
-        //}
+            return Ok(task);
+        }
     }
 }

@@ -16,3 +16,12 @@
     text-decoration: none;
     color: #6a6a6a;
 }
+
+.calendar-completed-checkbox {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+  

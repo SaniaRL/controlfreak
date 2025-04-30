@@ -15,8 +15,6 @@ function Calendar(){
 	const [isLoading, setIsLoading] = useState(false)
 	const [events, setEvents] = useState<EventData[]>([])
 	const [tasks, setTasks] = useState<CalendarTaskData[]>([])
-	const [combined, setCombined] = useState<(EventData | CalendarTaskData)[]>([])
-
 
 	useEffect(() => {		
 		console.log("in useEffect")
@@ -37,8 +35,6 @@ function Calendar(){
 				setTasks(mapTasks(tasks))
 				console.log(tasks)
 
-				setCombined([...events, ...tasks])
-
 			} catch (e: any) {
 				setError(e)
 			} finally {
@@ -55,10 +51,50 @@ function Calendar(){
 		}));	
 	}
 
+	const renderEventContent = (eventInfo : any) => {
+		const event = eventInfo.event;
+
+		if(event.extendedProps.completed !== undefined) {
+			return(
+				<div className="event-content">
+        <span>{event.title}</span>
+        <input 
+					className="calendar-completed-checkbox"
+          type="checkbox"
+          checked={event.extendedProps.completed}
+          onChange={() => completeTask(event)}
+        />
+      </div>
+			);
+		}
+		return <span>{event.title}</span>;
+	}
+
+	const completeTask = async (event: any) => {
+		const updatedCompleted = !event.extendedProps.completed
+
+		try {
+			const response = await fetch(`${BASE_URL}/APIv1/tasks/${event.id}/complete`, {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json', },
+				body: JSON.stringify(updatedCompleted),
+			})
+
+			if(response.ok) {
+				event.setExtendedProp("completed", updatedCompleted)
+			} else {
+				console.error("Fel")
+			}
+		} catch (error: any) {
+			console.error("Något gick fel i try/catch")
+		}
+	}
+
 	return(
 		<div className="calendar-container">
 			<FullCalendar 
 			plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+			eventContent={renderEventContent}
 			initialView="dayGridMonth"
 			firstDay={1}
 			height={"90vh"}
