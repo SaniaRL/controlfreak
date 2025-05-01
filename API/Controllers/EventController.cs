@@ -37,8 +37,14 @@ namespace API.Controllers
                         AllDay = x.AllDay,
                         BackgroundColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.BackgroundColor).First(),
                         TextColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.TextColor).First(),
-                        Recurrence = x.Recurrence
-
+                        RRule = x.RecurrenceRule != null
+                            ? new RecurrenceRuleDTO{
+                                Id = x.RecurrenceRule.Id,
+                                Freq = x.RecurrenceRule.Freq,
+                                Until = x.RecurrenceRule.Until,
+                                Dtstart = x.RecurrenceRule.Start
+                            }
+                            : null
                     }).ToList();
 
                     return Ok(eventVMs);
@@ -77,7 +83,15 @@ namespace API.Controllers
                         AllDay = x.AllDay,
                         BackgroundColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.BackgroundColor).First(),
                         TextColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.TextColor).First(),
-                        Recurrence = x.Recurrence
+                        RRule = x.RecurrenceRule != null
+                           ? new RecurrenceRuleDTO
+                           {
+                               Id = x.RecurrenceRule.Id,
+                               Freq = x.RecurrenceRule.Freq,
+                               Until = x.RecurrenceRule.Until,
+                               Dtstart = x.RecurrenceRule.Start
+                           }
+                           : null
                     }).ToList();
 
                     return Ok(eventVMs);

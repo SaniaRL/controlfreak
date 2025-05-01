@@ -17,7 +17,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<CalendarTaskDTO>> GetTasks([FromQuery] bool includeCompletedTasks = false)
+        public ActionResult<List<TaskDTO>> GetTasks([FromQuery] bool includeCompletedTasks = false)
         {
             try
             {
@@ -28,7 +28,24 @@ namespace API.Controllers
 
                 if (tasks.Count > 0)
                 {
-                    var taskVMs = tasks.Select(x => new CalendarTaskDTO(x.Id, x.Title, x.Completed, x.CompletedWhen, x.DeadLine, x.Recurrence)).ToList();
+                    //Få in RRule innan?
+                    var taskVMs = tasks.Select(x => new TaskDTO
+                    {
+                        Id = x.Id, 
+                        Title = x.Title,
+                        Completed = x.Completed,
+                        CompletedWhen = x.CompletedWhen,
+                        Deadline = x.DeadLine, 
+                        IsStackable = x.IsStackable,
+                        RRule = x.RecurrenceRule != null
+                        ? new RecurrenceRuleDTO
+                        {
+                            Freq = x.RecurrenceRule.Freq,
+                            Until = x.RecurrenceRule.Until,
+                            Dtstart = x.RecurrenceRule.Start
+                        }
+                        : null
+                    }).ToList();
 
                     return Ok(taskVMs);
                 }
@@ -41,52 +58,26 @@ namespace API.Controllers
             return NotFound("No tasks found.");
         }
 
-        //[HttpGet("tasks")]
-        //public ActionResult<List<TaskItem>> GetTasks(
-        //    [FromQuery] bool includeCompletedTasks = false)
-        //{
-        //    try
-        //    {
-        //        var tasks = includeCompletedTasks
-        //            ? _context.Tasks.ToList()
-        //            : _context.Tasks.Where(x => !(x.Completed)).ToList();
-
-
-        //        if (tasks.Count > 0)
-        //        {
-        //            return Ok(tasks);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-
-        //    return NotFound("No tasks found.");
-        //}
-
         [HttpPost("new")]
         public async Task<ActionResult<Task>> CreateTask([FromBody] CreateTask taskData)
         {
-            var task = new TaskItem(taskData.Title, taskData.DeadLine, taskData.Recurrence);
+            int? recurrenceRuleId = null;
+
+            if(taskData.RRule != null)
+            {
+                var RRule = new RecurrenceRule(freq: taskData.RRule.Freq, until: taskData.RRule.Until, start: taskData.RRule.Dtstart);
+                _context.Add(RRule);
+                await _context.SaveChangesAsync();
+                recurrenceRuleId = RRule.Id;
+            }
+
+            var task = new TaskItem(title: taskData.Title, deadline: taskData.DeadLine, isStackable: taskData.IsStackable, recurrenceRuleId: recurrenceRuleId);
 
             _context.Add(task);
             await _context.SaveChangesAsync();
 
             return Ok(task);
         }
-
-        //[HttpPost("event")]
-        //public async Task<ActionResult<Task>> CreateEvent([FromBody] CreateEvent eventData)
-        //{  
-        //    var newEvent = new EventItem(eventData.Title, eventData.Content, eventData.Start
-        //        , eventData.End, 1, RecurrenceInterval.Never);
-
-        //    _context.Add(newEvent);
-        //    await _context.SaveChangesAsync();
-
-        //    return Ok(newEvent);
-        //}
 
         [HttpDelete("{id}/delete")]
         public async Task<ActionResult<Task>> DeleteTask(int id)

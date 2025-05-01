@@ -1,8 +1,9 @@
-﻿using API.Interfaces;
+﻿using API.Entities;
+using API.Interfaces;
 
 namespace API.DTO
 {
-    public class EventDTO : IAmRecurring
+    public class EventDTO
     {
         public int Id { get; set; }
         public string Title { get; set; } = String.Empty;
@@ -12,7 +13,7 @@ namespace API.DTO
         public string BackgroundColor { get; set; } = String.Empty;
         public string TextColor { get; set; } = String.Empty;
         public bool AllDay { get; set; }
-        public RecurrenceInterval Recurrence { get; set; }
+        public RecurrenceRuleDTO? RRule { get; set; } = null;
 
     }
 }

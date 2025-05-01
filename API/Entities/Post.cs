@@ -10,14 +10,16 @@ namespace API.Entities
         public string Title { get; private set; }
         public DateTime CreatedWhen { get; set; } = DateTime.Now;
         public DateTime UpdatedWhen { get; private set; }
-        public RecurrenceInterval Recurrence { get; set; }
+
+        public int? RecurrenceRuleId { get; set; }
+        public RecurrenceRule? RecurrenceRule { get; set; }
 
         //TODO fixa private set med update
 
-        public Post(string title, RecurrenceInterval recurrence)
+        public Post(string title, int? recurrenceRuleId)
         {
             Title = title;
-            Recurrence = recurrence;
+            RecurrenceRuleId = recurrenceRuleId;
         }
         public void Update()
         {

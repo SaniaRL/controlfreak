@@ -15,8 +15,8 @@ namespace API.Entities
 
         public Category Category { get; set; } = null!;
 
-        public EventItem(string title, string content, DateTime start, DateTime? end, bool allDay, int categoryId, RecurrenceInterval recurrence) 
-            : base(title, recurrence)
+        public EventItem(string title, string content, DateTime start, DateTime? end, bool allDay, int categoryId, int? recurrenceRuleId) 
+            : base(title, recurrenceRuleId)
         {
             Content = content;
             Start = start;

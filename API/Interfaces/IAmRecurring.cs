@@ -1,7 +1,9 @@
-﻿namespace API.Interfaces
+﻿using API.Entities;
+
+namespace API.Interfaces
 {
     public interface IAmRecurring
     {
-        RecurrenceInterval Recurrence { get; set; }
+        RecurrenceRule? RecurrenceRule { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Card, Form } from 'react-bootstrap'
 import { TaskData } from '../../../types/TaskData'
-import UpdateButton from '../../../shared/updateButton'
+import UpdateButton from '../../../shared/UpdateButton'
 import DeleteButton from '../../../shared/DeleteButton'
 import './TaskList.css'
 
@@ -21,6 +21,7 @@ function TaskListItem({ task, updateTasks } : { task: TaskData, updateTasks: () 
 					},
 					body: JSON.stringify(newCompleted),
 				});
+				updateTasks()
 			} catch (error) {
 				console.error('Error updating task:', error);
 			}
