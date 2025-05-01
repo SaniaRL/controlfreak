@@ -1,10 +1,11 @@
 import { ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap"
 import { RecurrenceInterval } from "../enums/recurrenceInterval"
 
-function RecurrencePicker({ setRecurrence } : { setRecurrence: React.Dispatch<React.SetStateAction<number>> }) {
+function RecurrencePicker({ setRecurrence, className } 
+  : { setRecurrence: React.Dispatch<React.SetStateAction<number>>, className?: string}) {
   return (
     <DropdownButton
-    className='item'
+    className={className}
     as={ButtonGroup}
     variant='secondary'
     title='Recurring'>

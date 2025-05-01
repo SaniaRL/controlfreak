@@ -17,8 +17,8 @@ namespace API.Controllers
         }
 
         //Eventuellt hämta månad för månad men med några dagar innan / efter. Dvs för det synliga intervallet endast.
-        [HttpGet("calendar")]
-        public ActionResult<List<CalendarEventVM>> GetAllCalendar()
+        [HttpGet]
+        public ActionResult<List<EventDTO>> GetAllCalendar()
         {
             try
             {
@@ -27,11 +27,12 @@ namespace API.Controllers
 
                 if (events.Count > 0)
                 {
-                    var eventVMs = events.Select(x => new CalendarEventVM
+                    var eventVMs = events.Select(x => new EventDTO
                     {
                         Id = x.Id,
                         Title = x.Title,
                         Start = x.Start,
+                        Content = x.Content,
                         End = x.End,
                         AllDay = x.AllDay,
                         BackgroundColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.BackgroundColor).First(),
@@ -51,27 +52,32 @@ namespace API.Controllers
             return NotFound("No events found.");
         }
 
-        [HttpGet("activityfeed")]
-        public ActionResult<List<EventVM>> GetAllActivityfeed()
+        [HttpGet("search/{input}")]
+        public ActionResult<List<EventDTO>> SearchEvent(string input)
         {
             try
             {
-                var events = _context.Events.ToList();
+                var events = _context.Events
+                    .Where(x => x.Title
+                        .ToLower()
+                        .Contains(input
+                            .ToLower()))
+                    .ToList();
 
 
                 if (events.Count > 0)
                 {
-                    var eventVMs = events.Select(x => new EventVM
+                    var eventVMs = events.Select(x => new EventDTO
                     {
                         Id = x.Id,
                         Title = x.Title,
-                        Content = x.Content,
                         Start = x.Start,
+                        Content = x.Content,
                         End = x.End,
-                        BackgroundColor = x.Category.BackgroundColor,
-                        TextColor = x.Category.TextColor,
+                        AllDay = x.AllDay,
+                        BackgroundColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.BackgroundColor).First(),
+                        TextColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.TextColor).First(),
                         Recurrence = x.Recurrence
-
                     }).ToList();
 
                     return Ok(eventVMs);

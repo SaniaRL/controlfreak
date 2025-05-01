@@ -105,3 +105,12 @@ body {
   justify-content: space-between;
   align-items: center;
 }
+
+
+.active-view {
+  opacity: 50%;
+}
+
+.activity-filter-panel .form-control {
+  width: 350px;
+}

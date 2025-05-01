@@ -3,7 +3,7 @@ import SidebarHealthComponent from "./SidebarHealthComponent"
 import SidebarBudgetComponent from "./SidebarBudgetComponent";
 // import Calendar from "../calendar/calendar";
 
-function SidebarComponent() {
+function LSidebarComponent() {
     return (
         <>
             <div className="sidebar sidebar-left bg-body-tertiary">
@@ -15,4 +15,4 @@ function SidebarComponent() {
     );
 }
 
-export default SidebarComponent
+export default LSidebarComponent

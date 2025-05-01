@@ -26,7 +26,8 @@ namespace API
             List<Category> categoryList =
             [
                 new(name: "Events", backgroundColor: "#585858", textColor: "#ffffff"),
-                new(name: "Birthdays", backgroundColor: "#8A0A91", textColor: "#ffffff")
+                new(name: "Birthdays", backgroundColor: "#8A0A91", textColor: "#ffffff"),
+                new(name: "Work", backgroundColor: "#486589", textColor: "#ffffff"),
             ];
 
             Categories.AddRange(categoryList);
@@ -71,6 +72,14 @@ namespace API
                 new(title: "30-årsfest!", content: "Kil 18:00. Utgång i Karlstad.", start: new DateTime(2025, 4, 26, 18, 0, 0), end: new DateTime(2025, 4, 27, 3, 0, 0), allDay: false, categoryId: 1, recurrence: RecurrenceInterval.Never),
                 new(title: "Madde 30 år", content: "", start: new DateTime(2025, 4, 28, 0, 0, 0), end: null, allDay: true, categoryId: 2, recurrence: RecurrenceInterval.Never),
                 new(title: "Picknick", content: "Fira Becca", start: new DateTime(2025, 5, 3, 16, 0, 0), end:  new DateTime(2025, 5, 4, 2, 0, 0), allDay: false, categoryId: 1, recurrence: RecurrenceInterval.Never),
+                new(title: "Madde 30 år", content: "", start: new DateTime(2025, 4, 28, 0, 0, 0), end: null, allDay: true, categoryId: 2, recurrence: RecurrenceInterval.Never),
+                new(title: "Becca 33 år", content: "", start: new DateTime(2025, 5, 3, 0, 0, 0), end: null, allDay: true, categoryId: 2, recurrence: RecurrenceInterval.Never),
+                new(title: "Mamma 54 år", content: "", start: new DateTime(2025, 5, 25, 0, 0, 0), end: null, allDay: true, categoryId: 2, recurrence: RecurrenceInterval.Never),
+                new(title: "Dag 10h", content: "", start: new DateTime(2025, 4, 9, 8, 0, 0), end:  new DateTime(2025, 4, 9, 18, 0, 0), allDay: false, categoryId: 3, recurrence: RecurrenceInterval.Never),
+                new(title: "Dag 9h", content: "", start: new DateTime(2025, 4, 20, 9, 0, 0), end:  new DateTime(2025, 4, 20, 18, 0, 0), allDay: false, categoryId: 3, recurrence: RecurrenceInterval.Never),
+                new(title: "Dag 11h", content: "", start: new DateTime(2025, 4, 24, 8, 0, 0), end:  new DateTime(2025, 4, 24, 19, 0, 0), allDay: false, categoryId: 3, recurrence: RecurrenceInterval.Never),
+                new(title: "Dag 9h", content: "", start: new DateTime(2025, 5, 18, 9, 0, 0), end:  new DateTime(2025, 5, 18, 18, 0, 0), allDay: false, categoryId: 3, recurrence: RecurrenceInterval.Never),
+                new(title: "Natt 6h", content: "", start: new DateTime(2025, 5, 24, 18, 0, 0), end:  new DateTime(2025, 5, 24, 23, 59, 59), allDay: false, categoryId: 3, recurrence: RecurrenceInterval.Never),
             ];
 
             Events.AddRange(eventList);

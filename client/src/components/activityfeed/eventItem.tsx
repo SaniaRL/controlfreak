@@ -1,15 +1,12 @@
-import { Card } from "react-bootstrap";
-import UpdateButton from "../../shared/updateButton";
-import DeleteButton from "../../shared/deleteButton";
+import { Card } from 'react-bootstrap'
+import UpdateButton from '../../shared/updateButton'
+import DeleteButton from '../../shared/DeleteButton'
+import { EventData } from '../../types/EventData';
+import './ActivityFeed.css'
 
-
-function EventItem({id, description, content}: {id: string, description: string, content: string}) {
-
-
+function EventItem({event}: {event: EventData}) {
 	const deletePost = async (id: number) => {
-
-
-		//Få med i body om det är event eller task och ha samma kontroller? olika kontroller?
+		//Set loading set error
 		try {
 			await fetch(`https://localhost:7159/posts/event/${id}/delete`, {
 					method: 'DELETE',
@@ -20,12 +17,21 @@ function EventItem({id, description, content}: {id: string, description: string,
 		}; 
 
 	return(
-		<Card className='activity-item'>
-			<p>{description}</p>
-			<p>{content}</p>
-			<div className='activity-item-options'>
-					<UpdateButton />
-					<DeleteButton id={Number(id)} onDelete={deletePost} />
+		<Card className='event-item'>
+			<div className='event-item-head'>
+				<p>{event.title}</p>
+				<div className='dates'>
+					<p>{new Date(event.start).toLocaleString("sv-SE", { dateStyle: "short", timeStyle: "short" })}</p>
+					<p>{new Date(event.end).toLocaleString("sv-SE", { dateStyle: "short", timeStyle: "short" })}</p>
+				</div>
+				<div className='event-item-options'>
+						<UpdateButton />
+						<DeleteButton id={Number(event.id)} onDelete={deletePost} />
+				</div>
+			</div>
+			<div className='event-item-body'>
+			<p>{event.content}</p>
+			<p>category name</p>
 			</div>
 		</Card>
 	);
