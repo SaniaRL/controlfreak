@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import { TaskData } from '../../../types/TaskData'
 import TaskListItem from './TaskListItem'
 import './TaskList.css'
+import CreateTask from './CreateTask'
 
 const BASE_URL = 'https://localhost:7159';
 
 function TaskList({ showCompletedTasks } : { showCompletedTasks: boolean }) {
   const [tasks, setTasks] = useState<TaskData[]>([])
 
-  useEffect (() => {
+
     const fetchTasks = async () => {
       try {
         const response = await fetch(`${BASE_URL}/APIv1/tasks?includeCompletedTasks=${showCompletedTasks}`)
@@ -19,15 +20,20 @@ function TaskList({ showCompletedTasks } : { showCompletedTasks: boolean }) {
       } catch (e: any) {
         console.error(e)
       }
-    }; fetchTasks()
-  }, [])
+    }; 
+    
+    useEffect (() => { 
+      fetchTasks() 
+    }, [])
+
 
   return(
     <>
-      <h3>Tasks</h3>    
+      <h3>Tasks</h3>
+      <CreateTask updateTasks={fetchTasks} />
       <div className="task-container">
       { tasks.map((task) => (    
-        <TaskListItem key={task.id} task={task} />                        
+        <TaskListItem updateTasks={fetchTasks} key={task.id} task={task} />                        
       ))}
       </div>
     </>

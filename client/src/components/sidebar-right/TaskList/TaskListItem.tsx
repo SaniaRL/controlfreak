@@ -3,8 +3,9 @@ import { Card, Form } from 'react-bootstrap'
 import { TaskData } from '../../../types/TaskData'
 import UpdateButton from '../../../shared/updateButton'
 import DeleteButton from '../../../shared/DeleteButton'
+import './TaskList.css'
 
-function TaskListItem({ task } : { task: TaskData }) {
+function TaskListItem({ task, updateTasks } : { task: TaskData, updateTasks: () => void }) {
 		const [ completed, setCompleted ] = useState(task.completed);
 	
 		const changeCheckbox = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +32,7 @@ function TaskListItem({ task } : { task: TaskData }) {
 				await fetch(`https://localhost:7159/APIv1/tasks/${id}/delete`, {
 					method: 'DELETE',
 				});
+				updateTasks()
 			} catch (error) {
 				console.error('Error deleting task:', error);
 			}

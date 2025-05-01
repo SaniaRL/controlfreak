@@ -1,6 +1,7 @@
 import { ButtonGroup, Container, Navbar} from "react-bootstrap";
 import '../../App.css'
 import ChangeViewButton from "../../shared/ChangeViewButton";
+import './Navbar.css'
 
 function NavbarComponent({ currentView, setView }: { currentView: string, setView: (view: string) => void }) {
 
