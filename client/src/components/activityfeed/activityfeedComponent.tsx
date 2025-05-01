@@ -2,11 +2,11 @@ import "../../App.css"
 import { useState } from "react"
 import CreateActivity from "./createActivity.tsx"
 import ActivityFilterPanel from "./filter-components/ActivityFilterPanel.tsx"
-import EventItem from "./eventItem.tsx"
-import { CalendarEvent } from "../../types/CalendarEvent.ts"
+import EventItem from "./EventItem.tsx"
+import { EventData } from "../../types/EventData.ts"
 
 export default function ActivityfeedComponent() {
-	const [searchResults, setSearchResults] = useState<CalendarEvent[]>([])
+	const [searchResults, setSearchResults] = useState<EventData[]>([])
 	
 	return (
 		<div className="activityfeed">
@@ -14,7 +14,7 @@ export default function ActivityfeedComponent() {
 			<CreateActivity />
 			<div className="activity-container">
 				{ searchResults.map((event) => (    
-					<EventItem key={event.id} id={event.id} description={event.title} content={event.content} />                        
+					<EventItem key={event.id} event={event} />                        
 				))}
 			</div>
 		</div>

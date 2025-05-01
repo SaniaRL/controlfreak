@@ -1,0 +1,33 @@
+
+.event-item {
+    padding: 2px 20px;
+    box-shadow: 1px 2px 14px -10px rgba(0,0,0,0.75);
+}
+  
+.event-item:hover {
+    background: #f8f9fa;
+}
+
+.event-item-head p {
+    padding-top: 15px;
+    width: 100%;
+    font-size: large;
+}
+  
+.event-item-head,
+.event-item-options {
+    display: flex;
+}
+
+.dates {
+    display: contents;
+}
+
+.dates p {
+    font-size: 10px;
+}
+
+.event-item-body p {
+    font-size: 14px;
+
+}

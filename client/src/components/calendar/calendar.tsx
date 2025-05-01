@@ -23,13 +23,13 @@ function Calendar(){
 			setIsLoading(true)
 
 			try{
-				const eventResponse = await fetch(`${BASE_URL}/APIv1/events/calendar`)
+				const eventResponse = await fetch(`${BASE_URL}/APIv1/events`)
 				const events = (await eventResponse.json()) as EventData[]
 
 				setEvents(events)
 				console.log(events)
 
-				const taskResponse = await fetch(`${BASE_URL}/APIv1/tasks`)
+				const taskResponse = await fetch(`${BASE_URL}/APIv1/tasks?includeCompletedTasks=true`)
 				const tasks = (await taskResponse.json()) as CalendarTaskData[]
 
 				setTasks(mapTasks(tasks))
@@ -98,7 +98,6 @@ function Calendar(){
 			initialView="dayGridMonth"
 			firstDay={1}
 			height={"90vh"}
-			// aspectRatio={1.5}
 			headerToolbar={{
 				start:"today, prev, next",
 				center:"title",

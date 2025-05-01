@@ -5,10 +5,7 @@ export interface EventData {
     start: string,
     end: string,
     backgroundColor: string,
-    textColor: string
+    textColor: string,
+    allDay: boolean,
+    editable: boolean
 }
-
-/*
-id, allDay, url, classNames, editable, backgroundColor, borderColor, 
-textColor, groupId, display, overlap, constraint, extendedProps, resourceId, resourceIds,
- */

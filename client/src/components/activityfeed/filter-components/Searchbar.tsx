@@ -13,9 +13,10 @@ function Searchbar({ updateSearchResults }: { updateSearchResults: React.Dispatc
 	useEffect (() => {
 		const delayDebounce = setTimeout(async () => {
 			if(search === "") {
-				const eventResponse = await fetch(`${BASE_URL}/APIv1/events/calendar`)
+				const eventResponse = await fetch(`${BASE_URL}/APIv1/events`)
 				const events = await eventResponse.json()
-				updateSearchResults(events)			
+				updateSearchResults(events)		
+				console.log(events)	
 			} else {		
 				fetch(`${BASE_URL}/APIv1/events/search/${search}`)
 					.then(response => response.json())

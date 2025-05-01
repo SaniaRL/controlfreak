@@ -60,7 +60,6 @@ function CreateTask({updateTasks}: {updateTasks : () => void}) {
           </DropdownButton>
 
           <DatePicker
-          className='date-picker'
           selected={deadline}
             onChange={(date: Date | null) => setDate(date)}
             dateFormat='yyyy/MM/dd'

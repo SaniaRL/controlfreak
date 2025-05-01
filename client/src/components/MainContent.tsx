@@ -1,7 +1,7 @@
-import ActivityfeedComponent from "./activityfeed/activityfeedComponent";
-import Calendar from "./calendar/calendar";
-import LSidebarComponent from "./sidebar-left/LSidebarComponent";
-import RSidebarComponent from "./sidebar-right/RSidebarComponent";
+import ActivityfeedComponent from './activityfeed/ActivityfeedComponent'
+import Calendar from './calendar/calendar'
+import LSidebarComponent from './sidebar-left/LSidebarComponent'
+import RSidebarComponent from './sidebar-right/RSidebarComponent'
 
 
 function MainContent({ view }: { view: string }) {

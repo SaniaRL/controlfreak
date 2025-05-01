@@ -29,7 +29,6 @@ function TaskList({ showCompletedTasks } : { showCompletedTasks: boolean }) {
 
   return(
     <>
-      <h3>Tasks</h3>
       <CreateTask updateTasks={fetchTasks} />
       <div className="task-container">
       { tasks.map((task) => (    

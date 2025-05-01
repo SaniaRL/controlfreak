@@ -47,7 +47,7 @@ function TaskListItem({ task, updateTasks } : { task: TaskData, updateTasks: () 
 			/> 
 			<p>{task.title}</p>
 			<div className='activity-item-options'>
-					<UpdateButton />
+					{/* <UpdateButton /> */}
 					<DeleteButton id={Number(task.id)} onDelete={deletePost} />
 			</div>
 		</Card>
