@@ -2,17 +2,20 @@
 
 namespace API.Entities
 {
-    public class TaskItem : Post, ICanComplete, IHasDeadline
+    public class TaskItem : Post, ICanComplete, IHasDeadline, IAmStackable
     {
         public bool Completed { get; private set; } = false;
 
         public DateTime? CompletedWhen { get; private set; }
         public DateTime? DeadLine { get; set; }
-        public TaskItem(string title, DateTime? deadline, RecurrenceInterval recurrence) : base(title, recurrence)
+        public bool IsStackable { get; set; } = true;
+
+        public TaskItem(string title, DateTime? deadline, bool isStackable, int? recurrenceRuleId) : base(title, recurrenceRuleId)
         {
             DeadLine = deadline;
+            IsStackable = isStackable;
         }
-        public TaskItem(string title, RecurrenceInterval recurrence) : base(title, recurrence) { }
+        public TaskItem(string title, int? recurrenceRuleId) : base(title, recurrenceRuleId) { }
 
         public void SetCompleted(bool completed)
         {

@@ -47,7 +47,7 @@ function Calendar(){
 	function mapTasks(tasks: CalendarTaskData[]): CalendarTaskData[] {
 		return tasks.map(task => ({
 			...task,
-			start: task.start ?? new Date().toISOString()
+			start: task.completed ? task.completedWhen : task.deadline ? task.deadline : new Date().toISOString()
 		}));	
 	}
 

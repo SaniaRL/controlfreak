@@ -1,5 +1,5 @@
 import { Card } from 'react-bootstrap'
-import UpdateButton from '../../shared/updateButton'
+import UpdateButton from '../../shared/UpdateButton'
 import DeleteButton from '../../shared/DeleteButton'
 import { EventData } from '../../types/EventData';
 import './ActivityFeed.css'

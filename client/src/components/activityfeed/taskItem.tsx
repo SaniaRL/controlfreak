@@ -1,57 +1,57 @@
-import { useState } from 'react'
-import { Card, Form } from 'react-bootstrap'
-import '../../App.css'
-import UpdateButton from '../../shared/updateButton'
-import DeleteButton from '../../shared/DeleteButton'
+// import { useState } from 'react'
+// import { Card, Form } from 'react-bootstrap'
+// import '../../App.css'
+// import UpdateButton from '../../shared/UpdateButton'
+// import DeleteButton from '../../shared/DeleteButton'
 
 
-function TaskItem({ id, description, isCompleted }: { id: string, description: string; isCompleted: boolean }) {
-    const [ completed, setCompleted ] = useState(isCompleted);
+// function TaskItem({ id, description, isCompleted }: { id: string, description: string; isCompleted: boolean }) {
+//     const [ completed, setCompleted ] = useState(isCompleted);
 
-    const changeCheckbox = async (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const changeCheckbox = async (e: React.ChangeEvent<HTMLInputElement>) => {
 
-        const newCompleted = e.target.checked;
-        setCompleted(newCompleted);
+//         const newCompleted = e.target.checked;
+//         setCompleted(newCompleted);
 
-        try {
-            await fetch(`https://localhost:7159/APIv1/tasks/${id}/complete`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newCompleted),
-            });
-        } catch (error) {
-            console.error('Error updating task:', error);
-        }
-    }; 
+//         try {
+//             await fetch(`https://localhost:7159/APIv1/tasks/${id}/complete`, {
+//                 method: 'PUT',
+//                 headers: {
+//                     'Content-Type': 'application/json',
+//                 },
+//                 body: JSON.stringify(newCompleted),
+//             });
+//         } catch (error) {
+//             console.error('Error updating task:', error);
+//         }
+//     }; 
 
-    const deletePost = async (id: number) => {
+//     const deletePost = async (id: number) => {
 
-        try {
-            await fetch(`https://localhost:7159/APIv1/tasks/${id}/delete`, {
-                method: 'DELETE',
-            });
-        } catch (error) {
-            console.error('Error deleting task:', error);
-        }
-    }; 
+//         try {
+//             await fetch(`https://localhost:7159/APIv1/tasks/${id}/delete`, {
+//                 method: 'DELETE',
+//             });
+//         } catch (error) {
+//             console.error('Error deleting task:', error);
+//         }
+//     }; 
 
-    return(
-        <Card className='activity-item'>
-            <Form.Check
-            type='checkbox'
-            checked={completed}
-            onChange={changeCheckbox}
-            /> 
-            {/* description as p because not all have checkbox later  */}
-            <p>{description}</p>
-            <div className='activity-item-options'>
-                <UpdateButton />
-                <DeleteButton id={Number(id)} onDelete={deletePost} />
-            </div>
-        </Card>
-    );
-}
+//     return(
+//         <Card className='activity-item'>
+//             <Form.Check
+//             type='checkbox'
+//             checked={completed}
+//             onChange={changeCheckbox}
+//             /> 
+//             {/* description as p because not all have checkbox later  */}
+//             <p>{description}</p>
+//             <div className='activity-item-options'>
+//                 <UpdateButton />
+//                 <DeleteButton id={Number(id)} onDelete={deletePost} />
+//             </div>
+//         </Card>
+//     );
+// }
 
-export default TaskItem
+// export default TaskItem
