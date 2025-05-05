@@ -9,7 +9,8 @@ namespace API.DTO
         public DateTime Start { get; set; }
         public DateTime? End { get; set; }
         public bool AllDay { get; set; }
-        public RecurrenceInterval Recurrence { get; set; }
+        public string? RRule { get; set; }
         public int CategoryId { get; set; }
+        public string[]? Tags { get; set; }
     }
 }

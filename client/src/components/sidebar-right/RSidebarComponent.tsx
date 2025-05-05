@@ -1,13 +1,16 @@
-import TaskList from "./TaskList/Tasklist";
+import { CalendarTaskData } from '../../types/TaskData'
+import { UpdatePayLoad } from '../../types/UpdatePayload'
+import TaskList from './TaskList/Tasklist'
 
 //Knapp för om avslutade ska visas
+//Kanske skicka och byta namn på CalendarProps idk detta är ju chill kanske ?
 
-function RSidebarComponent() {
+function RSidebarComponent( { tasks, onDataChange }: { tasks: CalendarTaskData[], onDataChange: (updates?: UpdatePayLoad) => void } ) {
     return(
         <div className="sidebar sidebar-right bg-body-tertiary">
-            <TaskList showCompletedTasks={false}/>
+            <TaskList tasks={tasks} onDataChange={onDataChange}/>
         </div>
-    );
+    )
 }
 
 export default RSidebarComponent

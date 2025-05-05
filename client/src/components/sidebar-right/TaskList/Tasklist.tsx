@@ -1,38 +1,22 @@
-import { useEffect, useState } from 'react'
-import { TaskData } from '../../../types/TaskData'
 import TaskListItem from './TaskListItem'
-import './TaskList.css'
+import { UpdatePayLoad } from '../../../types/UpdatePayload'
+
 import CreateTask from './CreateTask'
 
-const BASE_URL = 'https://localhost:7159';
+import './TaskList.css'
+import { CalendarTaskData } from '../../../types/TaskData'
 
-function TaskList({ showCompletedTasks } : { showCompletedTasks: boolean }) {
-  const [tasks, setTasks] = useState<TaskData[]>([])
-
-
-    const fetchTasks = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/APIv1/tasks?includeCompletedTasks=${showCompletedTasks}`)
-        const tasks = (await response.json()) as TaskData[]
-
-        setTasks(tasks)
-        console.log(tasks)
-      } catch (e: any) {
-        console.error(e)
-      }
-    }; 
-    
-    useEffect (() => { 
-      fetchTasks() 
-    }, [])
-
+//Inte void få response? Promise<void>?
+function TaskList({ tasks, onDataChange } : { tasks: CalendarTaskData[], onDataChange: (updates?: UpdatePayLoad) => void }) {
+  // const [tasks, setTasks] = useState<TaskData[]>([])
+  // const [showCompletedTasks, setShowCompletedTasks] = useState(false)
 
   return(
     <>
-      <CreateTask updateTasks={fetchTasks} />
+      <CreateTask onDataChange={onDataChange} />
       <div className="task-container">
       { tasks.map((task) => (    
-        <TaskListItem updateTasks={fetchTasks} key={task.id} task={task} />                        
+        <TaskListItem onDataChange={onDataChange} key={task.id} task={task} />                        
       ))}
       </div>
     </>

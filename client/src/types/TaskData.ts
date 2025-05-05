@@ -1,11 +1,16 @@
-import { RRule } from "./RRule";
 
-export interface TaskData {
-    id: number;
-    title: string;
-    completed: boolean;
-    completedWhen: Date;
-    isStackable: boolean;
-    deadline: Date | null,
-    recurrenceRule?: RRule; 
+export interface CalendarTaskData {
+    id: string
+    title: string
+    start: Date
+    end?: Date | undefined
+    completed: boolean
+    completedWhen: Date | undefined
+    deadline: Date | null
+    isStackable: boolean
+    allDay: boolean
+    backgroundColor: string
+    textColor: string
+    rrule?: string | undefined
+    tags: string[] | undefined
 }

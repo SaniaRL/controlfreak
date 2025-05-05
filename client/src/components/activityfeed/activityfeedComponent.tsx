@@ -1,6 +1,6 @@
 import "../../App.css"
 import { useState } from "react"
-import CreateActivity from "./createActivity.tsx"
+import CreateActivity from "./CreateActivity.tsx"
 import ActivityFilterPanel from "./filter-components/ActivityFilterPanel.tsx"
 import EventItem from "./EventItem.tsx"
 import { EventData } from "../../types/EventData.ts"

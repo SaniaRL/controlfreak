@@ -7,15 +7,15 @@ namespace API.Entities
         public bool Completed { get; private set; } = false;
 
         public DateTime? CompletedWhen { get; private set; }
-        public DateTime? DeadLine { get; set; }
+        public DateTime? DeadLine { get; private set; }
         public bool IsStackable { get; set; } = true;
 
-        public TaskItem(string title, DateTime? deadline, bool isStackable, int? recurrenceRuleId) : base(title, recurrenceRuleId)
+        public TaskItem(string title, DateTime? deadline, bool isStackable, string? rRule) : base(title, rRule)
         {
             DeadLine = deadline;
             IsStackable = isStackable;
         }
-        public TaskItem(string title, int? recurrenceRuleId) : base(title, recurrenceRuleId) { }
+        public TaskItem(string title, string? rRule) : base(title, rRule) { }
 
         public void SetCompleted(bool completed)
         {
@@ -25,5 +25,13 @@ namespace API.Entities
 
             Update();
         }
+
+        public void SetDeadline(DateTime? deadline)
+        {
+            DeadLine = deadline;
+
+            Update();
+        }
+
     }
 }

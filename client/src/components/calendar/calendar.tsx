@@ -1,99 +1,44 @@
 
-import "./calendar.css"
-import FullCalendar from "@fullcalendar/react"
-import dayGridPlugin from "@fullcalendar/daygrid"
-import timeGridPlugin from "@fullcalendar/timegrid"
-import interactionPlugin from "@fullcalendar/interaction"
-import { EventData } from "../../types/EventData"
-import { useEffect, useState } from "react"
-import { CalendarTaskData } from "../../types/CalendarTaskData"
+import './Calendar.css'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import rrulePlugin from '@fullcalendar/rrule'
+import { CalendarProps } from '../../types/CalendarProps'
 
-const BASE_URL = 'https://localhost:7159';
 
-function Calendar(){
-	const [error, setError] = useState();
-	const [isLoading, setIsLoading] = useState(false)
-	const [events, setEvents] = useState<EventData[]>([])
-	const [tasks, setTasks] = useState<CalendarTaskData[]>([])
-
-	useEffect(() => {		
-		console.log("in useEffect")
-		const fetchData = async () => {
-
-			setIsLoading(true)
-
-			try{
-				const eventResponse = await fetch(`${BASE_URL}/APIv1/events`)
-				const events = (await eventResponse.json()) as EventData[]
-
-				setEvents(events)
-				console.log(events)
-
-				const taskResponse = await fetch(`${BASE_URL}/APIv1/tasks?includeCompletedTasks=true`)
-				const tasks = (await taskResponse.json()) as CalendarTaskData[]
-
-				setTasks(mapTasks(tasks))
-				console.log(tasks)
-
-			} catch (e: any) {
-				setError(e)
-			} finally {
-				setIsLoading(false)
-			}
-		}
-		fetchData()
-	}, [])
-
-	function mapTasks(tasks: CalendarTaskData[]): CalendarTaskData[] {
-		return tasks.map(task => ({
-			...task,
-			start: task.completed ? task.completedWhen : task.deadline ? task.deadline : new Date().toISOString()
-		}));	
-	}
+function Calendar({events, tasks, onDataChange}: CalendarProps) {
 
 	const renderEventContent = (eventInfo : any) => {
-		const event = eventInfo.event;
+		const entry = eventInfo.event;
 
-		if(event.extendedProps.completed !== undefined) {
+		if(entry.extendedProps.completed !== undefined) {
 			return(
 				<div className="event-content">
-        <span>{event.title}</span>
-        <input 
-					className="calendar-completed-checkbox"
-          type="checkbox"
-          checked={event.extendedProps.completed}
-          onChange={() => completeTask(event)}
-        />
-      </div>
-			);
+					<span>{entry.title}</span>
+					<input 
+						className="calendar-completed-checkbox"
+						type="checkbox"
+						checked={entry.extendedProps.completed}
+						onChange={() => onDataChange?.({
+							type: 'tasks',
+							CRUD: 'PUT',
+							id: entry.id,
+							updates: { completed: !entry.extendedProps.completed }
+						})}
+					/>
+		  </div>
+			)
 		}
-		return <span>{event.title}</span>;
+		return <span>{entry.title}</span>
 	}
 
-	const completeTask = async (event: any) => {
-		const updatedCompleted = !event.extendedProps.completed
-
-		try {
-			const response = await fetch(`${BASE_URL}/APIv1/tasks/${event.id}/complete`, {
-				method: 'PUT',
-				headers: { 'Content-Type': 'application/json', },
-				body: JSON.stringify(updatedCompleted),
-			})
-
-			if(response.ok) {
-				event.setExtendedProp("completed", updatedCompleted)
-			} else {
-				console.error("Fel")
-			}
-		} catch (error: any) {
-			console.error("Något gick fel i try/catch")
-		}
-	}
-
+	
 	return(
 		<div className="calendar-container">
 			<FullCalendar 
-			plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+			plugins={[dayGridPlugin, rrulePlugin, timeGridPlugin, interactionPlugin]}
 			eventContent={renderEventContent}
 			initialView="dayGridMonth"
 			firstDay={1}

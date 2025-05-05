@@ -11,15 +11,12 @@ namespace API.Entities
         public DateTime CreatedWhen { get; set; } = DateTime.Now;
         public DateTime UpdatedWhen { get; private set; }
 
-        public int? RecurrenceRuleId { get; set; }
-        public RecurrenceRule? RecurrenceRule { get; set; }
+        public string? RRule{ get; private set; }
 
-        //TODO fixa private set med update
-
-        public Post(string title, int? recurrenceRuleId)
+        public Post(string title, string rRule)
         {
             Title = title;
-            RecurrenceRuleId = recurrenceRuleId;
+            RRule = rRule;
         }
         public void Update()
         {
@@ -32,5 +29,13 @@ namespace API.Entities
 
             Update();
         }
+
+        public void SetRRule(string? rRule)
+        {
+            RRule = rRule;
+
+            Update();
+        }
+
     }
 }

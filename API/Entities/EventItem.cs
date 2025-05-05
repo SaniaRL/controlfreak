@@ -8,21 +8,41 @@ namespace API.Entities
         public string Content { get; set; }
         public DateTime Start { get; private set; }
         public DateTime? End { get; private set; }
-        public bool AllDay { get; set; }
+        public bool AllDay { get; private set; }
+        public string[]? Tags { get; private set; }
 
         [Required]
         public int CategoryId { get; set; }
 
         public Category Category { get; set; } = null!;
 
-        public EventItem(string title, string content, DateTime start, DateTime? end, bool allDay, int categoryId, int? recurrenceRuleId) 
-            : base(title, recurrenceRuleId)
+        public EventItem(string title, string content, DateTime start, DateTime? end, bool allDay, int categoryId, string? rRule, string[]? tags) 
+            : base(title, rRule)
         {
             Content = content;
             Start = start;
             End = end;
             AllDay = allDay;
             CategoryId = categoryId;
+            Tags = tags;
         }
+
+        public void SetStart(DateTime start)
+        {
+            Start = start;
+            Update();
+        }
+        public void SetEnd(DateTime? end)
+        {
+            End = end;
+            Update();
+        }
+        public void SetAllday(bool allDay)
+        {
+            AllDay = allDay;
+            Update();
+        }
+
+
     }
 }
