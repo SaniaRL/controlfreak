@@ -128,3 +128,7 @@ Checkbox måste också ha rätt muspekare och så*/
     background-color: #ffffff;
     border: 1px solid #ccc;
   }
+
+  .show-completed {
+    margin-bottom: 0.5rem
+  }

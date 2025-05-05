@@ -1,5 +1,5 @@
 
-export interface CalendarTaskData {
+export interface TaskData {
     id: string
     title: string
     start: Date
