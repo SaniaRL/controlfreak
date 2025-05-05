@@ -1,4 +1,4 @@
-import { CalendarTaskData } from './CalendarTaskData'
+import { CalendarTaskData } from './TaskData'
 import { EventData } from './EventData'
 import { UpdatePayLoad } from './UpdatePayload'
 

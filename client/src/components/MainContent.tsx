@@ -1,12 +1,12 @@
 
-import React, { useState, useCallback, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import ActivityfeedComponent from './activityfeed/ActivityfeedComponent'
 import Calendar from './calendar/Calendar'
 import LSidebarComponent from './sidebar-left/LSidebarComponent'
 import RSidebarComponent from './sidebar-right/RSidebarComponent'
 import { EventData } from '../types/EventData'
-import { CalendarTaskData } from '../types/CalendarTaskData'
-import { CalendarProps } from '../types/CalendarProps'
+import { CalendarTaskData } from '../types/TaskData'
+// import { CalendarProps } from '../types/CalendarProps'
 import { UpdatePayLoad } from '../types/UpdatePayload'
 
 const BASE_URL = 'https://localhost:7159'
@@ -46,7 +46,7 @@ function MainContent({ view }: { view: string }) {
     //Is loading borde ta nån parameter kanske beroende på vad typ en string som meddelande
     setIsLoading(true)
     try {
-      const response = await fetch(`${BASE_URL}/${API}/tasks?includeCompletedTasks=${includeCompletedTasks}`)
+      const response = await fetch(`${BASE_URL}/${API}/tasks/GET?includeCompletedTasks=${includeCompletedTasks}`)
       const tasks = (await response.json()) as CalendarTaskData[]
   
       setTasks(mapTasks(tasks))	
@@ -76,15 +76,20 @@ function MainContent({ view }: { view: string }) {
     })
   }
 
-  function onDataChange(data: UpdatePayLoad) {
-    setIsLoading(true)
-    try {
-      mapCRUD(data)
-      //Gör fler saker för andra förändringar och håll crud separat?
-    } catch (e: any){
-      setError(e)
-    } finally {
-      setIsLoading(false)
+  function onDataChange(data: UpdatePayLoad | undefined) {
+    if(data === undefined) {
+      //Gör nåt???
+      console.log('Data is undefined')
+    } else {
+      setIsLoading(true)
+      try {
+        mapCRUD(data)
+        //Gör fler saker för andra förändringar och håll crud separat?
+      } catch (e: any){
+        setError(e)
+      } finally {
+        setIsLoading(false)
+      }  
     }
   }
 
@@ -96,8 +101,10 @@ function MainContent({ view }: { view: string }) {
     const method = x.CRUD
     const property = x.updates ? Object.keys(x.updates)[0] : undefined
     const value = x.updates ? Object.values(x.updates)[0] : undefined
+
+    const segments = [ BASE_URL, API, type, method, id, property ]
     try {
-      const response = await fetch(`${BASE_URL}/${API}/${type}/${method}/${id}/${property}`, {
+      const response = await fetch(`${segments.join('/')}`, {
         method: method,
         headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify(value),
@@ -123,9 +130,9 @@ function MainContent({ view }: { view: string }) {
     <div className="main-content">
     <LSidebarComponent />
     { view === 'activity' ? <ActivityfeedComponent /> : <Calendar events={events} tasks={tasks} onDataChange={onDataChange}/>}
-    <RSidebarComponent />
+    <RSidebarComponent tasks={tasks} onDataChange={onDataChange} />
     </div>
-  );
+  )
 }
 
 export default MainContent

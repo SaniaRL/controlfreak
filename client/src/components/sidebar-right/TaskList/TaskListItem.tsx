@@ -1,55 +1,47 @@
 import { useState } from 'react'
 import { Card, Form } from 'react-bootstrap'
-import { TaskData } from '../../../types/TaskData'
-import UpdateButton from '../../../shared/UpdateButton'
-import DeleteButton from '../../../shared/DeleteButton'
-import './TaskList.css'
+import { TaskData } from '../../../types/TaskDataOLD'
+import { UpdatePayLoad } from '../../../types/UpdatePayload'
 
-function TaskListItem({ task, updateTasks } : { task: TaskData, updateTasks: () => void }) {
-		const [ completed, setCompleted ] = useState(task.completed);
-	
-		const changeCheckbox = async (e: React.ChangeEvent<HTMLInputElement>) => {
-	
-			const newCompleted = e.target.checked;
-			setCompleted(newCompleted);
-	
-			try {
-				await fetch(`https://localhost:7159/APIv1/tasks/${task.id}/complete`, {
-					method: 'PUT',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(newCompleted),
-				});
-				updateTasks()
-			} catch (error) {
-				console.error('Error updating task:', error);
-			}
-		}; 
-	
-		const deletePost = async (id: number) => {
-	
-			try {
-				await fetch(`https://localhost:7159/APIv1/tasks/${id}/delete`, {
-					method: 'DELETE',
-				});
-				updateTasks()
-			} catch (error) {
-				console.error('Error deleting task:', error);
-			}
-		}; 
-	
+import DeleteButton from '../../../shared/DeleteButton'
+
+import './TaskList.css'
+import { CalendarTaskData } from '../../../types/TaskData'
+
+function TaskListItem({ task, onDataChange } : { task: CalendarTaskData, onDataChange: (updates?: UpdatePayLoad) => void }) {
+	const [ completed, setCompleted ] = useState(task.completed);		
+
+	function deleteTask(){
+		onDataChange?.({
+			type: 'tasks',
+			CRUD: 'DELETE',
+			updates: {id: task.id}
+		})
+		//Uppdatera sig eller nåt idk
+	}
+
+	function completeTask(){
+		setCompleted(!completed)
+		onDataChange?.({
+			type: 'tasks',
+			CRUD: 'PUT',
+			id: task.id,
+			updates: {completed: completed}
+		})
+		//Uppdatera sig eller nåt idk
+	}
+
 	return(
 		<Card className='task-item'>
 			<Form.Check
 			type='checkbox'
 			checked={completed}
-			onChange={changeCheckbox}
+			onChange={completeTask}
 			/> 
 			<p>{task.title}</p>
 			<div className='activity-item-options'>
 					{/* <UpdateButton /> */}
-					<DeleteButton id={Number(task.id)} onDelete={deletePost} />
+					<DeleteButton id={Number(task.id)} onDelete={deleteTask} />
 			</div>
 		</Card>
 	)

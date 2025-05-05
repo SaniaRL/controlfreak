@@ -17,7 +17,7 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("GET")]
         public ActionResult<List<TaskDTO>> GetTasks([FromQuery] bool includeCompletedTasks = false)
         {
             try
@@ -50,7 +50,7 @@ namespace API.Controllers
             return NotFound("No tasks found.");
         }
 
-        [HttpPost("new")]
+        [HttpPost("POST")]
         public async Task<ActionResult<Task>> CreateTask([FromBody] CreateTask taskData)
         {
 
@@ -62,7 +62,7 @@ namespace API.Controllers
             return Ok(task);
         }
 
-        [HttpDelete("{id}/delete")]
+        [HttpDelete("DELETE/{id}")]
         public async Task<ActionResult<Task>> DeleteTask(int id)
         {
             var task = await _context.Tasks.FindAsync(id);

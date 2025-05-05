@@ -1,39 +1,19 @@
 import { useState } from 'react'
 import { Button, Form, FormControl, InputGroup } from 'react-bootstrap'
-import { CreateTaskData } from '../../../types/CreateTaskData'
+import { Frequency, RRule } from 'rrule'
+import { UpdatePayLoad } from '../../../types/UpdatePayload'
+
 import DatePicker from 'react-datepicker'
+import RRPicker from '../../../shared/RRPicker'
+
 import 'react-datepicker/dist/react-datepicker.css'
 import './TaskList.css'
-import RRPicker from '../../../shared/RRPicker'
-import { Frequency, RRule } from 'rrule'
 
-function CreateTask({updateTasks}: {updateTasks : () => void}) {
-  const [ description, setDescription ] = useState('')
+function CreateTask({ onDataChange }: {onDataChange : (updates?: UpdatePayLoad) => void}) {
+  const [ title, setDescription ] = useState('')
   const [ deadline, setDeadline ] = useState<Date | null>(null)
   const [ recurrence, setRecurrence ] = useState<string | undefined>(undefined)
   const [ showRRPicker, setShowRRPicker ] = useState(false)
-
-    const createNewTask = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      console.log(description);
-  
-      let data: CreateTaskData = { title: description, deadline: deadline, rrule: recurrence }
-    
-      try {
-        await fetch(`https://localhost:7159/APIv1/tasks/new`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        updateTasks()
-        setDescription('')
-        setDeadline(null)
-      } catch (error) {
-          console.error("Error creating new post:", error)
-      }
-    };
 
   const setDate = (date: Date | null) => {
     if(date != null) {
@@ -48,9 +28,8 @@ function CreateTask({updateTasks}: {updateTasks : () => void}) {
       freq: freq,
       until: until
     })
-    const rruleString: string = rule.toString()
 
-    console.log(rruleString)
+    const rruleString: string = rule.toString()
 
     setRecurrence(rruleString)
     setShowRRPicker(false)
@@ -61,15 +40,34 @@ function CreateTask({updateTasks}: {updateTasks : () => void}) {
     setShowRRPicker(false)
   }
 
+  function postTask() {
+    const data = {
+      title: title,
+      deadline: deadline,
+      recurrence: recurrence
+    }
+
+    onDataChange?.({
+      type: 'tasks',
+      CRUD: 'POST',
+      updates: data
+    })   
+    
+    //egentligen ska den sen bara rensan om post går bra annars kanske feedback med röd border idk i nuläget men ska fixa sen
+    setDescription('')
+    setDeadline(null)
+    setRecurrence(undefined)
+  }
+
   return(
-    <Form onSubmit={createNewTask}>
+    <Form onSubmit={() => postTask()}>
       <InputGroup className='task-input-group'>
         <span className='task-input-area'>
 
           <FormControl 
           className='task-input'
           type='text'
-          value={description}
+          value={title}
           onChange={(e) => setDescription(e.target.value)}/>
 
           <DatePicker
@@ -101,7 +99,7 @@ function CreateTask({updateTasks}: {updateTasks : () => void}) {
           className='rr-picker-container'>
             <RRPicker 
               start={deadline ? deadline : new Date()} 
-              onCreateRRule={(freq: Frequency, until: Date | undefined) => CreateRRule(freq, until)}
+              onSave={(freq: Frequency, until: Date | undefined) => CreateRRule(freq, until)}
               onAbort={() => onCancelRRPicker()} 
             />
           </div>}

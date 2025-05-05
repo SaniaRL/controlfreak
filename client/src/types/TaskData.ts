@@ -1,13 +1,16 @@
-export interface TaskData {
-    id: number
+
+export interface CalendarTaskData {
+    id: string
     title: string
-    start: string
-    end: string
+    start: Date
+    end?: Date | undefined
     completed: boolean
-    completedWhen: Date
-    isStackable: boolean
+    completedWhen: Date | undefined
     deadline: Date | null
+    isStackable: boolean
     allDay: boolean
     backgroundColor: string
     textColor: string
+    rrule?: string | undefined
+    tags: string[] | undefined
 }
