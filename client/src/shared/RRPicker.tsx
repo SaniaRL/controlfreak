@@ -3,10 +3,9 @@ import { Button, ButtonGroup, Form, Stack } from 'react-bootstrap'
 import { Frequency, RRule } from 'rrule'
 import './RRPicker.css'
 
-function RRPicker({ /*start,*/ prevState, onSave, onDelete, onCancel } : { 
-		// start: Date | undefined, 
-		prevState: string | undefined 
-		onSave: ( freq: Frequency, until: Date | undefined) => void
+function RRPicker({ savedState, onSave, onDelete, onCancel } : { 
+		savedState: string | undefined 
+		onSave: ( freq: Frequency, until: Date | null) => void
 		onDelete: () => void
 	  onCancel: () => void 
 	}) {
@@ -14,55 +13,50 @@ function RRPicker({ /*start,*/ prevState, onSave, onDelete, onCancel } : {
 	const [stateChanged, setStateChanged] = useState(false)
 	const frequency: Frequency[] = [Frequency.DAILY, Frequency.WEEKLY, Frequency.MONTHLY, Frequency.YEARLY]
 	const [freq, setFreq] = useState(Frequency.WEEKLY)
-	const [until, setUntil] = useState<Date | undefined>(undefined)
+	const [until, setUntil] = useState<Date | null>(null)
+	const [initFreq, setInitFreq] = useState<Frequency | undefined>(undefined)
+	const [initUntil, setInitUntil] = useState<Date | null>(null)
 
 	useEffect(() => {
-		if(prevState) {
+		if(savedState) {
 			try {
-				const rrule: RRule = RRule.fromString(prevState)
-				//freq är obligatorisk och buttongroup så jag iffar inte ens nu
+				const rrule: RRule = RRule.fromString(savedState)
+				setInitFreq(rrule.options.freq)
 				setFreq(rrule.options.freq)
-				if(rrule.options.until) {
-					setUntil(rrule.options.until)
-				}
+				setInitUntil(rrule.options.until)
+				setUntil(rrule.options.until)
 			} catch (e: any) {
 				console.log('rrpicker prevstate error')
 			}
-		}
-	})
-
-	function setFrequency(frequency: Frequency) {
-		setFreq(frequency)
-
-		let changed = false
-
-		if (prevState) {
-			const prevRRule = RRule.fromString(prevState)
-			if(prevRRule.options.freq !== frequency || prevRRule.options.until !== until) {
-				changed = true
-			}
 		} else {
-			changed = true
+			setStateChanged(true)
 		}
+	}, [savedState])
+
+	function setFrequency(input: Frequency) {
+		setFreq(input)
+		const hasChanged = input !== initFreq
+		changeState(hasChanged)
+	}
+
+	function setUntilValue(input: Date | null) {
+		setUntil(input)
+		const condition = input !== initUntil
+		changeState(condition)	
+	}
+
+	function changeState(condition: boolean) {
+		const changed = savedState
+		? condition
+		: true		
 
 		setStateChanged(changed) 
 	}
 
-	function setUntilValue(newUntil: Date | undefined) {
-		setUntil(newUntil)
-		
-		let changed = false
-
-		if (prevState) {
-			const prevRRule = RRule.fromString(prevState)
-			if(prevRRule.options.freq !== freq || prevRRule.options.until !== newUntil) {
-				changed = true
-			}
-		} else {
-			changed = true
-		}
-
-		setStateChanged(changed) 
+	function save() {
+		setInitFreq(freq)
+		setInitUntil(until)
+		onSave(freq, until)
 	}
 
 	return(
@@ -85,11 +79,10 @@ function RRPicker({ /*start,*/ prevState, onSave, onDelete, onCancel } : {
 
 			<Form.Control 
 					type='date'
+				  value={until ? until.toISOString().split('T')[0] : ''}
 					onChange={ (e) => {
 						const value = new Date(e.target.value)
-						// if(value > start) {
 						setUntilValue(value)
-						// }
 						//varning om det inte är efter ?? ok med efter ?? använder vi start
 					}}
 				/>
@@ -98,18 +91,18 @@ function RRPicker({ /*start,*/ prevState, onSave, onDelete, onCancel } : {
 
 				{stateChanged &&
 				<Button
-					variant='secondary'
+					variant='primary'
 					disabled={ until === null } 
-					onClick={ () => onSave(freq, until) }>
+					onClick={ () => save() }>
 						Save
 				</Button> 
 				} 
 
-				{prevState &&
+				{savedState &&
 				<Button
-				variant='secondary'
+				variant='danger'
 				disabled={ until === null } 
-				onClick={ () => onSave(freq, until) }>
+				onClick={ () => onDelete() }>
 					Delete
 				</Button>
 				}
