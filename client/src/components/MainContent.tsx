@@ -112,9 +112,9 @@ function MainContent({ view }: { view: string }) {
 
       if(response.ok) {
         //uppdatera allt och så
-        console.log('ok')
+        console.log('mapCRUD = ok')
       } else {
-        console.error("Fel")
+        console.error('mapCRUD = ')
       }
     } catch (error: any) {
       console.error("Något gick fel i try/catch")
@@ -122,7 +122,7 @@ function MainContent({ view }: { view: string }) {
   }
 
   useEffect(() => {
-		console.log("Updated tasks:", tasks);
+		console.log("Updated tasks:", tasks)
 	}, [tasks])
 
 

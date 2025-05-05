@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Card, Form } from 'react-bootstrap'
-import { TaskData } from '../../../types/TaskDataOLD'
 import { UpdatePayLoad } from '../../../types/UpdatePayload'
 
 import DeleteButton from '../../../shared/DeleteButton'
@@ -9,7 +8,7 @@ import './TaskList.css'
 import { CalendarTaskData } from '../../../types/TaskData'
 
 function TaskListItem({ task, onDataChange } : { task: CalendarTaskData, onDataChange: (updates?: UpdatePayLoad) => void }) {
-	const [ completed, setCompleted ] = useState(task.completed);		
+	const [ completed, setCompleted ] = useState(task.completed)	
 
 	function deleteTask(){
 		onDataChange?.({

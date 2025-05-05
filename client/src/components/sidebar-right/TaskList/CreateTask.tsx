@@ -35,11 +35,6 @@ function CreateTask({ onDataChange }: {onDataChange : (updates?: UpdatePayLoad) 
     setShowRRPicker(false)
   }
 
-  function onCancelRRPicker() {
-    setRecurrence(undefined)
-    setShowRRPicker(false)
-  }
-
   function postTask() {
     const data = {
       title: title,
@@ -87,20 +82,23 @@ function CreateTask({ onDataChange }: {onDataChange : (updates?: UpdatePayLoad) 
           className='create-task-btn'
           variant='outline-secondary' 
           onClick={() => setShowRRPicker(!showRRPicker)}
-          disabled={deadline === null}>
+          // disabled={deadline === null}
+          >
             <img src='/icons/recurrence_icon.png' alt='recurrence picker icon' />            
           </Button>
         </span>
 
       </InputGroup>
 
-      {showRRPicker && deadline !== null &&
+      {showRRPicker /*&& deadline !== null*/ &&
           <div 
           className='rr-picker-container'>
             <RRPicker 
-              start={deadline ? deadline : new Date()} 
+              // start={deadline ? deadline : undefined /* new Date()*/} 
+              prevState={recurrence}
               onSave={(freq: Frequency, until: Date | undefined) => CreateRRule(freq, until)}
-              onAbort={() => onCancelRRPicker()} 
+              onDelete={() => setRecurrence(undefined)}
+              onCancel={() => setShowRRPicker(false)} 
             />
           </div>}
     </Form>
