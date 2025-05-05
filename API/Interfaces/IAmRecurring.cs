@@ -4,6 +4,8 @@ namespace API.Interfaces
 {
     public interface IAmRecurring
     {
-        RecurrenceRule? RecurrenceRule { get; set; }
+        string? RRule{ get; }
+
+        void SetRRule(string rRule);
     }
 }

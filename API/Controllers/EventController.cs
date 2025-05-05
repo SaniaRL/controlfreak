@@ -24,31 +24,20 @@ namespace API.Controllers
             {
                 var events = _context.Events.ToList();
 
-
-                if (events.Count > 0)
+                var eventVMs = events.Select(x => new EventDTO
                 {
-                    var eventVMs = events.Select(x => new EventDTO
-                    {
-                        Id = x.Id,
-                        Title = x.Title,
-                        Start = x.Start,
-                        Content = x.Content,
-                        End = x.End,
-                        AllDay = x.AllDay,
-                        BackgroundColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.BackgroundColor).First(),
-                        TextColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.TextColor).First(),
-                        RRule = x.RecurrenceRule != null
-                            ? new RecurrenceRuleDTO{
-                                Id = x.RecurrenceRule.Id,
-                                Freq = x.RecurrenceRule.Freq,
-                                Until = x.RecurrenceRule.Until,
-                                Dtstart = x.RecurrenceRule.Start
-                            }
-                            : null
-                    }).ToList();
+                    Id = x.Id,
+                    Title = x.Title,
+                    Start = x.Start,
+                    Content = x.Content,
+                    End = x.End,
+                    AllDay = x.AllDay,
+                    BackgroundColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.BackgroundColor).First(),
+                    TextColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.TextColor).First(),
+                    Rrule = x.RRule
+                }).ToList();
 
-                    return Ok(eventVMs);
-                }
+                return Ok(eventVMs);
             }
             catch (Exception ex)
             {
@@ -71,31 +60,20 @@ namespace API.Controllers
                     .ToList();
 
 
-                if (events.Count > 0)
+                var eventVMs = events.Select(x => new EventDTO
                 {
-                    var eventVMs = events.Select(x => new EventDTO
-                    {
-                        Id = x.Id,
-                        Title = x.Title,
-                        Start = x.Start,
-                        Content = x.Content,
-                        End = x.End,
-                        AllDay = x.AllDay,
-                        BackgroundColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.BackgroundColor).First(),
-                        TextColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.TextColor).First(),
-                        RRule = x.RecurrenceRule != null
-                           ? new RecurrenceRuleDTO
-                           {
-                               Id = x.RecurrenceRule.Id,
-                               Freq = x.RecurrenceRule.Freq,
-                               Until = x.RecurrenceRule.Until,
-                               Dtstart = x.RecurrenceRule.Start
-                           }
-                           : null
-                    }).ToList();
+                    Id = x.Id,
+                    Title = x.Title,
+                    Start = x.Start,
+                    Content = x.Content,
+                    End = x.End,
+                    AllDay = x.AllDay,
+                    BackgroundColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.BackgroundColor).First(),
+                    TextColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.TextColor).First(),
+                    Rrule = x.RRule
+                }).ToList();
 
-                    return Ok(eventVMs);
-                }
+                return Ok(eventVMs);
             }
             catch (Exception ex)
             {

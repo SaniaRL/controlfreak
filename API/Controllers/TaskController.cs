@@ -1,6 +1,7 @@
 ﻿using API.DTO;
 using API.Entities;
 using API.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -22,33 +23,24 @@ namespace API.Controllers
             try
             {
                 var tasks = includeCompletedTasks
-                    ? _context.Tasks.ToList()
-                    : _context.Tasks.Where(x => !(x.Completed)).ToList();
+                    ? _context.Tasks
+                        .ToList()
+                    : _context.Tasks
+                        .Where(x => !(x.Completed))
+                        .ToList();
 
-
-                if (tasks.Count > 0)
+                var taskVMs = tasks.Select(x => new TaskDTO
                 {
-                    //Få in RRule innan?
-                    var taskVMs = tasks.Select(x => new TaskDTO
-                    {
-                        Id = x.Id, 
-                        Title = x.Title,
-                        Completed = x.Completed,
-                        CompletedWhen = x.CompletedWhen,
-                        Deadline = x.DeadLine, 
-                        IsStackable = x.IsStackable,
-                        RRule = x.RecurrenceRule != null
-                        ? new RecurrenceRuleDTO
-                        {
-                            Freq = x.RecurrenceRule.Freq,
-                            Until = x.RecurrenceRule.Until,
-                            Dtstart = x.RecurrenceRule.Start
-                        }
-                        : null
-                    }).ToList();
+                    Id = x.Id,
+                    Title = x.Title,
+                    Completed = x.Completed,
+                    CompletedWhen = x.CompletedWhen,
+                    Deadline = x.DeadLine,
+                    IsStackable = x.IsStackable,
+                    Rrule = x.RRule
+                }).ToList();
 
-                    return Ok(taskVMs);
-                }
+                return Ok(taskVMs);
             }
             catch (Exception ex)
             {
@@ -61,17 +53,8 @@ namespace API.Controllers
         [HttpPost("new")]
         public async Task<ActionResult<Task>> CreateTask([FromBody] CreateTask taskData)
         {
-            int? recurrenceRuleId = null;
 
-            if(taskData.RRule != null)
-            {
-                var RRule = new RecurrenceRule(freq: taskData.RRule.Freq, until: taskData.RRule.Until, start: taskData.RRule.Dtstart);
-                _context.Add(RRule);
-                await _context.SaveChangesAsync();
-                recurrenceRuleId = RRule.Id;
-            }
-
-            var task = new TaskItem(title: taskData.Title, deadline: taskData.DeadLine, isStackable: taskData.IsStackable, recurrenceRuleId: recurrenceRuleId);
+            var task = new TaskItem(title: taskData.Title, deadline: taskData.DeadLine, isStackable: taskData.IsStackable, rRule: taskData.RRule);
 
             _context.Add(task);
             await _context.SaveChangesAsync();
@@ -95,7 +78,7 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}/complete")]
+        [HttpPut("PUT/{id}/completed")]
         public async Task<ActionResult<Task>> UpdateCompletionStatus(int id,
             [FromBody] bool isCompleted)
         {

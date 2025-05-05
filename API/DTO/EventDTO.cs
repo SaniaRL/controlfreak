@@ -13,7 +13,7 @@ namespace API.DTO
         public string BackgroundColor { get; set; } = String.Empty;
         public string TextColor { get; set; } = String.Empty;
         public bool AllDay { get; set; }
-        public RecurrenceRuleDTO? RRule { get; set; } = null;
+        public string? Rrule{ get; set; } = null;
 
     }
 }

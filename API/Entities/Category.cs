@@ -9,7 +9,6 @@ namespace API.Entities
         public string Name { get; set; }
         public string BackgroundColor { get; set; }
         public string TextColor { get; set; }
-
         List<EventItem> Events { get; set; }
 
         public Category(string name, string backgroundColor, string textColor)
@@ -17,7 +16,7 @@ namespace API.Entities
             Name = name;
             BackgroundColor = backgroundColor;
             TextColor = textColor;
-            Events = new List<EventItem>();
+            Events = [];
         }
     }
 }

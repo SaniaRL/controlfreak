@@ -3,6 +3,7 @@ import { TaskData } from '../../../types/TaskData'
 import TaskListItem from './TaskListItem'
 import './TaskList.css'
 import CreateTask from './CreateTask'
+import RRPicker from '../../../shared/RRPicker'
 
 const BASE_URL = 'https://localhost:7159';
 

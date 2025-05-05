@@ -114,3 +114,17 @@ Checkbox måste också ha rätt muspekare och så*/
     border: none;
     height: 75%;
 }
+
+/* .rr-picker-container {
+    position: relative;
+} */
+
+.rr-picker-container {
+    position: absolute;
+    top: 106px;
+    right: 1.3rem;
+    max-width: 400px;
+    z-index: 10;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+  }
