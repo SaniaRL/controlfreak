@@ -5,9 +5,9 @@ import { UpdatePayLoad } from '../../../types/UpdatePayload'
 import DeleteButton from '../../../shared/DeleteButton'
 
 import './TaskList.css'
-import { CalendarTaskData } from '../../../types/TaskData'
+import { TaskData } from '../../../types/TaskData'
 
-function TaskListItem({ task, onDataChange } : { task: CalendarTaskData, onDataChange: (updates?: UpdatePayLoad) => void }) {
+function TaskListItem({ task, onDataChange } : { task: TaskData, onDataChange: (updates?: UpdatePayLoad) => void }) {
 	const [ completed, setCompleted ] = useState(task.completed)	
 
 	function deleteTask(){

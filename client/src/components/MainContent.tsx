@@ -5,7 +5,7 @@ import Calendar from './calendar/Calendar'
 import LSidebarComponent from './sidebar-left/LSidebarComponent'
 import RSidebarComponent from './sidebar-right/RSidebarComponent'
 import { EventData } from '../types/EventData'
-import { CalendarTaskData } from '../types/TaskData'
+import { TaskData } from '../types/TaskData'
 // import { CalendarProps } from '../types/CalendarProps'
 import { UpdatePayLoad } from '../types/UpdatePayload'
 
@@ -16,7 +16,7 @@ function MainContent({ view }: { view: string }) {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false)
   const [events, setEvents] = useState<EventData[]>([])
-  const [tasks, setTasks] = useState<CalendarTaskData[]>([])
+  const [tasks, setTasks] = useState<TaskData[]>([])
 
   useEffect(() => {		
     const fetchData = async () => {
@@ -47,7 +47,7 @@ function MainContent({ view }: { view: string }) {
     setIsLoading(true)
     try {
       const response = await fetch(`${BASE_URL}/${API}/tasks/GET?includeCompletedTasks=${includeCompletedTasks}`)
-      const tasks = (await response.json()) as CalendarTaskData[]
+      const tasks = (await response.json()) as TaskData[]
   
       setTasks(mapTasks(tasks))	
     } catch(e: any) {
@@ -62,7 +62,7 @@ function MainContent({ view }: { view: string }) {
     //Se till att ha meddelande om loading och error och shit
   }
 
-  function mapTasks(tasks: CalendarTaskData[]): CalendarTaskData[] {
+  function mapTasks(tasks: TaskData[]): TaskData[] {
     return tasks.map(task => {
       const start = task.completedWhen
         ? task.completedWhen 

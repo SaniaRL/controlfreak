@@ -4,19 +4,33 @@ import { UpdatePayLoad } from '../../../types/UpdatePayload'
 import CreateTask from './CreateTask'
 
 import './TaskList.css'
-import { CalendarTaskData } from '../../../types/TaskData'
+import { TaskData } from '../../../types/TaskData'
+import { Form } from 'react-bootstrap'
+import { useEffect, useState } from 'react'
 
 //Inte void få response? Promise<void>?
-function TaskList({ tasks, onDataChange } : { tasks: CalendarTaskData[], onDataChange: (updates?: UpdatePayLoad) => void }) {
-  // const [tasks, setTasks] = useState<TaskData[]>([])
-  // const [showCompletedTasks, setShowCompletedTasks] = useState(false)
+function TaskList({ tasks, onDataChange } : { tasks: TaskData[], onDataChange: (updates?: UpdatePayLoad) => void }) {
+  const [filteredTasks, setFilteredTasks] = useState<TaskData[]>([])
+  const [showCompletedTasks, setShowCompletedTasks] = useState(false)
+
+  useEffect(() => {
+    const newFilteredTasks = showCompletedTasks
+      ? tasks
+      : tasks.filter((task) => !task.completed)
+
+    setFilteredTasks(newFilteredTasks)
+  }, [tasks, showCompletedTasks])
 
   return(
     <>
       <CreateTask onDataChange={onDataChange} />
+      <Form.Check
+      className='show-completed'
+      label='Show completed' 
+      onChange={() => setShowCompletedTasks(!showCompletedTasks)}/>
       <div className="task-container">
-      { tasks.map((task) => (    
-        <TaskListItem onDataChange={onDataChange} key={task.id} task={task} />                        
+      { filteredTasks.map((task) => (
+        <TaskListItem onDataChange={onDataChange} key={task.id} task={task} />
       ))}
       </div>
     </>

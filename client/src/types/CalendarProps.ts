@@ -1,9 +1,9 @@
-import { CalendarTaskData } from './TaskData'
+import { TaskData } from './TaskData'
 import { EventData } from './EventData'
 import { UpdatePayLoad } from './UpdatePayload'
 
 export interface CalendarProps {
-    tasks?: CalendarTaskData[]
+    tasks?: TaskData[]
     events?: EventData[]
     tags?: string[]
     category?: string
