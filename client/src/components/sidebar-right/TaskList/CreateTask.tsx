@@ -22,7 +22,7 @@ function CreateTask({ onDataChange }: {onDataChange : (updates?: UpdatePayLoad) 
     setDeadline(date)
   }  
 
-  function CreateRRule(freq: Frequency, until: Date | undefined) {
+  function CreateRRule(freq: Frequency, until: Date | null) {
     const rule: RRule = new RRule({
       dtstart: deadline ? deadline : new Date(),
       freq: freq,
@@ -72,31 +72,28 @@ function CreateTask({ onDataChange }: {onDataChange : (updates?: UpdatePayLoad) 
           showTimeSelect={false}
           popperPlacement='bottom-start'
           customInput={
-            <Button className={`create-task-btn ${deadline? 'active-deadline' : ''}`}>
+            <Button className={`create-task-btn ${deadline ? 'active-deadline' : ''}`}>
                 <img src='/icons/skull.png' alt='deadline skull icon' />
             </Button>
             }
           />
 
           <Button 
-          className='create-task-btn'
+          className={`create-task-btn ${recurrence ? 'active-rrule' : ''}`}
           variant='outline-secondary' 
-          onClick={() => setShowRRPicker(!showRRPicker)}
-          // disabled={deadline === null}
-          >
+          onClick={() => setShowRRPicker(!showRRPicker)}>
             <img src='/icons/recurrence_icon.png' alt='recurrence picker icon' />            
           </Button>
         </span>
 
       </InputGroup>
 
-      {showRRPicker /*&& deadline !== null*/ &&
+      {showRRPicker &&
           <div 
           className='rr-picker-container'>
             <RRPicker 
-              // start={deadline ? deadline : undefined /* new Date()*/} 
-              prevState={recurrence}
-              onSave={(freq: Frequency, until: Date | undefined) => CreateRRule(freq, until)}
+              savedState={recurrence}
+              onSave={(freq: Frequency, until: Date | null) => CreateRRule(freq, until)}
               onDelete={() => setRecurrence(undefined)}
               onCancel={() => setShowRRPicker(false)} 
             />
