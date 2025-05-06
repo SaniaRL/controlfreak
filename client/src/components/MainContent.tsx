@@ -79,11 +79,29 @@ function MainContent({ view }: { view: string }) {
     } else {
       setIsLoading(true)
       try {
-        await executeCRUD(data)
-
+        const response = await executeCRUD(data)
         switch(data.type) {
           case 'tasks':
-            updateTaskState(data)
+            switch(data.CRUD) {
+              case 'GET':
+              case 'PUT':
+                updateTaskState(data)
+                break
+              case 'POST':
+                if (response?.ok) {
+                  const newTask: TaskData = await response.json()
+                  setTasks(prevTasks => newTask ? [...prevTasks, newTask] : prevTasks)
+                } else {
+                  console.log('onDataChange task POST response not ok')
+                } 
+              break
+              case 'DELETE':
+                if (response?.ok) {
+                  setTasks(prevTasks => prevTasks.filter(task => task.id !== data.id))
+                } else {
+                  console.log('onDataChange task DELETE response not ok')
+                }     
+            }
             break
           case 'events':
             fetchEvents()
@@ -123,6 +141,7 @@ function MainContent({ view }: { view: string }) {
           console.log('POST')
           break
         case 'DELETE':
+
           console.log('DELETE')
       }
     }
