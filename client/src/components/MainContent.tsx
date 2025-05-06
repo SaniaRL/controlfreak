@@ -20,7 +20,7 @@ function MainContent({ view }: { view: string }) {
 
   useEffect(() => {		
     const fetchData = async () => {
-        fetchTasks(true)  
+        fetchTasks()  
         fetchEvents()
     }
     fetchData()
@@ -42,24 +42,20 @@ function MainContent({ view }: { view: string }) {
     }
   }
 
-  async function fetchTasks(includeCompletedTasks: boolean) {
-    //Is loading borde ta nån parameter kanske beroende på vad typ en string som meddelande
+  async function fetchTasks() {
     setIsLoading(true)
     try {
-      const response = await fetch(`${BASE_URL}/${API}/tasks/GET?includeCompletedTasks=${includeCompletedTasks}`)
+      const response = await fetch(`${BASE_URL}/${API}/tasks/GET`)
       const tasks = (await response.json()) as TaskData[]
   
       setTasks(mapTasks(tasks))	
     } catch(e: any) {
       console.error(e)
-      //Denna bör också ta flera param kanske
       setError(e)
     } finally {
       setIsLoading(false)
     }
     	//ändra kategori till kategori men då också ändra dto och mappa rätt med background och textcolor från kategorin
-
-    //Se till att ha meddelande om loading och error och shit
   }
 
   function mapTasks(tasks: TaskData[]): TaskData[] {
@@ -76,14 +72,57 @@ function MainContent({ view }: { view: string }) {
     })
   }
 
-  function onDataChange(data: UpdatePayLoad | undefined) {
+  async function onDataChange(data: UpdatePayLoad | undefined) {
     if(data === undefined) {
       //Gör nåt???
       console.log('Data is undefined')
     } else {
       setIsLoading(true)
       try {
-        mapCRUD(data)
+        const response = await executeCRUD(data)
+        switch(data.type) {
+          case 'tasks':
+            switch(data.CRUD) {
+              case 'GET':
+                console.log('onDataChange: GET')
+                break
+
+              case 'PUT':
+                executeCRUD({ type: data.type, CRUD: 'GET', id: data.id })
+                .then(response => response?.json())
+                .then(updatedTask => { 
+                  if (updatedTask) {
+                    setTasks(prevTasks => 
+                      prevTasks.map(task =>
+                        task.id === updatedTask.id ? updatedTask : task
+                      )
+                    )
+                  }
+                })
+                break
+
+              case 'POST':
+                if (response?.ok) {
+                  const newTask: TaskData = await response.json()
+                  setTasks(prevTasks => newTask ? [...prevTasks, newTask] : prevTasks)
+                } else {
+                  console.log('onDataChange task POST response not ok')
+                } 
+                break
+
+              case 'DELETE':
+                if (response?.ok) {
+                  setTasks(prevTasks => prevTasks.filter(task => task.id !== data.id))
+                } else {
+                  console.log('onDataChange task DELETE response not ok')
+                }     
+            }
+            break
+          case 'events':
+            console.log('onDataChange case: Events')
+            break
+          case 'categories': console.log('mapCRUD categories')
+        }
         //Gör fler saker för andra förändringar och håll crud separat?
       } catch (e: any){
         setError(e)
@@ -93,37 +132,65 @@ function MainContent({ view }: { view: string }) {
     }
   }
 
-  const mapCRUD = async (x: UpdatePayLoad) => {
+  //Kolla innan att response är ok
+  // function updateTaskState(data: UpdatePayLoad | undefined) {
+  //   if (data) {
+  //     switch (data.CRUD) {
+  //       case 'GET':
+  //         console.log('GET')
+  //         break
+  //       case 'PUT':
+  //       case 'POST':
+  //         console.log('POST')
+  //         break
+  //       case 'DELETE':
+
+  //         console.log('DELETE')
+  //     }
+  //   }
+  // }
+
+  const executeCRUD = async (x: UpdatePayLoad) => {
     setIsLoading(true)
-    //const för att checka av dem
+
     const type = x.type
     const id = x.id
     const method = x.CRUD
-    const property = x.updates ? Object.keys(x.updates)[0] : undefined
-    const value = x.updates ? Object.values(x.updates)[0] : undefined
 
-    const segments = [ BASE_URL, API, type, method, id, property ]
+    let property
+    let value
+    if(x.includePropertyInUrl) {
+      property = x.updates ? Object.keys(x.updates)[0] : undefined
+      value = x.updates ? Object.values(x.updates)[0] : undefined  
+    } else {
+      value = x.updates
+    }
+
+    const segments = [ BASE_URL, API, type, method, id, property ].filter(Boolean)
+
     try {
       const response = await fetch(`${segments.join('/')}`, {
         method: method,
         headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify(value),
-      })
+      }) 
 
-      if(response.ok) {
-        //uppdatera allt och så
-        console.log('mapCRUD = ok')
-      } else {
-        console.error('mapCRUD = ')
-      }
+      return response
+
+      // if(response.ok) {
+      //   //uppdatera allt och så
+      //   console.log('mapCRUD = ok')
+      // } else {
+      //   console.error('mapCRUD = ')
+      // }
     } catch (error: any) {
-      console.error("Något gick fel i try/catch")
+      console.error("Något gick fel i executeCRUD")
     }
   }
 
-  useEffect(() => {
-		console.log("Updated tasks:", tasks)
-	}, [tasks])
+  // useEffect(() => {
+	// 	console.log("Updated tasks:", tasks)
+	// }, [tasks])
 
 
   return(

@@ -52,6 +52,7 @@ function Calendar({events, tasks, onDataChange}: CalendarProps) {
 				{ events: events },
 				{ events: tasks }
 			]}
+			dayMaxEvents={3}
 			/>
 		</div>
 	)

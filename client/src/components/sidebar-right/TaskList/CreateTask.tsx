@@ -55,7 +55,10 @@ function CreateTask({ onDataChange }: {onDataChange : (updates?: UpdatePayLoad) 
   }
 
   return(
-    <Form onSubmit={() => postTask()}>
+    <Form onSubmit={(e) => {
+      e.preventDefault()
+      postTask()
+      }}>
       <InputGroup className='task-input-group'>
         <span className='task-input-area'>
 

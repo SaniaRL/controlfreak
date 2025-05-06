@@ -92,7 +92,6 @@ function RRPicker({ savedState, onSave, onDelete, onCancel } : {
 				{stateChanged &&
 				<Button
 					variant='primary'
-					disabled={ until === null } 
 					onClick={ () => save() }>
 						Save
 				</Button> 
@@ -101,7 +100,6 @@ function RRPicker({ savedState, onSave, onDelete, onCancel } : {
 				{savedState &&
 				<Button
 				variant='danger'
-				disabled={ until === null } 
 				onClick={ () => onDelete() }>
 					Delete
 				</Button>

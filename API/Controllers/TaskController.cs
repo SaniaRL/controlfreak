@@ -18,16 +18,11 @@ namespace API.Controllers
         }
 
         [HttpGet("GET")]
-        public ActionResult<List<TaskDTO>> GetTasks([FromQuery] bool includeCompletedTasks = false)
+        public ActionResult<List<TaskDTO>> GetTasks()
         {
             try
             {
-                var tasks = includeCompletedTasks
-                    ? _context.Tasks
-                        .ToList()
-                    : _context.Tasks
-                        .Where(x => !(x.Completed))
-                        .ToList();
+                var tasks = _context.Tasks.ToList();
 
                 var taskVMs = tasks.Select(x => new TaskDTO
                 {
@@ -46,8 +41,32 @@ namespace API.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
+        }
 
-            return NotFound("No tasks found.");
+        [HttpGet("GET/{id}")]
+        public ActionResult<TaskDTO> GetTask(int id)
+        {
+            try
+            {
+                var task = _context.Tasks.First(x => x.Id == id);
+
+                var taskVM = new TaskDTO
+                {
+                    Id = task.Id,
+                    Title = task.Title,
+                    Completed = task.Completed,
+                    CompletedWhen = task.CompletedWhen,
+                    Deadline = task.DeadLine,
+                    IsStackable = task.IsStackable,
+                    Rrule = task.RRule
+                };
+
+                return Ok(taskVM);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpPost("POST")]

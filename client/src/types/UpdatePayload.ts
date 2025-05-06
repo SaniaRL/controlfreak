@@ -3,4 +3,5 @@ export interface UpdatePayLoad {
     CRUD: 'GET' | 'PUT' | 'POST' | 'DELETE'
     id?: string | number 
     updates?: { [key: string]: any }
+    includePropertyInUrl?: boolean
 }
