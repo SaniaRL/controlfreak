@@ -84,9 +84,23 @@ function MainContent({ view }: { view: string }) {
           case 'tasks':
             switch(data.CRUD) {
               case 'GET':
-              case 'PUT':
-                updateTaskState(data)
+                console.log('onDataChange: GET')
                 break
+
+              case 'PUT':
+                executeCRUD({ type: data.type, CRUD: 'GET', id: data.id })
+                .then(response => response?.json())
+                .then(updatedTask => { 
+                  if (updatedTask) {
+                    setTasks(prevTasks => 
+                      prevTasks.map(task =>
+                        task.id === updatedTask.id ? updatedTask : task
+                      )
+                    )
+                  }
+                })
+                break
+
               case 'POST':
                 if (response?.ok) {
                   const newTask: TaskData = await response.json()
@@ -94,7 +108,8 @@ function MainContent({ view }: { view: string }) {
                 } else {
                   console.log('onDataChange task POST response not ok')
                 } 
-              break
+                break
+
               case 'DELETE':
                 if (response?.ok) {
                   setTasks(prevTasks => prevTasks.filter(task => task.id !== data.id))
@@ -104,7 +119,7 @@ function MainContent({ view }: { view: string }) {
             }
             break
           case 'events':
-            fetchEvents()
+            console.log('onDataChange case: Events')
             break
           case 'categories': console.log('mapCRUD categories')
         }
@@ -118,34 +133,22 @@ function MainContent({ view }: { view: string }) {
   }
 
   //Kolla innan att response är ok
-  function updateTaskState(data: UpdatePayLoad | undefined) {
-    if (data) {
-      switch (data.CRUD) {
-        case 'GET':
-          console.log('GET')
-          break
-        case 'PUT':
-          executeCRUD({ type: data.type, CRUD: 'GET', id: data.id })
-            .then(response => response?.json())
-            .then(updatedTask => { 
-              if (updatedTask) {
-                setTasks(prevTasks => 
-                  prevTasks.map(task =>
-                    task.id === updatedTask.id ? updatedTask : task
-                  )
-                )
-              }
-            })
-          break
-        case 'POST':
-          console.log('POST')
-          break
-        case 'DELETE':
+  // function updateTaskState(data: UpdatePayLoad | undefined) {
+  //   if (data) {
+  //     switch (data.CRUD) {
+  //       case 'GET':
+  //         console.log('GET')
+  //         break
+  //       case 'PUT':
+  //       case 'POST':
+  //         console.log('POST')
+  //         break
+  //       case 'DELETE':
 
-          console.log('DELETE')
-      }
-    }
-  }
+  //         console.log('DELETE')
+  //     }
+  //   }
+  // }
 
   const executeCRUD = async (x: UpdatePayLoad) => {
     setIsLoading(true)
@@ -185,9 +188,9 @@ function MainContent({ view }: { view: string }) {
     }
   }
 
-  useEffect(() => {
-		console.log("Updated tasks:", tasks)
-	}, [tasks])
+  // useEffect(() => {
+	// 	console.log("Updated tasks:", tasks)
+	// }, [tasks])
 
 
   return(
