@@ -18,16 +18,11 @@ namespace API.Controllers
         }
 
         [HttpGet("GET")]
-        public ActionResult<List<TaskDTO>> GetTasks([FromQuery] bool includeCompletedTasks = false)
+        public ActionResult<List<TaskDTO>> GetTasks()
         {
             try
             {
-                var tasks = includeCompletedTasks
-                    ? _context.Tasks
-                        .ToList()
-                    : _context.Tasks
-                        .Where(x => !(x.Completed))
-                        .ToList();
+                var tasks = _context.Tasks.ToList();
 
                 var taskVMs = tasks.Select(x => new TaskDTO
                 {

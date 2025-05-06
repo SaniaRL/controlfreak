@@ -14,6 +14,7 @@ function TaskListItem({ task, onDataChange } : { task: TaskData, onDataChange: (
 		onDataChange?.({
 			type: 'tasks',
 			CRUD: 'DELETE',
+			id: task.id,
 			updates: {id: task.id}
 		})
 		//Uppdatera sig eller nåt idk
@@ -25,7 +26,8 @@ function TaskListItem({ task, onDataChange } : { task: TaskData, onDataChange: (
 			type: 'tasks',
 			CRUD: 'PUT',
 			id: task.id,
-			updates: {completed: completed}
+			updates: {completed: completed},
+			includePropertyInUrl: true 
 		})
 		//Uppdatera sig eller nåt idk
 	}
@@ -33,14 +35,14 @@ function TaskListItem({ task, onDataChange } : { task: TaskData, onDataChange: (
 	return(
 		<Card className='task-item'>
 			<Form.Check
+			// className='checkbox'
 			type='checkbox'
 			checked={completed}
 			onChange={completeTask}
 			/> 
-			<p>{task.title}</p>
+			<p className='host-crotesk-custom'>{task.title}</p>
 			<div className='activity-item-options'>
-					{/* <UpdateButton /> */}
-					<DeleteButton id={Number(task.id)} onDelete={deleteTask} />
+				<DeleteButton id={Number(task.id)} onDelete={deleteTask} />
 			</div>
 		</Card>
 	)

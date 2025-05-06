@@ -20,7 +20,7 @@ function MainContent({ view }: { view: string }) {
 
   useEffect(() => {		
     const fetchData = async () => {
-        fetchTasks(true)  
+        fetchTasks()  
         fetchEvents()
     }
     fetchData()
@@ -42,11 +42,11 @@ function MainContent({ view }: { view: string }) {
     }
   }
 
-  async function fetchTasks(includeCompletedTasks: boolean) {
+  async function fetchTasks() {
     //Is loading borde ta nån parameter kanske beroende på vad typ en string som meddelande
     setIsLoading(true)
     try {
-      const response = await fetch(`${BASE_URL}/${API}/tasks/GET?includeCompletedTasks=${includeCompletedTasks}`)
+      const response = await fetch(`${BASE_URL}/${API}/tasks/GET`)
       const tasks = (await response.json()) as TaskData[]
   
       setTasks(mapTasks(tasks))	
@@ -84,6 +84,8 @@ function MainContent({ view }: { view: string }) {
       setIsLoading(true)
       try {
         mapCRUD(data)
+        fetchEvents()
+        fetchTasks()
         //Gör fler saker för andra förändringar och håll crud separat?
       } catch (e: any){
         setError(e)
@@ -95,14 +97,22 @@ function MainContent({ view }: { view: string }) {
 
   const mapCRUD = async (x: UpdatePayLoad) => {
     setIsLoading(true)
-    //const för att checka av dem
+
     const type = x.type
     const id = x.id
     const method = x.CRUD
-    const property = x.updates ? Object.keys(x.updates)[0] : undefined
-    const value = x.updates ? Object.values(x.updates)[0] : undefined
 
-    const segments = [ BASE_URL, API, type, method, id, property ]
+    let property
+    let value
+    if(x.includePropertyInUrl) {
+      property = x.updates ? Object.keys(x.updates)[0] : undefined
+      value = x.updates ? Object.values(x.updates)[0] : undefined  
+    } else {
+      value = x.updates
+    }
+
+    const segments = [ BASE_URL, API, type, method, id, property ].filter(Boolean)
+
     try {
       const response = await fetch(`${segments.join('/')}`, {
         method: method,
