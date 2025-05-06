@@ -41,8 +41,32 @@ namespace API.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
+        }
 
-            return NotFound("No tasks found.");
+        [HttpGet("GET/{id}")]
+        public ActionResult<TaskDTO> GetTask(int id)
+        {
+            try
+            {
+                var task = _context.Tasks.First(x => x.Id == id);
+
+                var taskVM = new TaskDTO
+                {
+                    Id = task.Id,
+                    Title = task.Title,
+                    Completed = task.Completed,
+                    CompletedWhen = task.CompletedWhen,
+                    Deadline = task.DeadLine,
+                    IsStackable = task.IsStackable,
+                    Rrule = task.RRule
+                };
+
+                return Ok(taskVM);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpPost("POST")]

@@ -43,7 +43,6 @@ function MainContent({ view }: { view: string }) {
   }
 
   async function fetchTasks() {
-    //Is loading borde ta nån parameter kanske beroende på vad typ en string som meddelande
     setIsLoading(true)
     try {
       const response = await fetch(`${BASE_URL}/${API}/tasks/GET`)
@@ -52,14 +51,11 @@ function MainContent({ view }: { view: string }) {
       setTasks(mapTasks(tasks))	
     } catch(e: any) {
       console.error(e)
-      //Denna bör också ta flera param kanske
       setError(e)
     } finally {
       setIsLoading(false)
     }
     	//ändra kategori till kategori men då också ändra dto och mappa rätt med background och textcolor från kategorin
-
-    //Se till att ha meddelande om loading och error och shit
   }
 
   function mapTasks(tasks: TaskData[]): TaskData[] {
@@ -76,16 +72,24 @@ function MainContent({ view }: { view: string }) {
     })
   }
 
-  function onDataChange(data: UpdatePayLoad | undefined) {
+  async function onDataChange(data: UpdatePayLoad | undefined) {
     if(data === undefined) {
       //Gör nåt???
       console.log('Data is undefined')
     } else {
       setIsLoading(true)
       try {
-        mapCRUD(data)
-        fetchEvents()
-        fetchTasks()
+        await executeCRUD(data)
+
+        switch(data.type) {
+          case 'tasks':
+            updateTaskState(data)
+            break
+          case 'events':
+            fetchEvents()
+            break
+          case 'categories': console.log('mapCRUD categories')
+        }
         //Gör fler saker för andra förändringar och håll crud separat?
       } catch (e: any){
         setError(e)
@@ -95,7 +99,36 @@ function MainContent({ view }: { view: string }) {
     }
   }
 
-  const mapCRUD = async (x: UpdatePayLoad) => {
+  //Kolla innan att response är ok
+  function updateTaskState(data: UpdatePayLoad | undefined) {
+    if (data) {
+      switch (data.CRUD) {
+        case 'GET':
+          console.log('GET')
+          break
+        case 'PUT':
+          executeCRUD({ type: data.type, CRUD: 'GET', id: data.id })
+            .then(response => response?.json())
+            .then(updatedTask => { 
+              if (updatedTask) {
+                setTasks(prevTasks => 
+                  prevTasks.map(task =>
+                    task.id === updatedTask.id ? updatedTask : task
+                  )
+                )
+              }
+            })
+          break
+        case 'POST':
+          console.log('POST')
+          break
+        case 'DELETE':
+          console.log('DELETE')
+      }
+    }
+  }
+
+  const executeCRUD = async (x: UpdatePayLoad) => {
     setIsLoading(true)
 
     const type = x.type
@@ -118,16 +151,18 @@ function MainContent({ view }: { view: string }) {
         method: method,
         headers: { 'Content-Type': 'application/json', },
         body: JSON.stringify(value),
-      })
+      }) 
 
-      if(response.ok) {
-        //uppdatera allt och så
-        console.log('mapCRUD = ok')
-      } else {
-        console.error('mapCRUD = ')
-      }
+      return response
+
+      // if(response.ok) {
+      //   //uppdatera allt och så
+      //   console.log('mapCRUD = ok')
+      // } else {
+      //   console.error('mapCRUD = ')
+      // }
     } catch (error: any) {
-      console.error("Något gick fel i try/catch")
+      console.error("Något gick fel i executeCRUD")
     }
   }
 

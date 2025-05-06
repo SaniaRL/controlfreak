@@ -9,7 +9,9 @@ import { Form } from 'react-bootstrap'
 import { useEffect, useState } from 'react'
 
 //Inte void få response? Promise<void>?
-function TaskList({ tasks, onDataChange } : { tasks: TaskData[], onDataChange: (updates?: UpdatePayLoad) => void }) {
+function TaskList({ tasks, onDataChange } 
+  : { tasks: TaskData[], onDataChange: (updates?: UpdatePayLoad) => void }) {
+
   const [filteredTasks, setFilteredTasks] = useState<TaskData[]>([])
   const [showCompletedTasks, setShowCompletedTasks] = useState(false)
 
@@ -30,7 +32,7 @@ function TaskList({ tasks, onDataChange } : { tasks: TaskData[], onDataChange: (
       onChange={() => setShowCompletedTasks(!showCompletedTasks)}/>
       <div className="task-container">
       { filteredTasks.map((task) => (
-        <TaskListItem onDataChange={onDataChange} key={task.id} task={task} />
+        <TaskListItem onDataChange={onDataChange} key={`task-${task.id}`} task={task} />
       ))}
       </div>
     </>
