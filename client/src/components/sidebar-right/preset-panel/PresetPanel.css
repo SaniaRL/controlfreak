@@ -1,0 +1,89 @@
+
+/* CLEAN CSS */
+
+
+
+/* NOT CLEAN CSS */
+
+.preset-panel-container .standard-button {
+    width: 100%; /* Låt knappen fylla bredden av Col */
+    height: 0; /* Nollställ höjden */
+    padding-bottom: 100%; /* Skapar en kvadratisk aspekt ratio */
+    position: relative; /* För att kunna positionera innehållet absolut */
+    display: block; /* För att padding-bottom ska påverka höjden */
+  }
+  
+  .preset-panel-container .standard-button img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Behåll bildens proportioner */
+  }
+
+
+/* .preset-panel-container .standard-button {
+    width: 100%;
+    padding-bottom: 100%;
+}
+
+.preset-panel-container .standard-button img {
+    width: 100%;
+}
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* .preset-panel-head {
+    margin-bottom: 15px;
+}
+
+.preset-panel-container {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 2rem;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+.row {    
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.row .btn {
+    display: flex;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 5px;  
+}
+
+.btn img {
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.3s ease;
+}
+
+.btn:hover img {
+    opacity: 50%;
+    background: transparent;
+    transform: scale(1.1);
+}
+ */

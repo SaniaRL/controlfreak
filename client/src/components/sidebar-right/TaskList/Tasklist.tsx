@@ -1,16 +1,16 @@
 import TaskListItem from './TaskListItem'
-import { UpdatePayLoad } from '../../../types/UpdatePayload'
+import { UpdatePayload } from '../../../types/data/UpdatePayload'
 
 import CreateTask from './CreateTask'
 
 import './TaskList.css'
-import { TaskData } from '../../../types/TaskData'
+import { TaskData } from '../../../types/data/TaskData'
 import { Form } from 'react-bootstrap'
 import { useEffect, useState } from 'react'
 
 //Inte void få response? Promise<void>?
 function TaskList({ tasks, onDataChange } 
-  : { tasks: TaskData[], onDataChange: (updates?: UpdatePayLoad) => void }) {
+  : { tasks: TaskData[], onDataChange: (updates?: UpdatePayload) => void }) {
 
   const [filteredTasks, setFilteredTasks] = useState<TaskData[]>([])
   const [showCompletedTasks, setShowCompletedTasks] = useState(false)
@@ -25,6 +25,7 @@ function TaskList({ tasks, onDataChange }
 
   return(
     <>
+      <hr></hr>
       <CreateTask onDataChange={onDataChange} />
       <Form.Check
       className='show-completed'

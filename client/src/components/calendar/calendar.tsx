@@ -5,7 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import rrulePlugin from '@fullcalendar/rrule'
-import { CalendarProps } from '../../types/CalendarProps'
+import { CalendarProps } from '../../types/props/CalendarProps'
 
 
 function Calendar({events, tasks, onDataChange}: CalendarProps) {

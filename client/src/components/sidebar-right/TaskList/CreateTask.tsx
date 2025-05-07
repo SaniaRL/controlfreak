@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { Button, Form, FormControl, InputGroup } from 'react-bootstrap'
 import { Frequency, RRule } from 'rrule'
-import { UpdatePayLoad } from '../../../types/UpdatePayload'
 
+import { UpdatePayload } from '../../../types/data/UpdatePayload'
 import DatePicker from 'react-datepicker'
-import RRPicker from '../../../shared/RRPicker'
+import RRPicker from '../../../shared/RRPicker/RRPicker'
 
 import 'react-datepicker/dist/react-datepicker.css'
 import './TaskList.css'
 
-function CreateTask({ onDataChange }: {onDataChange : (updates?: UpdatePayLoad) => void}) {
+function CreateTask({ onDataChange }: {onDataChange : (updates?: UpdatePayload) => void}) {
   const [ title, setDescription ] = useState('')
   const [ deadline, setDeadline ] = useState<Date | null>(null)
   const [ recurrence, setRecurrence ] = useState<string | undefined>(undefined)
@@ -97,7 +97,10 @@ function CreateTask({ onDataChange }: {onDataChange : (updates?: UpdatePayLoad) 
             <RRPicker 
               savedState={recurrence}
               onSave={(freq: Frequency, until: Date | null) => CreateRRule(freq, until)}
-              onDelete={() => setRecurrence(undefined)}
+              onDelete={() => {
+                setRecurrence(undefined)
+                setShowRRPicker(false)
+              }}
               onCancel={() => setShowRRPicker(false)} 
             />
           </div>}

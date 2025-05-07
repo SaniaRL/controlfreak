@@ -1,0 +1,13 @@
+/* CLEAN CSS */
+
+.sidebar-right {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+.show-preset-button {
+    align-self: flex-end;
+}
+
+/* NOT CLEAN */

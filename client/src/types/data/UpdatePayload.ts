@@ -1,4 +1,4 @@
-export interface UpdatePayLoad {
+export interface UpdatePayload {
     type: 'tasks' | 'events' | 'categories'
     CRUD: 'GET' | 'PUT' | 'POST' | 'DELETE'
     id?: string | number 

@@ -17,6 +17,8 @@ function RRPicker({ savedState, onSave, onDelete, onCancel } : {
 	const [initFreq, setInitFreq] = useState<Frequency | undefined>(undefined)
 	const [initUntil, setInitUntil] = useState<Date | null>(null)
 
+	//Ändra så den lyssnar på usestate uppifrån?
+
 	useEffect(() => {
 		if(savedState) {
 			try {
@@ -64,7 +66,6 @@ function RRPicker({ savedState, onSave, onDelete, onCancel } : {
 
 			<ButtonGroup aria-label='First group'>
 				{ frequency.map((btn) => (
-
 					<Button 
 						key={btn}
 						className={ `btn-group-btn ${ freq === btn ? 'active' : '' }` } 
@@ -78,14 +79,14 @@ function RRPicker({ savedState, onSave, onDelete, onCancel } : {
 			</ButtonGroup>
 
 			<Form.Control 
-					type='date'
-				  value={until ? until.toISOString().split('T')[0] : ''}
-					onChange={ (e) => {
-						const value = new Date(e.target.value)
-						setUntilValue(value)
-						//varning om det inte är efter ?? ok med efter ?? använder vi start
-					}}
-				/>
+				type='date'
+				value={until ? until.toISOString().split('T')[0] : ''}
+				onChange={ (e) => {
+					const value = new Date(e.target.value)
+					setUntilValue(value)
+					//varning om det inte är efter ?? ok med efter ?? använder vi start
+				}}
+			/>
 
 			<Stack gap={2} className="w-100 mx-auto">
 
