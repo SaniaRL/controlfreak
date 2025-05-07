@@ -1,7 +1,7 @@
 import { Card } from 'react-bootstrap'
 import UpdateButton from '../../shared/UpdateButton'
 import DeleteButton from '../../shared/DeleteButton'
-import { EventData } from '../../types/EventData';
+import { EventData } from '../../types/data/EventData';
 import './ActivityFeed.css'
 
 function EventItem({event}: {event: EventData}) {

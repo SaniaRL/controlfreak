@@ -3,7 +3,7 @@ import { useState } from "react"
 import CreateActivity from "./CreateActivity.tsx"
 import ActivityFilterPanel from "./filter-components/ActivityFilterPanel.tsx"
 import EventItem from "./EventItem.tsx"
-import { EventData } from "../../types/EventData.ts"
+import { EventData } from "../../types/data/EventData.ts"
 
 export default function ActivityfeedComponent() {
 	const [searchResults, setSearchResults] = useState<EventData[]>([])

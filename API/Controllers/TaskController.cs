@@ -1,7 +1,5 @@
 ﻿using API.DTO;
 using API.Entities;
-using API.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

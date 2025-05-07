@@ -1,31 +1,6 @@
-import { useState } from 'react';
-import { Form, Button, DropdownButton, ButtonGroup, Dropdown } from 'react-bootstrap'
-import { CreateTaskData } from '../../types/CreateTaskData';
-import RecurrencePicker from '../../shared/RecurrencePicker';
+import { Form, Button } from 'react-bootstrap'
 
 function CreateTask() {
-  // const [ description, setDescription ] = useState('')
-  // const [ deadline, setDeadline ] = useState(null)
-  // const [ recurrence, setRecurrence ] = useState(0)
-
-  // const createNewTask = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   console.log(description);
-
-  //   // let data: CreateTaskData = { title: description, deadline, recurrence }
-  
-  //   try {
-  //     await fetch(`https://localhost:7159/APIv1/tasks/new`, {
-  //         method: 'POST',
-  //         headers: {
-  //             'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify(data),
-  //     });
-  //   } catch (error) {
-  //       console.error("Error creating new post:", error);
-  //   }
-  // };
 
   return(
     <Form 

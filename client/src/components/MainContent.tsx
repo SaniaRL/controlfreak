@@ -4,10 +4,10 @@ import ActivityfeedComponent from './activityfeed/ActivityfeedComponent'
 import Calendar from './calendar/Calendar'
 import LSidebarComponent from './sidebar-left/LSidebarComponent'
 import RSidebarComponent from './sidebar-right/RSidebarComponent'
-import { EventData } from '../types/EventData'
-import { TaskData } from '../types/TaskData'
+import { EventData } from '../types/data/EventData'
+import { TaskData } from '../types/data/TaskData'
 // import { CalendarProps } from '../types/CalendarProps'
-import { UpdatePayLoad } from '../types/UpdatePayload'
+import { UpdatePayload } from '../types/data/UpdatePayload'
 
 const BASE_URL = 'https://localhost:7159'
 const API = 'APIv1'
@@ -72,7 +72,7 @@ function MainContent({ view }: { view: string }) {
     })
   }
 
-  async function onDataChange(data: UpdatePayLoad | undefined) {
+  async function onDataChange(data: UpdatePayload | undefined) {
     if(data === undefined) {
       //Gör nåt???
       console.log('Data is undefined')
@@ -80,6 +80,7 @@ function MainContent({ view }: { view: string }) {
       setIsLoading(true)
       try {
         const response = await executeCRUD(data)
+
         switch(data.type) {
           case 'tasks':
             switch(data.CRUD) {
@@ -150,7 +151,7 @@ function MainContent({ view }: { view: string }) {
   //   }
   // }
 
-  const executeCRUD = async (x: UpdatePayLoad) => {
+  const executeCRUD = async (x: UpdatePayload) => {
     setIsLoading(true)
 
     const type = x.type
@@ -196,7 +197,9 @@ function MainContent({ view }: { view: string }) {
   return(
     <div className="main-content">
     <LSidebarComponent />
-    { view === 'activity' ? <ActivityfeedComponent /> : <Calendar events={events} tasks={tasks} onDataChange={onDataChange}/>}
+    { view === 'activity' 
+    ? <ActivityfeedComponent /> 
+    : <Calendar events={events} tasks={tasks} onDataChange={onDataChange}/> }
     <RSidebarComponent tasks={tasks} onDataChange={onDataChange} />
     </div>
   )
