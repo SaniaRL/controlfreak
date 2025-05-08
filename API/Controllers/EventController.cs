@@ -3,6 +3,8 @@ using API.Entities;
 using API.Interfaces;
 using API.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace API.Controllers
 {
@@ -74,17 +76,26 @@ namespace API.Controllers
             }
         }
 
-        //[HttpPost("POST")]
-        //public async Task<ActionResult<Task>> CreateTask([FromBody] CreateTask taskData)
-        //{
-        //    //TAGS ÄR NULL
-        //    var task = new TaskItem(title: taskData.Title, deadline: taskData.DeadLine, isStackable: taskData.IsStackable, tags: null, rRule: taskData.RRule);
+        [HttpPost("POST")]
+        public async Task<ActionResult<Task>> CreateEvent([FromBody] PartialEventDTO partial)
+        {
+            var randomevent = new EventItem(
+                title: partial.Title ?? "", 
+                content: partial.Content, 
+                start: partial.Start ?? new DateTime(2025, 4, 26, 18, 0, 0), 
+                end: partial.End, 
+                allDay: partial.AllDay ?? false, 
+                categoryId: 1, 
+                rRule: null, 
+                tags: ["party", "travel"]);
 
-        //    _context.Add(task);
-        //    await _context.SaveChangesAsync();
 
-        //    return Ok(task);
-        //}
+            _context.Add(randomevent);
+
+            await _context.SaveChangesAsync();
+
+            return Ok(randomevent);
+        }
 
         [HttpPut("PUT/{id}")]
         public async Task<ActionResult<Task>> UpdateEvent(int id,

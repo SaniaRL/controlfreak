@@ -19,15 +19,49 @@ export default function EventItem({event, onDataChange, enableEditMode}
 		})
 	}
 
-	//Ev så bara header visar och resten är collapse?
+	const formattedDates = (() => {
+		if (event.allDay) {
+			return <>{new Date(event.start).toLocaleDateString("sv-SE")}</>
+		}
+	
+		const startDate = new Date(event.start)
+		const startTime = startDate.getMinutes() === 0
+			? startDate.toLocaleTimeString("sv-SE", { hour: '2-digit', minute: '2-digit' })
+			: startDate.toLocaleTimeString("sv-SE", { hour: '2-digit', minute: '2-digit' })
+		const startStr = startDate.toLocaleDateString("sv-SE")
+	
+		let endTime = ''
+		let endStr = ''
+	
+		if (event.end) {
+			const endDate = new Date(event.end)
+			endTime = endDate.getMinutes() === 0 
+				? endDate.toLocaleTimeString("sv-SE", { hour: '2-digit', minute: '2-digit' })
+				: endDate.toLocaleTimeString("sv-SE", { hour: '2-digit', minute: '2-digit' })
+			endStr = endDate.toLocaleDateString("sv-SE")
+		}
+	
+		if (event.end && startDate.toDateString() === new Date(event.end).toDateString()) {
+			return (
+				<>
+					{startTime} <span>&nbsp;-&nbsp;</span> {endTime} {startStr}
+				</>
+			)
+		}
+	
+		return (
+			<>
+				{startStr} {startTime} <span>&nbsp;-&nbsp;</span> {endStr} {endTime}
+			</>
+		)
+	})()
+		
 	return(
 		<div className='event-item'>
 			<div className='event-item-head'>
 				<div className='event-title'>{event.title}</div>
 				<div className='dates'>
-				{new Date(event.start).toLocaleString("sv-SE", { dateStyle: "short", timeStyle: "short" })}
-				{ event.end &&
-				new Date(event.end).toLocaleString("sv-SE", { dateStyle: "short", timeStyle: "short" })}
+					{formattedDates}
 				</div>
 				<div className='event-item-btns'>
 					<StandardButton

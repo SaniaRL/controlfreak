@@ -113,8 +113,16 @@ function MainContent({ view }: { view: string }) {
 
           case 'POST':
             if (response?.ok) {
-              const newTask: TaskData = await response.json()
-              setTasks(prevTasks => newTask ? [...prevTasks, newTask] : prevTasks)
+              switch(data.type) {
+                case 'tasks':
+                  const newTask: TaskData = await response.json()
+                  setTasks(prevTasks => newTask ? [...prevTasks, newTask] : prevTasks)
+                  break
+                case 'events':
+                  const newEvent: EventData = await response.json()
+                  setEvents(prevEvents => newEvent ? [...prevEvents, newEvent] : prevEvents)
+                  break
+              }
             } else {
               console.log('onDataChange task POST response not ok')
             } 
