@@ -26,7 +26,7 @@ namespace API.Entities
             UpdatedWhen = DateTime.Now;
         }
 
-        public void SetDescription(string title)
+        public void SetTitle(string title)
         {
             Title = title;
 

@@ -4,22 +4,16 @@ import StandardButton from '../../../shared/StandardButton'
 
 import '../ActivityFeed.css'
 
-export default function EventItem({event, onDataChange}
-	: {event: EventData, onDataChange: (updates?: UpdatePayload) => void}) {
+export default function EventItem({event, onDataChange, enableEditMode}
+	: {event: EventData, 
+		onDataChange: (updates?: UpdatePayload) => void,
+		enableEditMode: (id?: number) => void
+	}) {
 
 	function deleteEvent(){
 		onDataChange?.({
 			type: 'events',
 			CRUD: 'DELETE',
-			id: event.id,
-			updates: {id: event.id}
-		})
-	}
-
-	function updateEvent(){
-		onDataChange?.({
-			type: 'events',
-			CRUD: 'PUT',
 			id: event.id,
 			updates: {id: event.id}
 		})
@@ -41,7 +35,7 @@ export default function EventItem({event, onDataChange}
 								key: event.id,
 								id: event.id,
 								buttonProps: { content: {src: '/icons/edit_black.png', alt: 'edit button'}, variant: 'light', className: 'edit-post-button'},
-								onClick: updateEvent }}/>
+								onClick: () => enableEditMode(event.id) }}/>
 					<StandardButton
 						props= {{
 							key: event.id,

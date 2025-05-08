@@ -87,6 +87,7 @@ function MainContent({ view }: { view: string }) {
             break
 
           case 'PUT':
+            console.log(`PUT ${data.updates}`)
             executeCRUD({ type: data.type, CRUD: 'GET', id: data.id })
             .then(response => response?.json())
             .then(updatedData => { 
@@ -100,7 +101,7 @@ function MainContent({ view }: { view: string }) {
                     )
                     break
                   case 'events':
-                    setTasks(prevData => 
+                    setEvents(prevData => 
                       prevData.map(event =>
                         event.id === updatedData.id ? updatedData : event
                       )

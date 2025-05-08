@@ -1,6 +1,7 @@
 ﻿using API.DTO;
 using API.Entities;
 using API.Interfaces;
+using API.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -84,6 +85,25 @@ namespace API.Controllers
 
         //    return Ok(task);
         //}
+
+        [HttpPut("PUT/{id}")]
+        public async Task<ActionResult<Task>> UpdateEvent(int id,
+            [FromBody] PartialEventDTO pe)
+        {
+            var eventItem = await _context.Events.FindAsync(id);
+
+            if (eventItem == null)
+            {
+                return NotFound();
+            }
+
+            eventItem = EntityHelper.MapToEntity(eventItem, pe);
+            _context.Events.Update(eventItem);
+            await _context.SaveChangesAsync();
+
+            return Ok(eventItem);
+        }
+
 
         [HttpDelete("DELETE/{id}")]
         public async Task<ActionResult<Task>> DeleteEvent(int id)

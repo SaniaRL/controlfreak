@@ -22,7 +22,8 @@ namespace API.Entities
             Start = start;
             End = end;
             AllDay = allDay;
-            CategoryId = categoryId;        }
+            CategoryId = categoryId;        
+        }
 
         public void SetStart(DateTime start)
         {

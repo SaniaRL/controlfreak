@@ -18,6 +18,7 @@ function RRPicker({ savedState, onSave, onDelete, onCancel } : {
 	const [initUntil, setInitUntil] = useState<Date | null>(null)
 
 	//Ändra så den lyssnar på usestate uppifrån?
+	// Ändra till Partial för mindre plats
 
 	useEffect(() => {
 		if(savedState) {
