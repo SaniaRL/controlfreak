@@ -15,8 +15,13 @@
 }
   
 .event-item-head,
-.event-item-options {
+.event-item-btns {
     display: flex;
+}
+.event-item-btns {
+    display: flex;
+    width: 100px;
+    justify-content: space-around; 
 }
 
 .dates {
@@ -31,3 +36,26 @@
     font-size: 14px;
 
 }
+
+
+.activity-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 1rem;
+    box-shadow: 1px 2px 14px -10px rgba(0,0,0,0.75);
+  }
+  
+  .activity-item:hover {
+    background: #f8f9fa;
+  }
+  
+  .activity-item p {
+    margin-left: 20px;
+    /*Ändra detta för att centrera text vertikalt*/
+    padding-top: 15px;
+    width: 100%;
+    font-size: large;
+  }
+  

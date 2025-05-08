@@ -70,8 +70,8 @@ namespace API.Controllers
         [HttpPost("POST")]
         public async Task<ActionResult<Task>> CreateTask([FromBody] CreateTask taskData)
         {
-
-            var task = new TaskItem(title: taskData.Title, deadline: taskData.DeadLine, isStackable: taskData.IsStackable, rRule: taskData.RRule);
+            //TAGS ÄR NULL
+            var task = new TaskItem(title: taskData.Title, deadline: taskData.DeadLine, isStackable: taskData.IsStackable, tags: null, rRule: taskData.RRule);
 
             _context.Add(task);
             await _context.SaveChangesAsync();

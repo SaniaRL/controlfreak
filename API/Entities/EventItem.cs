@@ -9,7 +9,6 @@ namespace API.Entities
         public DateTime Start { get; private set; }
         public DateTime? End { get; private set; }
         public bool AllDay { get; private set; }
-        public string[]? Tags { get; private set; }
 
         [Required]
         public int CategoryId { get; set; }
@@ -17,15 +16,13 @@ namespace API.Entities
         public Category Category { get; set; } = null!;
 
         public EventItem(string title, string content, DateTime start, DateTime? end, bool allDay, int categoryId, string? rRule, string[]? tags) 
-            : base(title, rRule)
+            : base(title, tags, rRule)
         {
             Content = content;
             Start = start;
             End = end;
             AllDay = allDay;
-            CategoryId = categoryId;
-            Tags = tags;
-        }
+            CategoryId = categoryId;        }
 
         public void SetStart(DateTime start)
         {

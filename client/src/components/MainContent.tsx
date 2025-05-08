@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react'
-import ActivityfeedComponent from './activityfeed/ActivityfeedComponent'
+import ActivityfeedComponent from './activityfeed/Activityfeed'
 import Calendar from './calendar/Calendar'
 import LSidebarComponent from './sidebar-left/LSidebarComponent'
 import RSidebarComponent from './sidebar-right/RSidebarComponent'
@@ -13,7 +13,7 @@ const BASE_URL = 'https://localhost:7159'
 const API = 'APIv1'
 
 function MainContent({ view }: { view: string }) {
-  const [error, setError] = useState();
+  const [error, setError] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [events, setEvents] = useState<EventData[]>([])
   const [tasks, setTasks] = useState<TaskData[]>([])
@@ -81,48 +81,56 @@ function MainContent({ view }: { view: string }) {
       try {
         const response = await executeCRUD(data)
 
-        switch(data.type) {
-          case 'tasks':
-            switch(data.CRUD) {
-              case 'GET':
-                console.log('onDataChange: GET')
-                break
+        switch(data.CRUD) {
+          case 'GET':
+            console.log('onDataChange: GET')
+            break
 
-              case 'PUT':
-                executeCRUD({ type: data.type, CRUD: 'GET', id: data.id })
-                .then(response => response?.json())
-                .then(updatedTask => { 
-                  if (updatedTask) {
-                    setTasks(prevTasks => 
-                      prevTasks.map(task =>
-                        task.id === updatedTask.id ? updatedTask : task
+          case 'PUT':
+            executeCRUD({ type: data.type, CRUD: 'GET', id: data.id })
+            .then(response => response?.json())
+            .then(updatedData => { 
+              if (updatedData) {
+                switch(data.type) {
+                  case 'tasks':
+                    setTasks(prevData => 
+                      prevData.map(task =>
+                        task.id === updatedData.id ? updatedData : task
                       )
                     )
-                  }
-                })
-                break
+                    break
+                  case 'events':
+                    setTasks(prevData => 
+                      prevData.map(event =>
+                        event.id === updatedData.id ? updatedData : event
+                      )
+                    )
+                }
+              }
+            })
+            break
 
-              case 'POST':
-                if (response?.ok) {
-                  const newTask: TaskData = await response.json()
-                  setTasks(prevTasks => newTask ? [...prevTasks, newTask] : prevTasks)
-                } else {
-                  console.log('onDataChange task POST response not ok')
-                } 
-                break
+          case 'POST':
+            if (response?.ok) {
+              const newTask: TaskData = await response.json()
+              setTasks(prevTasks => newTask ? [...prevTasks, newTask] : prevTasks)
+            } else {
+              console.log('onDataChange task POST response not ok')
+            } 
+            break
 
-              case 'DELETE':
-                if (response?.ok) {
+          case 'DELETE':
+            if (response?.ok) {
+              switch(data.type) {
+                case 'tasks':
                   setTasks(prevTasks => prevTasks.filter(task => task.id !== data.id))
-                } else {
-                  console.log('onDataChange task DELETE response not ok')
-                }     
-            }
-            break
-          case 'events':
-            console.log('onDataChange case: Events')
-            break
-          case 'categories': console.log('mapCRUD categories')
+                  break
+                case 'events':
+                  setEvents(prevEvents => prevEvents.filter(event => event.id !== data.id))
+              }
+            } else {
+              console.log('onDataChange task DELETE response not ok')
+            }     
         }
         //Gör fler saker för andra förändringar och håll crud separat?
       } catch (e: any){
@@ -132,24 +140,6 @@ function MainContent({ view }: { view: string }) {
       }  
     }
   }
-
-  //Kolla innan att response är ok
-  // function updateTaskState(data: UpdatePayLoad | undefined) {
-  //   if (data) {
-  //     switch (data.CRUD) {
-  //       case 'GET':
-  //         console.log('GET')
-  //         break
-  //       case 'PUT':
-  //       case 'POST':
-  //         console.log('POST')
-  //         break
-  //       case 'DELETE':
-
-  //         console.log('DELETE')
-  //     }
-  //   }
-  // }
 
   const executeCRUD = async (x: UpdatePayload) => {
     setIsLoading(true)
@@ -178,12 +168,6 @@ function MainContent({ view }: { view: string }) {
 
       return response
 
-      // if(response.ok) {
-      //   //uppdatera allt och så
-      //   console.log('mapCRUD = ok')
-      // } else {
-      //   console.error('mapCRUD = ')
-      // }
     } catch (error: any) {
       console.error("Något gick fel i executeCRUD")
     }
@@ -198,7 +182,7 @@ function MainContent({ view }: { view: string }) {
     <div className="main-content">
     <LSidebarComponent />
     { view === 'activity' 
-    ? <ActivityfeedComponent /> 
+    ? <ActivityfeedComponent events={events} onDataChange={onDataChange} /> 
     : <Calendar events={events} tasks={tasks} onDataChange={onDataChange}/> }
     <RSidebarComponent tasks={tasks} onDataChange={onDataChange} />
     </div>

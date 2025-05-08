@@ -39,10 +39,10 @@ namespace API
         {
             List<TaskItem> taskList =
             [
-                new(title: "Boka tvättid", rRule: null),
-                new(title: "Duscha", rRule : null),
-                new(title: "Diska", rRule : null),
-                new(title: "Vitamin", rRule : "DTSTART=20250504T000000Z\nRRULE:FREQ=DAILY"),
+                new(title: "Boka tvättid", tags: null, rRule: null),
+                new(title: "Duscha", tags: null, rRule : null),
+                new(title: "Diska", tags: null, rRule : null),
+                new(title: "Vitamin", tags: null, rRule : "DTSTART=20250504T000000Z\nRRULE:FREQ=DAILY"),
             ];
 
             Tasks.AddRange(taskList);

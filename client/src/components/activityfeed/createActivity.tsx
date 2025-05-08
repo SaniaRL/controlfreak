@@ -1,9 +1,9 @@
-import CreateTask from './createTask';
+// import CreateTask from './CreateTask';
 
 function CreateActivity() {
   return(
     <div className='create-activity'>
-      <CreateTask />
+      {/* <CreateTask /> */}
     </div>
   );
 }

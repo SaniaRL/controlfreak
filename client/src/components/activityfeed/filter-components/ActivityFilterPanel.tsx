@@ -1,15 +1,14 @@
-import Searchbar from './Searchbar';
-import OrderByDropdown from './OrderByDropdown';
-import FilterDropdown from './FilterDropdown';
+import Searchbar from './Searchbar'
+import OrderByDropdown from './OrderByDropdown'
+import FilterDropdown from './FilterDropdown'
 
-function ActivityFilterPanel({ updateSearchResults }: { updateSearchResults: React.Dispatch<React.SetStateAction<any[]>> }) {
+export default function ActivityFilterPanel({ onSearch }
+  : { onSearch: (searchTerm: string) => void }) {
   return(
     <div className='activity-filter-panel'>
-      <Searchbar updateSearchResults={updateSearchResults}/>
+      <Searchbar onSearch={onSearch}/>
       <FilterDropdown />
       <OrderByDropdown />
     </div>
-  );
+  )
 }
-
-export default ActivityFilterPanel

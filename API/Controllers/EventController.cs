@@ -45,43 +45,61 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("search/{input}")]
-        public ActionResult<List<EventDTO>> SearchEvent(string input)
+        [HttpGet("GET/{id}")]
+        public ActionResult<TaskDTO> GetEvent(int id)
         {
             try
             {
-                var events = _context.Events
-                    .Where(x => x.Title
-                        .ToLower()
-                        .Contains(input
-                            .ToLower()))
-                    .ToList();
+                var eventItem = _context.Events.First(x => x.Id == id);
 
-
-                var eventVMs = events.Select(x => new EventDTO
+                var eventVM = new EventDTO
                 {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Start = x.Start,
-                    Content = x.Content,
-                    End = x.End,
-                    AllDay = x.AllDay,
-                    BackgroundColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.BackgroundColor).First(),
-                    TextColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.TextColor).First(),
-                    Rrule = x.RRule
-                }).ToList();
+                    Id = eventItem.Id,
+                    Title = eventItem.Title,
+                    Start = eventItem.Start,
+                    Content = eventItem.Content,
+                    End = eventItem.End,
+                    AllDay = eventItem.AllDay,
+                    BackgroundColor = _context.Categories.Where(c => eventItem.CategoryId == c.Id).Select(c => c.BackgroundColor).First(),
+                    TextColor = _context.Categories.Where(c => eventItem.CategoryId == c.Id).Select(c => c.TextColor).First(),
+                    Rrule = eventItem.RRule
+                };
 
-                return Ok(eventVMs);
+                return Ok(eventVM);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
-
-            return NotFound("No events found.");
         }
 
+        //[HttpPost("POST")]
+        //public async Task<ActionResult<Task>> CreateTask([FromBody] CreateTask taskData)
+        //{
+        //    //TAGS ÄR NULL
+        //    var task = new TaskItem(title: taskData.Title, deadline: taskData.DeadLine, isStackable: taskData.IsStackable, tags: null, rRule: taskData.RRule);
 
+        //    _context.Add(task);
+        //    await _context.SaveChangesAsync();
+
+        //    return Ok(task);
+        //}
+
+        [HttpDelete("DELETE/{id}")]
+        public async Task<ActionResult<Task>> DeleteEvent(int id)
+        {
+            var eventItem = await _context.Events.FindAsync(id);
+
+            if (eventItem == null)
+            {
+                return NotFound();
+            }
+
+            _context.Events.Remove(eventItem);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
 
     }
 }
