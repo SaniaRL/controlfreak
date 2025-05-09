@@ -1,4 +1,9 @@
 /* CLEAN CSS */
+.activityfeed {
+    position: relative;
+}
+
+/*CLEAN CSS*/
 .event-item {
     display: flex;
     flex-direction: column;

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 
-import CreateActivity from './CreateActivity.tsx'
+import CreateEvent from './create-activity/CreateEvent.tsx'
 import ActivityFilterPanel from './filter-components/ActivityFilterPanel.tsx'
 import { UpdatePayload } from '../../types/data/UpdatePayload.ts'
 import ActivityList from './activity-list/ActivityList.tsx'
 import { EventData } from "../../types/data/EventData.ts"
 
-import "../../App.css"
+import './ActivityFeed.css'
 
 export default function ActivityfeedComponent({events, onDataChange}
 	: {events: EventData[], onDataChange: (updates?: UpdatePayload) => void}) {
@@ -25,7 +25,7 @@ export default function ActivityfeedComponent({events, onDataChange}
 	return (
 		<div className='activityfeed'>
 			<ActivityFilterPanel onSearch={handleSearchResults}/>
-			<CreateActivity onDataChange={onDataChange}/>
+			<CreateEvent onDataChange={onDataChange}/>
 			<ActivityList events={displayEvents} onDataChange={onDataChange}/>
 		</div>
 	)

@@ -116,11 +116,11 @@ function MainContent({ view }: { view: string }) {
               switch(data.type) {
                 case 'tasks':
                   const newTask: TaskData = await response.json()
-                  setTasks(prevTasks => newTask ? [...prevTasks, newTask] : prevTasks)
+                  setTasks(prevTasks => newTask ? [newTask, ...prevTasks] : prevTasks)
                   break
                 case 'events':
                   const newEvent: EventData = await response.json()
-                  setEvents(prevEvents => newEvent ? [...prevEvents, newEvent] : prevEvents)
+                  setEvents(prevEvents => newEvent ? [newEvent, ...prevEvents] : prevEvents)
                   break
               }
             } else {

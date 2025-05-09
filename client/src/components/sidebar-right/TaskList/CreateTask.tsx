@@ -9,7 +9,7 @@ import RRPicker from '../../../shared/RRPicker/RRPicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import './TaskList.css'
 
-function CreateTask({ onDataChange }: {onDataChange : (updates?: UpdatePayload) => void}) {
+export default function CreateTask({ onDataChange }: {onDataChange : (updates?: UpdatePayload) => void}) {
   const [ title, setDescription ] = useState('')
   const [ deadline, setDeadline ] = useState<Date | null>(null)
   const [ recurrence, setRecurrence ] = useState<string | undefined>(undefined)
@@ -105,7 +105,5 @@ function CreateTask({ onDataChange }: {onDataChange : (updates?: UpdatePayload) 
             />
           </div>}
     </Form>
-  );
+  )
 }
-
-export default CreateTask
