@@ -1,8 +1,52 @@
+/* CLEAN CSS */
+.activityfeed {
+    position: relative;
+}
 
+/*CLEAN CSS*/
 .event-item {
+    display: flex;
+    flex-direction: column;
     padding: 2px 20px;
     box-shadow: 1px 2px 14px -10px rgba(0,0,0,0.75);
 }
+
+.event-item-title {
+    width: 70%;
+}
+
+.event-item-head {
+    display: flex;
+    justify-content: space-between;
+}
+
+.event-item-btns {
+    display: flex;
+    justify-self: flex-end;
+}
+
+.dates {
+    display: flex;
+    font-size: x-small;
+}
+
+.create-event .head {
+    display: flex;
+}
+
+
+/* NOT CLEAN CSS */
+
+/* .activity-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 1rem;
+    box-shadow: 1px 2px 14px -10px rgba(0,0,0,0.75);
+} */
+  
+
   
 .event-item:hover {
     background: #f8f9fa;
@@ -14,20 +58,21 @@
     font-size: large;
 }
   
-.event-item-head,
-.event-item-options {
-    display: flex;
-}
+/* .event-item-head, */
 
-.dates {
-    display: contents;
-}
-
-.dates p {
-    font-size: 10px;
-}
 
 .event-item-body p {
     font-size: 14px;
-
 }
+
+.activity-item:hover {
+background: #f8f9fa;
+}
+
+/* .activity-item p {
+margin-left: 20px;
+padding-top: 15px;
+width: 100%;
+font-size: large;
+} */
+  

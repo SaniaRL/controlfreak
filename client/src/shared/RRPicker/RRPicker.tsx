@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Form, Stack } from 'react-bootstrap'
 import { Frequency, RRule } from 'rrule'
+
 import './RRPicker.css'
 
-function RRPicker({ savedState, onSave, onDelete, onCancel } : { 
+export default function RRPicker({ savedState, onSave, onDelete, onCancel } : { 
 		savedState: string | undefined 
 		onSave: ( freq: Frequency, until: Date | null) => void
 		onDelete: () => void
@@ -18,6 +19,7 @@ function RRPicker({ savedState, onSave, onDelete, onCancel } : {
 	const [initUntil, setInitUntil] = useState<Date | null>(null)
 
 	//Ändra så den lyssnar på usestate uppifrån?
+	// Ändra till Partial för mindre plats
 
 	useEffect(() => {
 		if(savedState) {
@@ -117,5 +119,3 @@ function RRPicker({ savedState, onSave, onDelete, onCancel } : {
 		</Stack>
 	)
 }
-
-export default RRPicker

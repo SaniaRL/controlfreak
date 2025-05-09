@@ -49,8 +49,7 @@ function TaskListItem({ task, onDataChange } : { task: TaskData, onDataChange: (
 					id: task.id,
 					buttonProps: { content: {src: '/icons/bin_black.png', alt: 'garbage bin delete button'}, variant: 'light', className: 'edit-post-button'},
 					onClick: deleteTask,
-				}}
-				/>
+				}}/>
 			</div>
 		</Card>
 	)

@@ -1,5 +1,5 @@
 export interface EventData {
-    id: string
+    id: number
     title: string
     content: string
     start: Date

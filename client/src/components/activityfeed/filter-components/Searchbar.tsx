@@ -1,43 +1,26 @@
-import { useState, useEffect } from 'react'
-import { Form } from 'react-bootstrap';
+import { ChangeEvent, useState } from 'react'
+import { Form } from 'react-bootstrap'
 
-const BASE_URL = 'https://localhost:7159';
+export default function Searchbar({ onSearch }: { onSearch: (searchTerm: string) => void }) {
+	const [search, setSearch] = useState('')
 
-function Searchbar({ updateSearchResults }: { updateSearchResults: React.Dispatch<React.SetStateAction<any[]>> }) {
-	const [search, setSeach] = useState('')
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setSeach(e.target.value)
+	//Lägg till icon inte viktigt men
+
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		const newSearchTerm = e.target.value
+		setSearch(newSearchTerm)
+		onSearch(newSearchTerm)
 	}
 
-	useEffect (() => {
-		const delayDebounce = setTimeout(async () => {
-			if(search === "") {
-				const eventResponse = await fetch(`${BASE_URL}/APIv1/events`)
-				const events = await eventResponse.json()
-				updateSearchResults(events)		
-				console.log(events)	
-			} else {		
-				fetch(`${BASE_URL}/APIv1/events/search/${search}`)
-					.then(response => response.json())
-					.then(data => updateSearchResults(data))
-			}	
-		}, 300)
-	return () => clearTimeout(delayDebounce)	
-	}, [search]) 
-
 	return(
-		<section>
-			<Form.Control
-				className='search-input'
-				type='text'
-				placeholder='Search...'
-				autoComplete='off'
-				onChange={handleChange}
-				value={search}
-			/>
-		</section>
+		<Form.Control
+			className='search-input'
+			type='text'
+			placeholder='Search...'
+			autoComplete='off'
+			onChange={handleChange}
+			value={search}
+		/>
 	)
 }
-
-export default Searchbar

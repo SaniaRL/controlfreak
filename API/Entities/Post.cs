@@ -10,12 +10,15 @@ namespace API.Entities
         public string Title { get; private set; }
         public DateTime CreatedWhen { get; set; } = DateTime.Now;
         public DateTime UpdatedWhen { get; private set; }
+        public string[]? Tags { get; private set; }
+
 
         public string? RRule{ get; private set; }
 
-        public Post(string title, string rRule)
+        public Post(string title, string[]? tags, string rRule)
         {
             Title = title;
+            Tags = tags;
             RRule = rRule;
         }
         public void Update()
@@ -23,7 +26,7 @@ namespace API.Entities
             UpdatedWhen = DateTime.Now;
         }
 
-        public void SetDescription(string title)
+        public void SetTitle(string title)
         {
             Title = title;
 

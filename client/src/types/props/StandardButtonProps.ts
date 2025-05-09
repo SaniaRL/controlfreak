@@ -4,7 +4,7 @@ export interface StandardButtonProps {
     key?: React.Key
     id?: string | number
     buttonProps: ButtonProps
-    onClick: (id?: number) => void    
+    onClick: (id?: number | string) => void    
     onMouseEnter?: () => void    
     onMouseLeave?: () => void    
 }
