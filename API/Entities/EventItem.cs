@@ -11,7 +11,7 @@ namespace API.Entities
         public bool AllDay { get; private set; }
 
         [Required]
-        public int CategoryId { get; set; }
+        public int CategoryId { get; private set; }
 
         public Category Category { get; set; } = null!;
 
@@ -41,6 +41,11 @@ namespace API.Entities
             Update();
         }
 
+        public void SetCategory(int categoryId)
+        {
+            CategoryId = categoryId;
+            Update();
+        }
 
     }
 }

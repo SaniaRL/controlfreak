@@ -6,13 +6,12 @@ import LSidebarComponent from './sidebar-left/LSidebarComponent'
 import RSidebarComponent from './sidebar-right/RSidebarComponent'
 import { EventData } from '../types/data/EventData'
 import { TaskData } from '../types/data/TaskData'
-// import { CalendarProps } from '../types/CalendarProps'
 import { UpdatePayload } from '../types/data/UpdatePayload'
 
 const BASE_URL = 'https://localhost:7159'
 const API = 'APIv1'
 
-function MainContent({ view }: { view: string }) {
+export default function MainContent({ view }: { view: string }) {
   const [error, setError] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [events, setEvents] = useState<EventData[]>([])
@@ -188,7 +187,7 @@ function MainContent({ view }: { view: string }) {
 
 
   return(
-    <div className="main-content">
+    <div className='main-content'>
     <LSidebarComponent />
     { view === 'activity' 
     ? <ActivityfeedComponent events={events} onDataChange={onDataChange} /> 
@@ -197,5 +196,3 @@ function MainContent({ view }: { view: string }) {
     </div>
   )
 }
-
-export default MainContent

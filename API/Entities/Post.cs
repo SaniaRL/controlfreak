@@ -40,5 +40,13 @@ namespace API.Entities
             Update();
         }
 
+        public void SetTags(string[] tags)
+        {
+            Tags = tags;
+
+            Update();
+        }
+
+
     }
 }
