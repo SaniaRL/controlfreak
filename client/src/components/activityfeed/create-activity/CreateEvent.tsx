@@ -80,24 +80,24 @@ export default function CreateEvent({onDataChange}
 
           </div>
           <div className='body'>
-          <FormControl 
-              name='content'
-              as='textarea'
-              rows={3}
-              placeholder='Skriv nåt fint idk'
-              onChange={handleChange}/>
-
+            <FormControl 
+                name='content'
+                as='textarea'
+                rows={3}
+                placeholder='Skriv nåt fint idk'
+                onChange={handleChange}/>
+          </div>
           <div className='footer'>
             <Button>Category</Button>
-            <Button>Tags</Button><p>Tags...</p>
+            <Button>Tags</Button>
+            <p>Tags...</p>
+            <Button 
+              className='submit'
+              type='submit'
+              disabled={!hasRequiredFields}>
+                Create Event
+            </Button>
           </div>
-          </div>
-
-          <Button 
-            type='submit' 
-            disabled={!hasRequiredFields}>
-              Create Event
-          </Button>
         </Form>
       </Container>
     </Collapse>

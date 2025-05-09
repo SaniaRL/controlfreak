@@ -6,10 +6,15 @@
     margin: 0.5rem 0.45rem;
 }
 
-.create-event .head,
-.create-event .footer {
+.create-event .head {
     display: flex;
     flex-direction: row;
+}
+
+.create-event .footer {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    gap: 0.5rem;
 }
 
 .create-event-btn,
@@ -22,6 +27,7 @@
     background: transparent;
     border: none;
 }
+
 
 /* NOT CLEAN CSS */
 
