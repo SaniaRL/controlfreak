@@ -1,16 +1,19 @@
+import { useEffect, useState } from 'react'
 import { Button, Form, FormControl } from 'react-bootstrap'
 
-import StandardButton from '../../../shared/StandardButton'
-import { EventData } from '../../../types/data/EventData'
-import { UpdatePayload } from '../../../types/data/UpdatePayload'
-import { useEffect, useState } from 'react'
+import CategoryPicker from '../../misc/category-ui/CategoryPicker'
+import StandardButton from '../../../../shared/StandardButton'
+import { EventData } from '../../../../types/data/EventData'
+import { EventItemProps } from '../../../../types/props/EventItemProps'
 
-export default function EditEventItem({ event, onDataChange, disableEditMode }
-	: {event: EventData, 
-		onDataChange: (updates?: UpdatePayload) => void
-		disableEditMode: (id?: number) => void }) {
+import './EventItem.css'
+
+export default function EditEventItem({ event, categories, onDataChange, disableEditMode }
+	: EventItemProps) {
 			const[isDirty, setIsDirty] = useState(false)
 			const[newState, setNewState] = useState<EventData>(event)
+
+			//TODO: Kolla så data är korrekt
 
 	useEffect(() => {
 		const isCurrentlyDirty = Object.keys(newState).some(key => {
@@ -27,7 +30,7 @@ export default function EditEventItem({ event, onDataChange, disableEditMode }
 				id: event.id,
 				updates: newState
 			})
-		disableEditMode(event.id)		
+		disableEditMode(Number(event.id))		
 	}
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -36,14 +39,14 @@ export default function EditEventItem({ event, onDataChange, disableEditMode }
 	}
 
 	const onCancel = () => {
-		disableEditMode(event.id)
+		disableEditMode(Number(event.id))
 	}
 
 	//Ha save changes högre upp
 
 	return(
 		<Form 
-			className='event-item'
+			className='edit-event-item'
 			onSubmit={ (e) =>
 				{e.preventDefault()
 				console.log("Formuläret skickas!")
@@ -68,7 +71,7 @@ export default function EditEventItem({ event, onDataChange, disableEditMode }
 								key: event.id,
 								id: event.id,
 								buttonProps: { content: {src: '/icons/edit_black.png', alt: 'edit button'}, variant: 'light', className: 'edit-post-button'},
-								onClick: () => disableEditMode(event.id) }} />
+								onClick: () => disableEditMode(Number(event.id)) }} />
 					<StandardButton
 						props= {{
 							key: event.id,
@@ -83,7 +86,6 @@ export default function EditEventItem({ event, onDataChange, disableEditMode }
 					name='content' 
 					defaultValue={event.content} 
 					onChange={handleChange}/>
-				<p>category placeholder | tags placeholder</p>
 				<Button 
 					disabled={!isDirty} 
 					type='submit'
@@ -91,6 +93,12 @@ export default function EditEventItem({ event, onDataChange, disableEditMode }
 						Save changes
 				</Button>
 				<Button onClick={onCancel} variant='Secondary'>Cancel</Button>
+			</div>
+			<div className='event-item-footer'>
+				<CategoryPicker 
+				category={event.category} 
+				categories={categories}
+				onChange={() => handleChange} />
 			</div>
 		</Form>
 	)

@@ -18,12 +18,16 @@ export default function Calendar({events, tasks, onDataChange}: CalendarProps) {
 		const mappedEvents = events?.map(event => {
 			return {
 				...event,
-				textColor: event.category.textcolor,
-				backgroundColor: event.category.backgroundcolor
+				textColor: event.category.textColor,
+				backgroundColor: event.category.backgroundColor
 			}
 		})
 		setCalendarEvents(mappedEvents)
 	}, [events])
+
+	//TODO: Click -> Öppnna event/visa event
+	//Hantera rrule vid completed
+	//Varna vid delete av rrule
 
 	const renderEventContent = (eventInfo : any) => {
 		const entry = eventInfo.event

@@ -1,24 +1,28 @@
 /* CLEAN CSS */
 .activityfeed {
     position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 /*CLEAN CSS*/
-.event-item {
-    display: flex;
-    flex-direction: column;
-    padding: 2px 20px;
-    box-shadow: 1px 2px 14px -10px rgba(0,0,0,0.75);
+
+/* .activityfeed {
+  width: 60vw;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+} */
+
+.activity-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: calc(100vh - 220px);
+  overflow-y: scroll;
 }
 
-.event-item-title {
-    width: 70%;
-}
-
-.event-item-head {
-    display: flex;
-    justify-content: space-between;
-}
 
 .event-item-btns {
     display: flex;

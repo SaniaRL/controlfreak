@@ -1,6 +1,7 @@
 ﻿using API.DTO;
 using API.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -16,11 +17,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<EventDTO>> GetAllCalendar()
+        public ActionResult<List<EventDTO>> GetAll()
         {
             try
             {
-                var events = _context.Events.ToList();
+                var events = _context.Events.Include(e => e.Category).ToList();
 
                 var eventDTOs = events.Select(x => EntityHelper.MapEventToEventDTO(x)).ToList();
 
@@ -37,7 +38,7 @@ namespace API.Controllers
         {
             try
             {
-                var eventItem = _context.Events.First(x => x.Id == id);
+                var eventItem = _context.Events.Include(x => x.Category).First(x => x.Id == id);
 
                 var eventDTO = EntityHelper.MapEventToEventDTO(eventItem);
 
@@ -64,7 +65,7 @@ namespace API.Controllers
         public async Task<ActionResult<Task>> UpdateEvent(int id,
             [FromBody] PartialEventDTO partial)
         {
-            var eventItem = await _context.Events.FindAsync(id);
+            var eventItem = await _context.Events.Include(e => e.Category).FirstOrDefaultAsync(x => x.Id == id);
 
             if (eventItem == null)
             {
@@ -75,7 +76,7 @@ namespace API.Controllers
             _context.Events.Update(eventItem);
             await _context.SaveChangesAsync();
 
-            return Ok(eventItem);
+            return Ok(EntityHelper.MapEventToEventDTO(eventItem));
         }
 
 

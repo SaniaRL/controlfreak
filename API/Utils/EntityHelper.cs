@@ -8,7 +8,7 @@ namespace API.Utils
     {
         public static EventDTO MapEventToEventDTO(EventItem eventItem)
         {
-            var eventVM = new EventDTO
+            var eventDTO = new EventDTO
             {
                 Id = eventItem.Id,
                 Title = eventItem.Title,
@@ -16,12 +16,12 @@ namespace API.Utils
                 Content = eventItem.Content,
                 End = eventItem.End,
                 AllDay = eventItem.AllDay,
-                Category = eventItem.Category,
+                Category = MapCategoryToCategoryDTO(eventItem.Category),
                 Tags = eventItem.Tags,
                 Rrule = eventItem.RRule
             };
 
-            return eventVM;
+            return eventDTO;
         }
 
         public static EventItem MapEventDTOToEvent(EventDTO evenDTO)
@@ -32,7 +32,7 @@ namespace API.Utils
                 start: evenDTO.Start,
                 end: evenDTO.End,
                 allDay: evenDTO.AllDay,
-                categoryId: evenDTO.Category.Id,
+                categoryId: evenDTO.Category.Id.Value,
                 tags: evenDTO.Tags,
                 rRule: evenDTO.Rrule);
 
@@ -58,15 +58,15 @@ namespace API.Utils
             {
                 eventItem.SetEnd(partial.End.Value);
             }
-            if (partial.AllDay.HasValue) 
+            if (partial.AllDay.HasValue)
             {
                 eventItem.SetAllday(partial.AllDay.Value);
             }
-            if(partial.Category != null && partial.Category.Id.HasValue)
+            if (partial.Category != null && partial.Category.Id.HasValue)
             {
                 eventItem.SetCategory(partial.Category.Id.Value);
             }
-            if(partial.Tags != null)
+            if (partial.Tags != null)
             {
                 eventItem.SetTags(partial.Tags);
             }
@@ -74,21 +74,21 @@ namespace API.Utils
             return eventItem;
         }
 
-        //public static EventItem CreateEventFromPartial(PartialEventDTO partial)
-        //{
-        //    var eventItem = new EventItem(
-        //        title: partial.Title ?? "", 
-        //        content: partial.Content ?? "", 
-        //        start: partial.Start ?? DateTime.Now, 
-        //        end: partial.End, 
-        //        allDay: partial.AllDay ?? partial.End != null 
-        //            ? false 
-        //            : true, 
-        //        categoryId: partial., 
-        //        rRule: null, tags: null);
+        public static CategoryDTO MapCategoryToCategoryDTO(Category category)
+        {
+            return new CategoryDTO
+            {
+                Id = category.Id,
+                Name = category.Name,
+                BackgroundColor = category.BackgroundColor,
+                TextColor = category.TextColor,
+            };
+        }
 
-        //    return eventItem;
-        //}
+        public static Category MapCategoryDTOToCategory(CategoryDTO categoryDTO)
+        {
+            return new Category(name: categoryDTO.Name, backgroundColor: categoryDTO.BackgroundColor, textColor: categoryDTO.TextColor);
 
+        }
     }
 }

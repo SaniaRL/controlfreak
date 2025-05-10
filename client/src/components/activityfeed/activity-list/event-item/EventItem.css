@@ -1,0 +1,30 @@
+/* CLEAN CSS */
+.event-item,
+.edit-event-item {
+    display: grid;
+    grid-template-rows: 20px 1fr 20px;
+    padding: 2px 20px;
+    box-shadow: 1px 2px 14px -10px rgba(0,0,0,0.75);
+}
+
+.event-item-head {
+    display: flex;
+    justify-content: space-between;
+}
+
+.event-item-footer {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 0.5rem;
+
+}
+/* NOT CLEAN CSS */
+
+
+/*    text-overflow: ellipsis;
+*/
+
+.event-item-title {
+    width: 70%;
+}
+

@@ -7,6 +7,7 @@ import RSidebarComponent from './sidebar-right/RSidebarComponent'
 import { EventData } from '../types/data/EventData'
 import { TaskData } from '../types/data/TaskData'
 import { UpdatePayload } from '../types/data/UpdatePayload'
+import { Category } from '../types/data/Category'
 
 const BASE_URL = 'https://localhost:7159'
 const API = 'APIv1'
@@ -16,15 +17,31 @@ export default function MainContent({ view }: { view: string }) {
   const [isLoading, setIsLoading] = useState(false)
   const [events, setEvents] = useState<EventData[]>([])
   const [tasks, setTasks] = useState<TaskData[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
 
   useEffect(() => {		
     const fetchData = async () => {
         fetchTasks()  
         fetchEvents()
+        fetchCategories()
     }
     fetchData()
   }, [])
   
+    async function fetchCategories() {
+    setIsLoading(true)
+    try {
+      const response = await fetch(`${BASE_URL}/APIv1/categories`)
+      const categories = (await response.json()) as Category[]
+  
+      setCategories(categories)  
+      console.log(categories)
+    } catch (e: any) {
+      setError(e)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   async function fetchEvents() {
     setIsLoading(true)
@@ -32,8 +49,12 @@ export default function MainContent({ view }: { view: string }) {
       const eventResponse = await fetch(`${BASE_URL}/APIv1/events`)
       const events = (await eventResponse.json()) as EventData[]
   
-      setEvents(events)  
+      setEvents(mapEvents(events))  
       console.log(events)
+
+      events.forEach((x) => {
+        console.log(`type of start in fetch event: ${typeof x.start}`)
+      })
     } catch (e: any) {
       setError(e)
     } finally {
@@ -57,6 +78,7 @@ export default function MainContent({ view }: { view: string }) {
     	//ändra kategori till kategori men då också ändra dto och mappa rätt med background och textcolor från kategorin
   }
 
+  //TODO: flytta till kalendern 
   function mapTasks(tasks: TaskData[]): TaskData[] {
     return tasks.map(task => {
       const start = task.completedWhen
@@ -70,6 +92,15 @@ export default function MainContent({ view }: { view: string }) {
       }
     })
   }
+
+  function mapEvents(events: EventData[]): EventData[] {
+    return events.map(event => ({
+      ...event,
+      start: typeof event.start === 'string' ? new Date(event.start) : event.start,
+      end: event.end ? (typeof event.end === 'string' ? new Date(event.end) : event.end) : undefined,
+    }))
+  }
+
 
   async function onDataChange(data: UpdatePayload | undefined) {
     if(data === undefined) {
@@ -158,6 +189,7 @@ export default function MainContent({ view }: { view: string }) {
 
     let property
     let value
+
     if(x.includePropertyInUrl) {
       property = x.updates ? Object.keys(x.updates)[0] : undefined
       value = x.updates ? Object.values(x.updates)[0] : undefined  
@@ -190,8 +222,8 @@ export default function MainContent({ view }: { view: string }) {
     <div className='main-content'>
     <LSidebarComponent />
     { view === 'activity' 
-    ? <ActivityfeedComponent events={events} onDataChange={onDataChange} /> 
-    : <Calendar events={events} tasks={tasks} onDataChange={onDataChange}/> }
+    ? <ActivityfeedComponent events={events} categories={categories} onDataChange={onDataChange} /> 
+    : <Calendar events={events} tasks={tasks} categories={categories} onDataChange={onDataChange}/> }
     <RSidebarComponent tasks={tasks} onDataChange={onDataChange} />
     </div>
   )

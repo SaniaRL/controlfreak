@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+
+.category-display,
+.category-picker,
+.category-picker .dropdown-toggle,
+.category-picker .dropdown {
+    display: flex;
+    justify-content: center;
+
+    width: 100px;
+    max-width: 150px;
+    padding: 2px;
+
+    border-left: solid rgb(32, 32, 32) 2px;
+    border-bottom: solid rgb(32, 32, 32) 2px;
+
+    font-size: 12px;
+    font-family: "Instrument Sans", sans-serif;
+    font-weight: 460;
+    letter-spacing: 0.3px;
+
+}
+
+
+/* NOT CLEAN CSS */
+
+.category-picker .dropdown-toggle {
+    border: none;
+    background-color: transparent !important;
+}
