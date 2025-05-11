@@ -1,10 +1,8 @@
 import { DateDisplayProps } from '../../../../types/props/DateDisplayProps'
 
+import './DateDisplay.css'
 
 export default function DateDisplay({start, end, allDay}: DateDisplayProps) {
-
-	console.log("Typ av start:", typeof start)
-  console.log("Typ av end:", typeof end)
 
 	const displayDateOnly = (date: Date) => {
 		return date.toLocaleDateString('sv-SE')
@@ -22,17 +20,12 @@ export default function DateDisplay({start, end, allDay}: DateDisplayProps) {
 		return date.toLocaleTimeString("sv-SE", { hour: '2-digit', minute: '2-digit'})
 	}
 
-
-
 	const displayTimesTogether = (start: Date, end: Date) => {
 		const min = showMinutes(start) && showMinutes(end)
 		return min 
 			? `${displayHoursAndMinutes(start)} - ${displayHoursAndMinutes(end)}`
 			: `${displayHoursOnly(start)} - ${displayHoursOnly(end)}`
 	}
-
-
-	//TODO: städa här
 
 	const formattedDates = (() => {
 			
@@ -59,7 +52,7 @@ export default function DateDisplay({start, end, allDay}: DateDisplayProps) {
 
 	
 	return(
-		<div>
+		<div className='date-display'>
 			{formattedDates}
 		</div>
 	)

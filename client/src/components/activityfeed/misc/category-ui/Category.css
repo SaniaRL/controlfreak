@@ -6,6 +6,7 @@
 .category-picker .dropdown {
     display: flex;
     justify-content: center;
+    align-items: center;
 
     width: 100px;
     max-width: 150px;

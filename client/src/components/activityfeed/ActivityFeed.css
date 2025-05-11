@@ -1,8 +1,10 @@
 /* CLEAN CSS */
 .activityfeed {
     position: relative;
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    width: 60vw;
+    flex-direction: column;
+    padding: 16px 5px 0 5px;
 }
 
 /*CLEAN CSS*/
@@ -15,24 +17,25 @@
   gap: 0.5rem;
 } */
 
-.activity-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  height: calc(100vh - 220px);
-  overflow-y: scroll;
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 10px 0 0;
+    gap: 0.5rem;
+    height: calc(100vh - 220px);
+    overflow-y: scroll;
+    background-color: #fefefe;
 }
 
-
-.event-item-btns {
+/* .event-item-btns {
     display: flex;
     justify-self: flex-end;
-}
+} */
 
-.dates {
+/* .dates {
     display: flex;
     font-size: x-small;
-}
+} */
 
 .create-event .head {
     display: flex;
@@ -49,29 +52,11 @@
     padding: 1rem;
     box-shadow: 1px 2px 14px -10px rgba(0,0,0,0.75);
 } */
-  
 
-  
-.event-item:hover {
-    background: #f8f9fa;
-}
 
-.event-item-head p {
-    padding-top: 15px;
-    width: 100%;
-    font-size: large;
-}
-  
+
 /* .event-item-head, */
 
-
-.event-item-body p {
-    font-size: 14px;
-}
-
-.activity-item:hover {
-background: #f8f9fa;
-}
 
 /* .activity-item p {
 margin-left: 20px;
@@ -79,4 +64,4 @@ padding-top: 15px;
 width: 100%;
 font-size: large;
 } */
-  
+

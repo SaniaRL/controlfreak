@@ -103,6 +103,8 @@ export default function MainContent({ view }: { view: string }) {
 
 
   async function onDataChange(data: UpdatePayload | undefined) {
+    console.log('IN ON DATA CHANGE!!!')
+    console.log(data)
     if(data === undefined) {
       //Gör nåt???
       console.log('Data is undefined')
@@ -133,7 +135,7 @@ export default function MainContent({ view }: { view: string }) {
                   case 'events':
                     setEvents(prevData => 
                       prevData.map(event =>
-                        event.id === updatedData.id ? updatedData : event
+                        event.id === updatedData.id ? mapEvents([updatedData])[0] : event
                       )
                     )
                 }

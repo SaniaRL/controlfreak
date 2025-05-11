@@ -8,5 +8,5 @@ export interface ActivityfeedProps {
     events: EventData[]
     categories: Category[]
     tags?: string[]
-    onDataChange?: (update?: UpdatePayload) => void
+    onDataChange: (update?: UpdatePayload) => void
 }

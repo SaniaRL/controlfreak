@@ -28,8 +28,8 @@ export default function ActivityfeedComponent(props: ActivityfeedProps) {
 	return (
 		<div className='activityfeed'>
 			<ActivityFilterPanel onSearch={handleSearchResults}/>
-			<CreateEvent onDataChange={() => props.onDataChange}/>
-			<ActivityList events={displayEvents} categories={props.categories} onDataChange={() => props.onDataChange}/>
+			<CreateEvent onDataChange={props.onDataChange}/>
+			<ActivityList events={displayEvents} categories={props.categories} onDataChange={props.onDataChange}/>
 		</div>
 	)
 }

@@ -28,7 +28,7 @@ export default function ActivityList({events, categories, onDataChange}
 		//TODO: setEditMode
 
 	return(
-		<div className='activity-container'>
+		<div className='activity-list'>
 			{events.map(event =>
 				editableEvents.includes(Number(event.id)) || editMode
 				? <EditEventItem 
@@ -36,13 +36,13 @@ export default function ActivityList({events, categories, onDataChange}
 						event={event} 
 						categories={categories} 
 						disableEditMode={addEditableEvent} 
-						onDataChange={() => onDataChange}
+						onDataChange={onDataChange}
 					/>
 				: <EventItem 
 						key={event.id} 
 						event={event} 
 						enableEditMode={addEditableEvent} 
-						onDataChange={() => onDataChange} 
+						onDataChange={onDataChange} 
 					/>
 			)}
 		</div>
