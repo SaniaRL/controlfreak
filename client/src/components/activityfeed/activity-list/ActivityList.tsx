@@ -4,6 +4,7 @@ import EventItem from './event-item/EventItem'
 import EditEventItem from './event-item/EditEventItem'
 import { ActivityfeedProps } from '../../../types/props/ActivityfeedProps'
 
+import '../ActivityFeed.css'
 
 export default function ActivityList({events, categories, onDataChange}
 	: ActivityfeedProps) {
@@ -30,20 +31,22 @@ export default function ActivityList({events, categories, onDataChange}
 	return(
 		<div className='activity-list'>
 			{events.map(event =>
-				editableEvents.includes(Number(event.id)) || editMode
-				? <EditEventItem 
-						key={event.id} 
-						event={event} 
-						categories={categories} 
-						disableEditMode={addEditableEvent} 
-						onDataChange={onDataChange}
-					/>
-				: <EventItem 
-						key={event.id} 
-						event={event} 
-						enableEditMode={addEditableEvent} 
-						onDataChange={onDataChange} 
-					/>
+				<div key={event.id} className='event-wrapper'>
+					{editableEvents.includes(Number(event.id)) || editMode
+						? <EditEventItem 
+								key={event.id} 
+								event={event} 
+								categories={categories} 
+								disableEditMode={addEditableEvent} 
+								onDataChange={onDataChange}
+							/>
+						: <EventItem 
+								key={event.id} 
+								event={event} 
+								enableEditMode={addEditableEvent} 
+								onDataChange={onDataChange} 
+							/>}				
+				</div>
 			)}
 		</div>
 	)

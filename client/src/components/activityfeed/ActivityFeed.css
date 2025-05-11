@@ -7,7 +7,14 @@
     padding: 16px 5px 0 5px;
 }
 
+
 /*CLEAN CSS*/
+
+.event-wrapper {
+    display: contents;
+    transition: height 0.8s ease-in-out;
+}
+
 
 /* .activityfeed {
   width: 60vw;

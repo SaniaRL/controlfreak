@@ -27,11 +27,16 @@
     border-bottom: 1px solid #cecece;
 }
 
-.event-item-body {
+.event-item-body,
+.edit-event-item-body {
     margin: 12px 0;
     max-height: 120px;
     white-space: pre-wrap;
     font-size: 14px;
+}
+
+.edit-event-item-body {
+    overflow: auto;
 }
 
 .expandable {
@@ -42,7 +47,6 @@
     line-clamp: 3;
     overflow: hidden;
     box-shadow: 0 -56px 24px -32px rgba(254,254,254,1) inset;
-    border-bottom: 1px solid #cecece;
     cursor: pointer;
 }
 
@@ -62,6 +66,33 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     cursor: pointer;
+}
+
+.tag-wrapper {
+    display: grid;
+    grid-template-columns: 24px auto;
+    font-size: 30px;
+    padding: 0;
+}
+
+.event-item-footer,
+.edit-event-item-footer {
+    display: grid;
+    padding-top: 8px; 
+    gap: 0.5rem;
+}
+
+.event-item-footer {
+    grid-template-columns: auto 1fr auto auto;
+}
+
+.edit-event-item-footer {
+    grid-template-columns: auto 1fr auto;
+}
+
+.event-item-btns {
+    display: flex;
+    gap: 10px;
 }
 
 
@@ -104,29 +135,14 @@
     cursor: pointer;
 }
  */
-.event-item-footer {
-    display: grid;
-    grid-template-columns: auto 1fr auto auto;
-    gap: 0.5rem;
-}
-
-.edit-event-item-footer {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 0.5rem;
-}
-
-.event-item-btns {
-    display: flex;
-    gap: 10px;
-}
 
 .edit-event-button,
-.edit-event-button:hover {
+.edit-event-button:hover,
+.edit-event-button:active {
   display: flex;
   padding: 2px;
 
-  background: transparent;
+  background: transparent !important;
   border: none;
   box-shadow: none;
 }
@@ -138,6 +154,7 @@
 }
 
 .edit-event-button:hover img{
+    height: auto;
     transform: scale(1.2);
 }
 
@@ -147,7 +164,7 @@
 
 
 .edit-event-item .event-title,
-.edit-event-item .event-item-body > .form-control {
+.edit-event-item .edit-event-item-body > .form-control {
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
@@ -156,10 +173,10 @@
     color: inherit;
 }
 
-.edit-event-item .event-item-body > .form-control {
+.edit-event-item .edit-event-item-body > .form-control {
     display: block;
     width: 100%;
-    min-height: auto;
+    min-height: 120px;
 }
 /*    text-overflow: ellipsis;
 */

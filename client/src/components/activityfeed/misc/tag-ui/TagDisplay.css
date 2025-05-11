@@ -1,4 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap');
+
 /* CLEAN CSS */
+
+.tag-display {
+  display: grid;
+  grid-template-columns: 20px auto;
+  align-items: center;
+}
 
 .tag-container {
   display: flex;
@@ -8,9 +16,38 @@
   overflow: hidden;
   text-overflow: ellipsis;
   border-bottom: 1px solid #e0e0e0;
-  border-left: 1px solid #e0e0e0;
+  /* border-left: 1px solid #e0e0e0; */
   font-size: 12px;
   padding-left: 5px;
+}
+
+/* .tag-wrapper {
+} */
+
+.tag,
+.tag-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  transform: scale(1.5);
+  line-height: 1;
+
+  font-size: 20px;
+  font-family: "Zain", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.tag-btn,
+.tag-btn:hover,
+.tag-btn:focus,
+.tag-btn:active {
+  background: transparent !important;
+  color: black;
+  border: none;
+  box-shadow: none;
 }
 
 .tag-item,
@@ -22,6 +59,7 @@
   align-items: center;
   border: none;
   box-shadow: none;
+  cursor: default;
 }
 
 .tag-item-close {

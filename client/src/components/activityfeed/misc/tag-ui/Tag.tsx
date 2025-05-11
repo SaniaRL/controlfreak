@@ -5,15 +5,15 @@ import { TagEditProps } from '../../../../types/props/TagEditProps'
 
 import './TagDisplay.css'
 
-export default function Tag({ tag: prevState, editProps }: {
+export default function Tag({ tag: prevState, editProps, autofocus }: {
+  autofocus?: boolean
   tag: string
   editProps?: TagEditProps}) {
-    // const [isEditing, setIsEditing] = useState(false)
-    const [newState, setNewState] = useState(prevState)
+    const [newState, setNewState] = useState<string>(prevState)
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewState(e.target.value)
-  }
+      setNewState(e.target.value)
+    }
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -25,10 +25,11 @@ export default function Tag({ tag: prevState, editProps }: {
 
   const handleSave = () => {
     if (newState !== prevState && editProps?.onEdit) {
-      editProps.onEdit(prevState, newState)
+      editProps.onEdit(newState, prevState)
+    } if(!prevState) {
+      setNewState('')
     }
   }
-
 
   return(
     <div className='tag-item'>
@@ -41,11 +42,12 @@ export default function Tag({ tag: prevState, editProps }: {
       {editProps 
       ? <Form.Control 
           type='text' 
-          placeholder={newState} 
+          autoFocus={autofocus}
+          value={newState} 
           onKeyDown={handleKeyDown}
           onBlur={handleSave}
           onChange={handleInputChange}/>
-      : <div># {prevState}</div>}
+      : <div>{prevState}</div>}
 
     </div>                                                                                                                                                                                                                                                      
   )

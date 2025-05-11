@@ -1,4 +1,4 @@
 export interface TagEditProps {
-  onEdit: (prevState: string, newState: string) => void
+  onEdit: (newState: string, prevState?: string) => void
   onDelete: (tag: string) => void 
 }

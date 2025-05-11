@@ -1,28 +1,46 @@
+import { useState } from 'react'
+import { Button } from 'react-bootstrap'
+
 import { TagEditProps } from '../../../../types/props/TagEditProps'
 import Tag from './Tag'
+
 import './TagDisplay.css'
 
 export default function TagDisplay({tags, tagEditProps}: {
-  tags: string[]
+  tags?: string[]
   tagEditProps?: TagEditProps
 }) {
-  // const[newState, setNewState] = useState(tags)
+  const [open, setOpen] = useState(false)
 
-
-  // const handleDeleteTag = (tag: string) => {
-  //   const tags = tags.filter(t => t !== tag)
-  //   // setNewState(updatedTags)
-  //   tagEditProps?.onDelete(tag)
-  // }
-  
   return(
-    <div className='tag-container'>
-      {tags.map(t => 
-        <Tag 
-          key={t}
-          tag={t}
-          {...(tagEditProps && { editProps: tagEditProps })}/>
-      )}
+    <div className='tag-display'>
+      <div className='tag-wrapper'>
+        {tagEditProps 
+          ? <Button 
+            className='tag-btn'
+            onClick={() => setOpen(!open)}>
+              +
+            </Button>
+          : <p className='tag'>
+              #
+            </p>
+        }
+      </div>
+      <div className='tag-container'>
+        {open &&
+          <Tag 
+            key={''}
+            tag={''}
+            autofocus={true}
+            {...(tagEditProps && { editProps: tagEditProps })}/>
+        }
+        {tags?.map(t => 
+          <Tag 
+            key={t}
+            tag={t}
+            {...(tagEditProps && { editProps: tagEditProps })}/>
+        )}
+      </div>
     </div>
   )
 }

@@ -2,14 +2,15 @@ import { useEffect, useState } from 'react'
 import { Button, Form, FormControl } from 'react-bootstrap'
 
 import CategoryPicker from '../../misc/category-ui/CategoryPicker'
+import DateDisplay from '../../misc/date-ui/DateDisplay'
 import StandardButton from '../../../../shared/StandardButton'
 import TagDisplay from '../../misc/tag-ui/TagDisplay'
 
+import { Category } from '../../../../types/data/Category'
 import { EventData } from '../../../../types/data/EventData'
 import { EventItemProps } from '../../../../types/props/EventItemProps'
 
 import './EventItem.css'
-import DateDisplay from '../../misc/date-ui/DateDisplay'
 
 export default function EditEventItem({ event, categories, onDataChange, disableEditMode }
 	: EventItemProps) {
@@ -17,6 +18,8 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 			const[newState, setNewState] = useState<EventData>(event)
 
 			//TODO: Kolla så data är korrekt och varningar och save changes ?
+
+			//Kolla att ingen tom knapp är med
 
 	useEffect(() => {
 		const isCurrentlyDirty = Object.keys(newState).some(key => {
@@ -27,6 +30,14 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 		})
 		setIsDirty(isCurrentlyDirty)
 	}, [newState, event])
+
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') onCancel()
+		}
+		window.addEventListener('keydown', handleKeyDown)
+		return () => window.removeEventListener('keydown', handleKeyDown)
+	}, [])
 
 	const updateEvent = () => {
 		console.log(newState)
@@ -49,16 +60,51 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 		disableEditMode(Number(event.id))
 	}
 
-	const editTag = (prevTag: string, newTag: string) => {
-    if(!newState.tags.includes(newTag)) {
-		const updatedTags = newState.tags.map(t => t === prevTag ? newTag : t )
+	const editTag = (newTag: string, prevTag?: string) => {
+		if(!newTag) {
+			return
+		}
+
+		let updatedTags: string[]
+
+		if(prevTag) {
+			if(!newState.tags.includes(newTag)) {			
+			updatedTags = newState.tags.map(t => 
+				t === prevTag
+					? newTag 
+					: t
+				)
+			}
+    } else {
+
+			if(!newState.tags.map(t => t.toLowerCase()).includes(newTag.toLowerCase())) {
+				updatedTags = [...newState.tags, newTag]
+			} else {
+				updatedTags = newState.tags.map(t =>
+				t.toLowerCase() === newTag.toLowerCase()
+					? t === newTag
+						? t
+						: newTag
+					: t
+			)}
+		}
+
+		//Den tycks komma hit även om newTag = ""
+		//Detta körs en gång per tag istället för endast vid rop
 		setNewState(prev => ({...prev, tags: updatedTags}))
-    }
+		console.log(`new state tags ${newState.id}:`)
+		console.log(newState.tags)
 	}
 
 	const removeTag = (tag: string) => {
-		newState.tags = newState.tags.filter(t => t !== tag)
+  setNewState(prev => ({ ...prev, tags: prev.tags.filter(t => t !== tag) }));
 	}
+
+	const handleCategoryChange = (selectedCategory: Category) => {
+  setNewState(prev => ({ ...prev, category: selectedCategory }))
+ 	}
+
+	//TODO: autofocus
 
 	return(
 		<Form 
@@ -67,6 +113,7 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 				{e.preventDefault()
 				console.log("Formuläret skickas!")
 				updateEvent()}}>
+
 			<div className='edit-event-item-head'>
 				<FormControl 
 					type='text'
@@ -76,7 +123,10 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 					onChange={handleChange}/>
 
 				<div className='dates'>
-					<DateDisplay start={event.start} end={event.end} allDay={event.allDay} />
+					<DateDisplay 
+						start={event.start} 
+						end={event.end} 
+						allDay={event.allDay} />
 				</div>
 
 				<div className='event-item-btns'>
@@ -84,18 +134,27 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 							props= {{
 								key: event.id,
 								id: event.id,
-								buttonProps: { content: {src: '/icons/edit_black.png', alt: 'edit button'}, variant: 'light', className: 'edit-event-button'},
+								buttonProps: { 
+									content: {
+										src: '/icons/edit_black.png', 
+										alt: 'edit button'}, 
+										className: 'edit-event-button'},
 								onClick: () => disableEditMode(Number(event.id)) }} />
+
 					<StandardButton
 						props= {{
 							key: event.id,
 							id: event.id,
-							buttonProps: { content: {src: '/icons/bin_black.png', alt: 'garbage bin delete button'}, variant: 'light', className: 'edit-event-button'},
+							buttonProps: { 
+								content: {
+									src: '/icons/bin_black.png', 
+									alt: 'garbage bin delete button'}, 
+									className: 'edit-event-button'},
 							onClick: onCancel }}/>
 				</div>
 			</div>
 
-			<div className='event-item-body'>
+			<div className='edit-event-item-body'>
 				<FormControl 
 					as='textarea'
 					name='content' 
@@ -108,9 +167,15 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 				<CategoryPicker 
 				category={newState.category} 
 				categories={categories}
-				onChange={() => handleChange} 
+				onChange={handleCategoryChange} 
 				/>
-				{newState.tags && <TagDisplay tags={newState.tags} tagEditProps={{onDelete: removeTag, onEdit: editTag,}} />}
+
+				{newState.tags && <TagDisplay 
+					tags={newState.tags} 
+					tagEditProps={{
+						onDelete: removeTag, 
+						onEdit: editTag}} />}
+
 				<Button 
 					disabled={!isDirty} 
 					type='submit'

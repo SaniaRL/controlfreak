@@ -76,6 +76,9 @@ namespace API.Controllers
             _context.Events.Update(eventItem);
             await _context.SaveChangesAsync();
 
+            eventItem = await _context.Events.Include(e => e.Category).FirstOrDefaultAsync(x => x.Id == id);
+
+            //TODO kan va null men no no no
             return Ok(EntityHelper.MapEventToEventDTO(eventItem));
         }
 

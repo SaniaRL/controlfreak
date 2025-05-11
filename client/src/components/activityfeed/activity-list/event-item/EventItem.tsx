@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 
 import { EventData } from '../../../../types/data/EventData'
 import { UpdatePayload } from '../../../../types/data/UpdatePayload'
@@ -9,6 +9,7 @@ import StandardButton from '../../../../shared/StandardButton'
 import TagDisplay from '../../misc/tag-ui/TagDisplay'
 
 import './EventItem.css'
+import { Collapse } from 'react-bootstrap'
 
 export default function EventItem({event, onDataChange, enableEditMode}
 	: {event: EventData, 
@@ -53,31 +54,35 @@ export default function EventItem({event, onDataChange, enableEditMode}
 						props= {{
 							key: event.id,
 							id: event.id,
-							buttonProps: { content: {src: '/icons/edit_black.png', alt: 'edit button'}, variant: 'light', className: 'edit-event-button'},
+							buttonProps: { content: {src: '/icons/edit_black.png', alt: 'edit button'}, className: 'edit-event-button'},
 							onClick: () => enableEditMode(Number(event.id)) }}/>
 					<StandardButton
 						props= {{
 							key: event.id,
 							id: event.id,
-							buttonProps: { content: {src: '/icons/bin_black.png', alt: 'garbage bin delete button'}, variant: 'light', className: 'edit-event-button'},
+							buttonProps: { content: {src: '/icons/bin_black.png', alt: 'garbage bin delete button'}, className: 'edit-event-button'},
 							onClick: deleteEvent }}/>
 				</div>
 			</div>
 
-			<div 
-				className={canExpand
-					? expanded
-						? 'event-item-body expanded' 
-						: 'event-item-body expandable'
-					: 'event-item-body'} 
-				ref={contentRef}
-				onClick={canExpand ? () => setExpanded(!expanded) : () => {}}>
-				<p>{event.content}</p>
+			<div>
+				<Collapse in={event.content !== ''}>
+					<div 
+						className={canExpand
+							? expanded
+								? 'event-item-body expanded' 
+								: 'event-item-body expandable'
+							: 'event-item-body'} 
+						ref={contentRef}
+						onClick={canExpand ? () => setExpanded(!expanded) : () => {}}>
+						<p>{event.content}</p>
+					</div>			
+				</Collapse>
 			</div>
 
 			<div className='event-item-footer'>
 				<CategoryDisplay category={event.category}/>
-				{event.tags && <TagDisplay tags={event.tags} />}
+				<TagDisplay tags={event.tags} />
 			</div>
 		</div>
 	)
