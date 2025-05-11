@@ -9,8 +9,7 @@
     background-color: #fefefe;
 }
 
-.event-item:hover,
-.edit-event-item:hover {
+.event-item:hover {
     border: 1px solid #e0e0e0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     background-color: #fafafa;

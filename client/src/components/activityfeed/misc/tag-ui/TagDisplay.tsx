@@ -32,6 +32,7 @@ export default function TagDisplay({tags, tagEditProps}: {
             key={''}
             tag={''}
             autofocus={true}
+            cantClose={true}
             {...(tagEditProps && { editProps: tagEditProps })}/>
         }
         {tags?.map(t => 

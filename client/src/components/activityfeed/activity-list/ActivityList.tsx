@@ -29,7 +29,7 @@ export default function ActivityList({events, categories, onDataChange}
 		//TODO: setEditMode
 
 	return(
-		<div className='activity-list'>
+		<div className='activity-list'>			
 			{events.map(event =>
 				<div key={event.id} className='event-wrapper'>
 					{editableEvents.includes(Number(event.id)) || editMode

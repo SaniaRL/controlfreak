@@ -5,9 +5,10 @@ import { TagEditProps } from '../../../../types/props/TagEditProps'
 
 import './TagDisplay.css'
 
-export default function Tag({ tag: prevState, editProps, autofocus }: {
+export default function Tag({ tag: prevState, editProps, autofocus, cantClose }: {
   autofocus?: boolean
   tag: string
+  cantClose?: boolean
   editProps?: TagEditProps}) {
     const [newState, setNewState] = useState<string>(prevState)
 
@@ -17,8 +18,10 @@ export default function Tag({ tag: prevState, editProps, autofocus }: {
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
+      e.preventDefault()
       handleSave()
     } else if (e.key === 'Escape') {
+      e.preventDefault()
       setNewState(prevState)
     }
   }
@@ -34,20 +37,24 @@ export default function Tag({ tag: prevState, editProps, autofocus }: {
   return(
     <div className='tag-item'>
 
-      {editProps && 
+      {editProps && !cantClose &&
         <CloseButton
-        className='tag-item-close'
+        className='tag-item-remove'
         onClick={() => editProps.onDelete(prevState)}/>}
 
       {editProps 
-      ? <Form.Control 
-          type='text' 
-          autoFocus={autofocus}
-          value={newState} 
-          onKeyDown={handleKeyDown}
-          onBlur={handleSave}
-          onChange={handleInputChange}/>
-      : <div>{prevState}</div>}
+      ? <div className="input-wrapper">
+          <span className="input-sizer" aria-hidden="true">{newState || " "}</span>
+          <Form.Control
+            type="text"
+            autoFocus={autofocus}
+            value={newState}
+            onKeyDown={handleKeyDown}
+            onBlur={handleSave}
+            onChange={handleInputChange}
+          />
+        </div>
+        : <div>{prevState}</div>}
 
     </div>                                                                                                                                                                                                                                                      
   )

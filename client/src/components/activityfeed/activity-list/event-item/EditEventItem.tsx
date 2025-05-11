@@ -12,10 +12,9 @@ import { EventItemProps } from '../../../../types/props/EventItemProps'
 
 import './EventItem.css'
 
-export default function EditEventItem({ event, categories, onDataChange, disableEditMode }
-	: EventItemProps) {
-			const[isDirty, setIsDirty] = useState(false)
-			const[newState, setNewState] = useState<EventData>(event)
+export default function EditEventItem({ event, categories, onDataChange, disableEditMode }: EventItemProps) {
+	const[isDirty, setIsDirty] = useState(false)
+	const[newState, setNewState] = useState<EventData>(event)
 
 			//TODO: Kolla så data är korrekt och varningar och save changes ?
 
@@ -30,14 +29,6 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 		})
 		setIsDirty(isCurrentlyDirty)
 	}, [newState, event])
-
-	useEffect(() => {
-		const handleKeyDown = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') onCancel()
-		}
-		window.addEventListener('keydown', handleKeyDown)
-		return () => window.removeEventListener('keydown', handleKeyDown)
-	}, [])
 
 	const updateEvent = () => {
 		console.log(newState)
@@ -167,7 +158,8 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 				<CategoryPicker 
 				category={newState.category} 
 				categories={categories}
-				onChange={handleCategoryChange} 
+				onChange={handleCategoryChange}
+				onDataChange={onDataChange}
 				/>
 
 				{newState.tags && <TagDisplay 

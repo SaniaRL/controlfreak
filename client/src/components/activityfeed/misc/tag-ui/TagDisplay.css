@@ -11,14 +11,20 @@
 .tag-container {
   display: flex;
   align-items: flex-end;
-  max-width: 200px;
-  
-  overflow: hidden;
+  gap: 2px;
+  overflow-x: auto;
+
+  overflow: auto;
   text-overflow: ellipsis;
   border-bottom: 1px solid #e0e0e0;
-  /* border-left: 1px solid #e0e0e0; */
   font-size: 12px;
   padding-left: 5px;
+
+
+  overflow-y: hidden;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* .tag-wrapper {
@@ -50,32 +56,76 @@
   box-shadow: none;
 }
 
-.tag-item,
-.tag-item .form-control {
-  position: relative;
-  display: flex;
-  height: 100%;
-  padding: 5px;
-  align-items: center;
-  border: none;
-  box-shadow: none;
+.tag-item {
+  width: auto;
   cursor: default;
 }
 
-.tag-item-close {
-  position: absolute;
-  z-index: 100;
-  top: 4px;
-  right: 20px;
+.tag-item,
+.tag-item .form-control {
+  flex-grow: 1;
+  padding: 1px 3px;
+
+  position: relative;
+
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
 }
 
-/* .tag-item-close > .form-control {
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0;
+.tag-item-remove {
+  position: absolute;
+  top: 2px;
+  right: -6px;
+  z-index: 100;
+
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+
+  font-size: 8px;
+}
+
+.tag-item:hover .tag-item-remove,
+.tag-item-remove:hover {
+  opacity: 1;
+  transition: opacity 0.6s ease-in;  
+}
+
+.tag-item .form-control:focus {
+  outline: none;
+  border-radius: 0%;
+  caret-color: black;
+  box-shadow: none;
+}
+
+.input-wrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.input-sizer {
+  visibility: hidden;
+  white-space: pre;
   font-size: inherit;
-  color: inherit;
-} */
+  font-family: inherit;
+  font-weight: inherit;
+  padding: 1px 3px;
+}
+
+.input-wrapper > .form-control {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1px 3px;
+  margin: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  box-sizing: border-box;
+}
 
 /* NOT CLEAN CSS */
