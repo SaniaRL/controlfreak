@@ -33,6 +33,24 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("GET/{id}")]
+        public ActionResult<CategoryDTO> GetCategory(int id)
+        {
+            try
+            {
+                var Category = _context.Categories.Find(id);
+
+                var CategoryDTO = EntityHelper.MapCategoryToCategoryDTO(Category);
+
+                return Ok(CategoryDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
         [HttpPost("POST")]
         public async Task<ActionResult<Task>> PostCategory([FromBody] CategoryDTO categoryDTO)
         {
@@ -45,20 +63,25 @@ namespace API.Controllers
         }
 
         [HttpPut("PUT/{id}")]
-        public async Task<ActionResult<Task>> UpdateEvent(int id,
+        public async Task<ActionResult<Task>> UpdateCategory(int id,
         [FromBody] CategoryDTO partial)
         {
-            var category = await _context.Categories.FindAsync(id);
 
-            if (category == null)
+            var categoryFound = await _context.Categories.FindAsync(id);
+
+            if (categoryFound == null)
             {
                 return NotFound();
             }
-;
-            _context.Categories.Update(category);
+
+            categoryFound.Name = partial.Name;
+            categoryFound.TextColor = partial.TextColor;
+            categoryFound.BackgroundColor = partial.BackgroundColor;
+
+            _context.Categories.Update(categoryFound);
             await _context.SaveChangesAsync();
 
-            return Ok(EntityHelper.MapCategoryToCategoryDTO(category));
+            return Ok(EntityHelper.MapCategoryToCategoryDTO(categoryFound));
         }
 
 
@@ -72,11 +95,18 @@ namespace API.Controllers
                 return NotFound();
             }
 
+            var categoryExistsOnEvents = _context.Events.Any(e => e.CategoryId == id);
+
+            if (categoryExistsOnEvents)
+            {
+                return BadRequest("Category in use");
+            }
+
+
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
-
     }
 }

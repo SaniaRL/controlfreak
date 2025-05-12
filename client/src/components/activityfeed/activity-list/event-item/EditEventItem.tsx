@@ -172,7 +172,7 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 					disabled={!isDirty} 
 					type='submit'
 					>
-						Save changes
+						save
 				</Button>
 			</div>
 			{/* HIDDEN CONTROLS */}

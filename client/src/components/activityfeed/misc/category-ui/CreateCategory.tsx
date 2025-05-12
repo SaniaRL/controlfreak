@@ -6,14 +6,17 @@ import { UpdatePayload } from '../../../../types/data/UpdatePayload'
 
 import './Category.css'
 
-export default function CreateCategory({category, onDataChange}: {
+const defaultValue = {
+  name: 'text', 
+  backgroundColor: '#ffffff',
+  textColor: '#000000'
+}
+
+export default function CreateCategory({category, onDataChange, setEditMode}: {
     category?: Category
-    onDataChange: (update?: UpdatePayload) => void}) {
-      const[newState, setNewState] = useState<Category>({
-        name: 'Bob?', 
-        backgroundColor: '#ffffff',
-        textColor: '#000000'
-      })
+    onDataChange: (update?: UpdatePayload) => void
+    setEditMode: (editMode: boolean) => void }) {
+      const[newState, setNewState] = useState<Category>(defaultValue)
 
       useEffect(() => {
         if(category) {
@@ -28,7 +31,7 @@ export default function CreateCategory({category, onDataChange}: {
 	  	console.log('in Category data change')
   		console.log(newState)
 
-      const newCategory = !newState.id
+      const newCategory = newState.id === 0
 
 			onDataChange?.({
 				type: 'categories',
@@ -37,8 +40,28 @@ export default function CreateCategory({category, onDataChange}: {
 				updates: newState
 			})
 
-      //Ska detta ske oavsett?
+      setEditMode(false)
+      setNewState(defaultValue)
     }
+
+    const onDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault()
+      
+	  	console.log('in Category delete')
+  		console.log(newState)
+      
+      if(newState.id) {
+        onDataChange?.({
+            type: 'categories',
+            CRUD: 'DELETE',
+            id: newState.id
+			  })
+      }
+
+      setEditMode(false)
+      setNewState(defaultValue)
+    }
+
 
   return(
     <div className='create-category'>
@@ -47,6 +70,7 @@ export default function CreateCategory({category, onDataChange}: {
           className='create-category-input' 
           type='text' 
           value={newState.name}
+          onMouseDown={(e) => e.stopPropagation()}
           onChange={(e) => setNewState(prev => ({ ...prev, name: e.target.value }))}
           spellCheck={false}
           required
@@ -66,6 +90,9 @@ export default function CreateCategory({category, onDataChange}: {
         </div>
         <Button onClick={handleOnDataChange}>
           save
+        </Button>
+        <Button variant='secondary' onClick={onDelete}>
+          delete
         </Button>
       </Stack>
     </div>

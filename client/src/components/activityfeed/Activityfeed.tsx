@@ -6,7 +6,6 @@ import ActivityList from './activity-list/ActivityList.tsx'
 
 import { ActivityfeedProps } from '../../types/props/ActivityfeedProps.ts'
 import { EventData } from '../../types/data/EventData.ts'
-import CreateCategory from './misc/category-ui/CreateCategory.tsx'
 
 import './ActivityFeed.css'
 

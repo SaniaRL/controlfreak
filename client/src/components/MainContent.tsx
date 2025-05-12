@@ -138,22 +138,35 @@ export default function MainContent({ view }: { view: string }) {
                         event.id === updatedData.id ? mapEvents([updatedData])[0] : event
                       )
                     )
+                    break
+                  case 'categories':
+                    setCategories(prevData => 
+                      prevData.map(category =>
+                        category.id === updatedData.id ? updatedData : category
+                      )
+                    )
                 }
               }
             })
             break
 
+            //Får man inte tillbaka på put också?? wtf?
+
+            //TODO Plocka ut asså jisses
           case 'POST':
             if (response?.ok) {
               switch(data.type) {
                 case 'tasks':
                   const newTask: TaskData = await response.json()
-                  setTasks(prevTasks => newTask ? [newTask, ...prevTasks] : prevTasks)
+                  setTasks(prev => newTask ? [newTask, ...prev] : prev)
                   break
                 case 'events':
                   const newEvent: EventData = await response.json()
-                  setEvents(prevEvents => newEvent ? [newEvent, ...prevEvents] : prevEvents)
+                  setEvents(prev => newEvent ? [newEvent, ...prev] : prev)
                   break
+                case 'categories':
+                  const newCategory: Category = await response.json()
+                  setCategories(prev => newCategory ? [newCategory, ...prev] : prev)
               }
             } else {
               console.log('onDataChange task POST response not ok')
@@ -164,10 +177,13 @@ export default function MainContent({ view }: { view: string }) {
             if (response?.ok) {
               switch(data.type) {
                 case 'tasks':
-                  setTasks(prevTasks => prevTasks.filter(task => task.id !== data.id))
+                  setTasks(prev => prev.filter(task => task.id !== data.id))
                   break
                 case 'events':
-                  setEvents(prevEvents => prevEvents.filter(event => event.id !== data.id))
+                  setEvents(prev => prev.filter(event => event.id !== data.id))
+                  break
+                case 'categories':
+                  setCategories(prev => prev.filter(category => category.id !== data.id))
               }
             } else {
               console.log('onDataChange task DELETE response not ok')

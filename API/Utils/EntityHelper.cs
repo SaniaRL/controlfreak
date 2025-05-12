@@ -90,5 +90,6 @@ namespace API.Utils
             return new Category(name: categoryDTO.Name, backgroundColor: categoryDTO.BackgroundColor, textColor: categoryDTO.TextColor);
 
         }
+
     }
 }
