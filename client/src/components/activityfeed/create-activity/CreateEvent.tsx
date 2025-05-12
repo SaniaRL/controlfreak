@@ -11,7 +11,9 @@ export default function CreateEvent({onDataChange}
   : {onDataChange: (updates?: UpdatePayload) => void}) {
     const [hasRequiredFields, setHasRequiredFields] = useState(false)
     const [newEvent, setNewEvent] = useState<Partial<EventData>>({})
-    const [collapse, setCollapse] = useState(false)
+    const [open, setOpen] = useState(false)
+
+    //TODO snygga till?
 
   useEffect(() => {
     const hasRequiredFields = 
@@ -29,7 +31,7 @@ export default function CreateEvent({onDataChange}
       CRUD: 'POST',
       updates: newEvent
     })
-    setCollapse(true)
+    setOpen(true)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -43,10 +45,10 @@ export default function CreateEvent({onDataChange}
     <>
     <StandardButton props={{
 			buttonProps: { content: {src: '/icons/add_green.png', alt: 'add event button'}, variant: 'light', className: 'create-event-btn'},
-			onClick: () => setCollapse(!collapse),
+			onClick: () => setOpen(!open)
     }}/>
 
-    <Collapse in={collapse}>
+    <Collapse in={open}>
       <Container >
         <Form className='create-event' onSubmit= {(e) => {
           e.preventDefault() 

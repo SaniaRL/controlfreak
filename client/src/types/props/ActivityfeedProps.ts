@@ -3,10 +3,10 @@ import { EventData } from '../data/EventData'
 import { TaskData } from '../data/TaskData'
 import { UpdatePayload } from '../data/UpdatePayload'
 
-export interface CalendarProps {
+export interface ActivityfeedProps {
     tasks?: TaskData[]
-    events?: EventData[]
+    events: EventData[]
     categories: Category[]
     tags?: string[]
-    onDataChange?: (update?: UpdatePayload) => void
+    onDataChange: (update?: UpdatePayload) => void
 }

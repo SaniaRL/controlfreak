@@ -1,0 +1,181 @@
+/* CLEAN CSS */
+.event-item,
+.edit-event-item {
+    display: grid;
+    grid-template-rows: 40px auto 40px;
+    padding: 10px 20px 20px 20px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: #fefefe;
+}
+
+.event-item:hover {
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: #fafafa;
+}
+
+.event-item-head,
+.edit-event-item-head {
+    display: grid;
+    grid-template-columns: 300px auto 50px;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 14px;
+
+    border-bottom: 1px solid #cecece;
+}
+
+.event-item-body,
+.edit-event-item-body {
+    margin: 12px 0;
+    max-height: 120px;
+    white-space: pre-wrap;
+    font-size: 14px;
+}
+
+.edit-event-item-body {
+    overflow: auto;
+}
+
+.expandable {
+    position: relative;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+    box-shadow: 0 -56px 24px -32px rgba(254,254,254,1) inset;
+    cursor: pointer;
+}
+
+.expandable::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: 0 -56px 24px -32px rgba(254,254,254,1) inset;
+    z-index: 1;
+}
+
+.expanded {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    cursor: pointer;
+}
+
+.tag-wrapper {
+    display: grid;
+    grid-template-columns: 24px auto;
+    font-size: 30px;
+    padding: 0;
+}
+
+.event-item-footer,
+.edit-event-item-footer {
+    display: grid;
+    padding-top: 8px; 
+    gap: 0.5rem;
+}
+
+.event-item-footer {
+    grid-template-columns: auto 1fr auto auto;
+}
+
+.edit-event-item-footer {
+    grid-template-columns: auto 1fr auto;
+}
+
+.event-item-btns {
+    display: flex;
+    gap: 10px;
+}
+
+
+
+
+/* .event-item-body {
+    margin: 12px 0;
+    max-height: 50px;
+    white-space: pre-wrap;
+    font-size: 14px;
+}
+
+.expandable {
+    position: relative;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+    box-shadow: 0 -56px 24px -32px rgba(254,254,254,1) inset;
+    border-bottom: 1px solid #cecece;
+    cursor: pointer;
+}
+
+.expandable::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: 0 -56px 24px -32px rgba(254,254,254,1) inset;
+    z-index: 1;
+}
+
+.expanded {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    cursor: pointer;
+}
+ */
+
+.edit-event-button,
+.edit-event-button:hover,
+.edit-event-button:active {
+  display: flex;
+  padding: 2px;
+
+  background: transparent !important;
+  border: none;
+  box-shadow: none;
+}
+
+.edit-event-button img {
+  width: 100%;
+  height: 100%;
+  /* object-fit: contain; */
+}
+
+.edit-event-button:hover img{
+    height: auto;
+    transform: scale(1.2);
+}
+
+/* NOT CLEAN CSS */
+
+
+
+
+.edit-event-item .event-title,
+.edit-event-item .edit-event-item-body > .form-control {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+}
+
+.edit-event-item .edit-event-item-body > .form-control {
+    display: block;
+    width: 100%;
+    min-height: 120px;
+}
+/*    text-overflow: ellipsis;
+*/

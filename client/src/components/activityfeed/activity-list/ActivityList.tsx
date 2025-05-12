@@ -1,15 +1,19 @@
 import { useState } from 'react'
-import { UpdatePayload } from '../../../types/data/UpdatePayload'
-import { EventData } from '../../../types/data/EventData'
-import EventItem from './EventItem'
-import EditEventItem from './EditEventItem'
 
+import EventItem from './event-item/EventItem'
+import EditEventItem from './event-item/EditEventItem'
+import { ActivityfeedProps } from '../../../types/props/ActivityfeedProps'
 
-export default function ActivityList({events, onDataChange}
-	: {events: EventData[], onDataChange: (updates?: UpdatePayload) => void}) {
+import '../ActivityFeed.css'
+
+export default function ActivityList({events, categories, onDataChange}
+	: ActivityfeedProps) {
 		const [editMode, setEditMode] = useState(false)
 		const [editableEvents, setEditableEvents] = useState<number[]>([])
 
+
+		//TODO är det mer safe med number än string
+		
 		const addEditableEvent = (id?: number) => {
 			if(id) {
 				setEditableEvents(prevEditableEvents =>
@@ -22,12 +26,27 @@ export default function ActivityList({events, onDataChange}
 			}
 		}
 
+		//TODO: setEditMode
+
 	return(
-		<div className='activity-container'>
+		<div className='activity-list'>			
 			{events.map(event =>
-				editableEvents.includes(event.id) || editMode
-				? <EditEventItem key={event.id} event={event} disableEditMode={addEditableEvent} onDataChange={onDataChange}/>
-				: <EventItem key={event.id} event={event} enableEditMode={addEditableEvent} onDataChange={onDataChange} />
+				<div key={event.id} className='event-wrapper'>
+					{editableEvents.includes(Number(event.id)) || editMode
+						? <EditEventItem 
+								key={event.id} 
+								event={event} 
+								categories={categories} 
+								disableEditMode={addEditableEvent} 
+								onDataChange={onDataChange}
+							/>
+						: <EventItem 
+								key={event.id} 
+								event={event} 
+								enableEditMode={addEditableEvent} 
+								onDataChange={onDataChange} 
+							/>}				
+				</div>
 			)}
 		</div>
 	)

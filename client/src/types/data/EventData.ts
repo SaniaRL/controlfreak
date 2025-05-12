@@ -1,5 +1,7 @@
+import { Category } from './Category'
+
 export interface EventData {
-    id: number
+    id: string
     title: string
     content: string
     start: Date
@@ -8,6 +10,7 @@ export interface EventData {
     textColor: string
     allDay: boolean
     editable: boolean
+    category: Category
     rrule?: string
     tags: string[] 
 }

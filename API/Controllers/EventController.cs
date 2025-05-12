@@ -1,10 +1,7 @@
 ﻿using API.DTO;
-using API.Entities;
-using API.Interfaces;
 using API.Utils;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -19,28 +16,16 @@ namespace API.Controllers
             _context = context;
         }
 
-        //Eventuellt hämta månad för månad men med några dagar innan / efter. Dvs för det synliga intervallet endast.
         [HttpGet]
-        public ActionResult<List<EventDTO>> GetAllCalendar()
+        public ActionResult<List<EventDTO>> GetAll()
         {
             try
             {
-                var events = _context.Events.ToList();
+                var events = _context.Events.Include(e => e.Category).ToList();
 
-                var eventVMs = events.Select(x => new EventDTO
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Start = x.Start,
-                    Content = x.Content,
-                    End = x.End,
-                    AllDay = x.AllDay,
-                    BackgroundColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.BackgroundColor).First(),
-                    TextColor = _context.Categories.Where(c => x.CategoryId == c.Id).Select(c => c.TextColor).First(),
-                    Rrule = x.RRule
-                }).ToList();
+                var eventDTOs = events.Select(x => EntityHelper.MapEventToEventDTO(x)).ToList();
 
-                return Ok(eventVMs);
+                return Ok(eventDTOs);
             }
             catch (Exception ex)
             {
@@ -53,22 +38,11 @@ namespace API.Controllers
         {
             try
             {
-                var eventItem = _context.Events.First(x => x.Id == id);
+                var eventItem = _context.Events.Include(x => x.Category).First(x => x.Id == id);
 
-                var eventVM = new EventDTO
-                {
-                    Id = eventItem.Id,
-                    Title = eventItem.Title,
-                    Start = eventItem.Start,
-                    Content = eventItem.Content,
-                    End = eventItem.End,
-                    AllDay = eventItem.AllDay,
-                    BackgroundColor = _context.Categories.Where(c => eventItem.CategoryId == c.Id).Select(c => c.BackgroundColor).First(),
-                    TextColor = _context.Categories.Where(c => eventItem.CategoryId == c.Id).Select(c => c.TextColor).First(),
-                    Rrule = eventItem.RRule
-                };
+                var eventDTO = EntityHelper.MapEventToEventDTO(eventItem);
 
-                return Ok(eventVM);
+                return Ok(eventDTO);
             }
             catch (Exception ex)
             {
@@ -77,42 +51,35 @@ namespace API.Controllers
         }
 
         [HttpPost("POST")]
-        public async Task<ActionResult<Task>> CreateEvent([FromBody] PartialEventDTO partial)
+        public async Task<ActionResult<Task>> CreateEvent([FromBody] EventDTO eventDTO)
         {
-            var randomevent = new EventItem(
-                title: partial.Title ?? "", 
-                content: partial.Content, 
-                start: partial.Start ?? new DateTime(2025, 4, 26, 18, 0, 0), 
-                end: partial.End, 
-                allDay: partial.AllDay ?? false, 
-                categoryId: 1, 
-                rRule: null, 
-                tags: ["party", "travel"]);
+            var eventItem = EntityHelper.MapEventDTOToEvent(eventDTO);
 
-
-            _context.Add(randomevent);
-
+            _context.Add(eventItem);
             await _context.SaveChangesAsync();
 
-            return Ok(randomevent);
+            return Ok(EntityHelper.MapEventToEventDTO(eventItem));
         }
 
         [HttpPut("PUT/{id}")]
         public async Task<ActionResult<Task>> UpdateEvent(int id,
-            [FromBody] PartialEventDTO pe)
+            [FromBody] PartialEventDTO partial)
         {
-            var eventItem = await _context.Events.FindAsync(id);
+            var eventItem = await _context.Events.Include(e => e.Category).FirstOrDefaultAsync(x => x.Id == id);
 
             if (eventItem == null)
             {
                 return NotFound();
             }
 
-            eventItem = EntityHelper.MapToEntity(eventItem, pe);
+            eventItem = EntityHelper.MapToEntity(eventItem, partial);
             _context.Events.Update(eventItem);
             await _context.SaveChangesAsync();
 
-            return Ok(eventItem);
+            eventItem = await _context.Events.Include(e => e.Category).FirstOrDefaultAsync(x => x.Id == id);
+
+            //TODO kan va null men no no no
+            return Ok(EntityHelper.MapEventToEventDTO(eventItem));
         }
 
 

@@ -5,7 +5,7 @@ export default function Searchbar({ onSearch }: { onSearch: (searchTerm: string)
 	const [search, setSearch] = useState('')
 
 
-	//Lägg till icon inte viktigt men
+	//TODO: Lägg till icon inte viktigt men
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const newSearchTerm = e.target.value

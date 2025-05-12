@@ -20,28 +20,28 @@
 .create-event-btn,
 .create-event-btn:hover {
     position: absolute;
-    top: 15px;
-    right: -7px;
+    top: 23px;
+    right: -1px;
     height: 70px;
     width: 70px;
     background: transparent;
     border: none;
 }
 
-
-/* NOT CLEAN CSS */
-
-.create-event-btn img {
-    height: 70%;
-    /* object-fit: contain; */
-    transition: opacity 0.3s ease;
-}
-  
 .create-event-btn:hover img {
     opacity: 50%;
     background: transparent;
     transform: scale(1.1);
 }
+
+.create-event-btn img {
+    height: 70%;
+    transition: opacity 0.3s ease;
+}
+
+/* NOT CLEAN CSS */
+
+  
 
 
 

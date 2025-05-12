@@ -10,6 +10,18 @@ body {
   object-fit: contain;
 }
 
+.main-content {
+  display: flex;
+  top: 42px;
+}
+
+.navbar {
+  box-shadow: 1px 2px 14px -10px rgba(0,0,0,0.75);
+  z-index: 1000;
+  height: 42px;
+}
+
+
 /* NOT CLEAN AND OK CSS: */
 
 
@@ -29,46 +41,11 @@ body {
 
 
 
-
-
-
-
-
-
-.main-content {
-  display: flex;
-  top: 42px;
-}
-
-.navbar {
-  box-shadow: 1px 2px 14px -10px rgba(0,0,0,0.75);
-  z-index: 1000;
-  height: 42px;
-}
-
 .sidebar {
   width: 20vw;
   min-width: 200px;
   /* padding: 1.5rem; */
 }
-
-.activityfeed {
-  width: 60vw;
-  /* Hur ska den scrolla bra oh no */
-  padding: 10px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.activity-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  height: calc(100vh - 220px);
-  overflow-y: scroll;
-}
-
 
 .edit-post-button {
   display: flex;
@@ -82,6 +59,8 @@ body {
   height: 100%;
   object-fit: contain;
 }
+
+
 
 .create-activity {
   width: calc(100% - 15px);
@@ -120,7 +99,3 @@ body {
 .activity-filter-panel .form-control {
   width: 350px;
 }
-
-/* .standard-button {
-  width: 100%;
-} */
