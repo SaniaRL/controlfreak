@@ -35,11 +35,6 @@ export default function MainContent({ view }: { view: string }) {
     fetchData()
   }, [])
 
-  useEffect(() => {
-            console.log(events)
-
-  }, [events])
-
   async function onDataChange(data: UpdatePayload | undefined) {
     console.log('IN ON DATA CHANGE!!!')
     console.log(data)
@@ -90,6 +85,8 @@ export default function MainContent({ view }: { view: string }) {
                     break
                   case 'events':
                     const newEvent: EventData = await response.json()
+                    console.log('newEvent')
+                    console.log(newEvent)
                     setEvents(prev => newEvent ? [newEvent, ...prev] : prev)
                     break
                   case 'categories':

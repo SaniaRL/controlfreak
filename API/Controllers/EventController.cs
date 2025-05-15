@@ -95,23 +95,23 @@ namespace API.Controllers
 
                 var createdEventDTO = new EventDTO
                 {
-                    Id = eventDTO.Id,
-                    Title = eventDTO.Title,
-                    Content = eventDTO.Content,
-                    Start = eventDTO.Start,
-                    End = eventDTO.End,
-                    AllDay = eventDTO.AllDay,
+                    Id = eventItem.Id,
+                    Title = eventItem.Title,
+                    Content = eventItem.Content,
+                    Start = eventItem.Start,
+                    End = eventItem.End,
+                    AllDay = eventItem.AllDay,
                     Category = new CategoryDTO
                     {
-                        Id = eventDTO.Category.Id,
-                        TextColor = eventDTO.Category.TextColor,
-                        BackgroundColor = eventDTO.Category.BackgroundColor,
+                        Id = eventItem.Category.Id,
+                        TextColor = eventItem.Category.TextColor,
+                        BackgroundColor = eventItem.Category.BackgroundColor,
                     },
-                    Tags = eventDTO.Tags,
-                    Rrule = eventDTO.Rrule,
+                    Tags = eventItem.Tags,
+                    Rrule = eventItem.RRule,
                 };
 
-                return Ok(eventDTO);
+                return Ok(createdEventDTO);
 
                 //return CreatedAtAction(nameof(GetEvent), new { id = eventItem.Id }, createdEventDTO);
             }

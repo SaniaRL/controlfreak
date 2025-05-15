@@ -38,3 +38,7 @@
     align-content: center;
     align-items: center;
 }
+
+.allDay-label {
+    margin-bottom: 0 !important;
+}

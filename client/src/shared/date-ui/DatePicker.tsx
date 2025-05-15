@@ -54,7 +54,7 @@ export default function DatePicker({start, end, allDay, handleChange}: DatePicke
           checked={allDay || end === null || end === undefined}
           onChange={handleChange} 
         />
-        <Form.Label>All day</Form.Label>
+        <Form.Label className='allDay-label'>All day</Form.Label>
       </div>
     </div>
    )

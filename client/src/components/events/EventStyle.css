@@ -115,7 +115,8 @@
 }
 
 .create-event-btn,
-.create-event-btn:hover {
+.create-event-btn:hover,
+.create-event-btn:active {
     position: absolute;
     top: 23px;
     right: -1px;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Collapse, Container, Form, FormControl } from 'react-bootstrap'
+import { Button, Form, FormControl } from 'react-bootstrap'
 
 import { Category } from '../../types/data/Category'
 import { CreateEventProps } from '../../types/props/CreateEventProps'
@@ -8,17 +8,14 @@ import { EventDataNullable } from '../../types/data/EventDataNullable'
 
 import CategoryPicker from '../../shared/category-ui/CategoryPicker'
 import DatePicker from '../../shared/date-ui/DatePicker'
-import StandardButton from '../../shared/StandardButton'
 import TagDisplay from '../../shared/tag-ui/TagDisplay'
 
 import './EventStyle.css'
 
-export default function CreateEvent({categories, onDataChange}
+export default function CreateEvent({categories, onDataChange, closeOnSave}
   : CreateEventProps) {
     const [hasRequiredFields, setHasRequiredFields] = useState(false)
-    const [newEvent, setNewEvent] = useState<EventDataNullable>(defaultEvent)
-    const [open, setOpen] = useState(false)
-  
+    const [newEvent, setNewEvent] = useState<EventDataNullable>(defaultEvent)  
   
   useEffect(() => {
     if(!newEvent.category) {
@@ -45,46 +42,29 @@ export default function CreateEvent({categories, onDataChange}
       CRUD: 'POST',
       updates: newEvent
     })
-    setOpen(false)
+    closeOnSave()
   }
 
-  const toggleOpen = () => {
-    if(!open) {
-      setOpen(true)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const target = e.target as HTMLInputElement
+    const { name, type, value, checked } = target
+    const fieldValue = type === 'checkbox' ? checked : value
+
+    if (name === 'allDay') {
+      setNewEvent(prev => {
+        if (fieldValue) {
+          return { ...prev, allDay: true, end: undefined }
+        } else {
+            const newEnd = prev.start
+              ? new Date(new Date(prev.start).getTime() + 4 * 60 * 60 * 1000)
+              : undefined
+            return { ...prev, allDay: false, end: newEnd }
+          }
+      })
     } else {
-      setNewEvent(defaultEvent)
-      setOpen(false)
+      setNewEvent(prev => ({ ...prev, [name]: fieldValue }))
     }
   }
-
-const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  const target = e.target as HTMLInputElement
-  const { name, type, value, checked } = target
-  const fieldValue = type === 'checkbox' ? checked : value
-
-  if (name === 'allDay') {
-    setNewEvent(prev => {
-      if (fieldValue) {
-        return { ...prev, allDay: true, end: undefined }
-      } else {
-        const newEnd = prev.start
-          ? new Date(new Date(prev.start).getTime() + 4 * 60 * 60 * 1000)
-          : undefined
-        return { ...prev, allDay: false, end: newEnd }
-      }
-    })
-  } else {
-    setNewEvent(prev => ({ ...prev, [name]: fieldValue }))
-  }
-}
-
-
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  //   const target = e.target as HTMLInputElement
-  //   const { name, type, value, checked } = target
-  //   const fieldValue = type === 'checkbox' ? checked : value
-  //   setNewEvent(prev => ({ ...prev, [name]: fieldValue }))
-  // }
 
   	const editTag = (newTag: string, prevTag?: string) => {
 		if(!newTag || !newEvent.tags) {
@@ -128,69 +108,61 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElemen
   if (!categories.length || !newEvent.category) return null
    
 	return(
-    <>
-    <StandardButton props={{
-			buttonProps: { content: {src: '/icons/add_green.png', alt: 'add event button'}, variant: 'light', className: 'create-event-btn'},
-			onClick: toggleOpen
-    }}/>
+    <Form className='edit-event-item' onSubmit= {(e) => {
+      e.preventDefault() 
+      createEvent()}}>
+        <div className='edit-event-item-head'>
+          <FormControl 
+            type='text'
+            name='title' 
+            className='event-title' 
+            placeholder='...'
+            value={newEvent.title}
+            onChange={handleChange}
+            autoFocus
+          />
+            
 
-    <Collapse in={open}>
-      <Container >
-        <Form className='edit-event-item' onSubmit= {(e) => {
-          e.preventDefault() 
-          createEvent()}}>
-            <div className='edit-event-item-head'>
-              <FormControl 
-                type='text'
-                name='title' 
-                className='event-title' 
-                placeholder='oj'
-                value={newEvent.title}
-                onChange={handleChange}/>
+          <DatePicker
+            start={newEvent.start!} 
+            end={newEvent.end}
+            allDay={newEvent.allDay!}
+            handleChange={handleChange}
+          />
+        </div>
 
-              <DatePicker
-                start={newEvent.start!} 
-                end={newEvent.end}
-                allDay={newEvent.allDay!}
-                handleChange={handleChange}
-              />
-            </div>
-    
-            <div className='edit-event-item-body'>
-              <FormControl 
-                as='textarea'
-                name='content' 
-                value={newEvent.content} 
-                onChange={handleChange}/>
-            </div>
-      
-            <div className='edit-event-item-footer'>
-              <CategoryPicker 
-              category={newEvent.category!} 
-              categories={categories}
-              onChange={handleCategoryChange}
-              onDataChange={onDataChange}
-              />
-    
-            <TagDisplay 
-              tags={newEvent.tags} 
-              tagEditProps={{
-                onDelete: removeTag, 
-                onEdit: editTag}} />
-    
-            <Button 
-              disabled={!hasRequiredFields} 
-              type='submit'
-              >
-                save
-            </Button>
-          </div>
-          {/* HIDDEN CONTROLS */}
-          <Form.Control type='hidden' value={newEvent.tags}/>
-        </Form>
-      </Container>
-    </Collapse>
-    </>
+        <div className='edit-event-item-body'>
+          <FormControl 
+            as='textarea'
+            name='content' 
+            value={newEvent.content} 
+            onChange={handleChange}/>
+        </div>
+  
+        <div className='edit-event-item-footer'>
+          <CategoryPicker 
+          category={newEvent.category!} 
+          categories={categories}
+          onChange={handleCategoryChange}
+          onDataChange={onDataChange}
+          />
+
+        <TagDisplay 
+          tags={newEvent.tags} 
+          tagEditProps={{
+            onDelete: removeTag, 
+            onEdit: editTag}} />
+
+        <Button 
+          disabled={!hasRequiredFields} 
+          type='submit'
+          >
+            save
+        </Button>
+      </div>
+      {/* HIDDEN CONTROLS */}
+      <Form.Control type='hidden' value={newEvent.tags}/>
+    </Form>
 	)
 }
   
