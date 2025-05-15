@@ -49,8 +49,9 @@
 }
 
 .task-input-area {
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns: auto 40px 40px;
+    align-content: center;
     border: 1px solid #ccc;
     border-radius: 6px;
     padding: 0;
@@ -59,6 +60,8 @@
     background-color: #ffffff;
     margin-bottom: 0.5rem;
 }
+
+.task-input-area 
 
 .task-input-area:focus-within {
     /* border-color: #007bff; */
@@ -107,15 +110,20 @@
 
 .create-task-btn img, 
 .dropdown-toggle img {
-    height: 70%;
+    height: 50%;
     object-fit: contain;
     transition: opacity 0.3s ease;
 }
-  
+
+.create-task-btn:hover, 
+.dropdown-toggle:hover{
+    background: transparent !important;
+}
+
 .create-task-btn:hover img,
 .dropdown-toggle:hover img {
     opacity: 50%;
-    background: transparent;
+    background: transparent !important;
     transform: scale(1.1);
 }
 
@@ -147,6 +155,7 @@ Checkbox måste också ha rätt muspekare och så*/
 .edit-post-button:hover {
     border: none;
     height: 75%;
+    background: transparent;
 }
 
 /* .rr-picker-container {

@@ -1,50 +1,68 @@
 import { useEffect, useState } from 'react'
 import { Button, Form, FormControl } from 'react-bootstrap'
 
-import CategoryPicker from '../../misc/category-ui/CategoryPicker'
-import DateDisplay from '../../misc/date-ui/DateDisplay'
+import CategoryPicker from '../../../../shared/category-ui/CategoryPicker'
+import DateToggle from '../../../../shared/date-ui/DateToggle'
 import StandardButton from '../../../../shared/StandardButton'
-import TagDisplay from '../../misc/tag-ui/TagDisplay'
+import TagDisplay from '../../../../shared/tag-ui/TagDisplay'
 
 import { Category } from '../../../../types/data/Category'
-import { EventData } from '../../../../types/data/EventData'
 import { EventItemProps } from '../../../../types/props/EventItemProps'
 
 import './EventItem.css'
+import { toLocalISOString } from '../../../../utils/dateUtils'
 
 export default function EditEventItem({ event, categories, onDataChange, disableEditMode }: EventItemProps) {
+	const[newState, setNewState] = useState(event)
 	const[isDirty, setIsDirty] = useState(false)
-	const[newState, setNewState] = useState<EventData>(event)
-
-			//TODO: Kolla så data är korrekt och varningar och save changes ?
-
-			//Kolla att ingen tom knapp är med
+	const[isValid, setIsValid] = useState(false)
 
 	useEffect(() => {
-		const isCurrentlyDirty = Object.keys(newState).some(key => {
-			if(key === 'tags') {
-				return JSON.stringify(newState.tags.sort()) !== JSON.stringify(event.tags.sort());
-			}
-			return newState[key as keyof EventData] !== event[key as keyof EventData]
-		})
-		setIsDirty(isCurrentlyDirty)
+  	setNewState(event)
+		console.log('event date')
+		console.log(newState.start)
+	}, [event, setNewState])
+
+	useEffect(() => {
+  	setIsDirty(JSON.stringify(newState) !== JSON.stringify(event))
 	}, [newState, event])
+
+		//TODO: Kolla så data är korrekt och varningar och save changes ?
+		//Kolla att ingen tom knapp är med
+
+
+		const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | { target: { name: string; value: Date } }) => {
+    const target = e.target as HTMLInputElement
+    const { name, type, value, checked } = target
+
+    let fieldValue: string | boolean = type === 'checkbox' ? checked : value
+
+		if (type === 'datetime-local') {
+			fieldValue = new Date(value).toLocaleString('sv-SE', { timeZone: 'Europe/Stockholm' }).slice(0, 16);
+		}
+
+    setNewState(prev => ({ ...prev, [name]: fieldValue }))
+}
+	// const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+	// 	const target = e.target as HTMLInputElement
+	// 	const { name, type, value, checked } = target
+	// 	const fieldValue = type === 'checkbox' ? checked : value
+	// 	const startDateTime = type === 'datetime-local' 
+	// 		? new Date(value + 'Z').toLocaleString('sv-SE'/*, { timeZone: 'Europe/Stockholm', hour12: false }*/).replace(',', '').slice(0, 16) 
+	// 		: value
+	// 	setNewState(prev => ({ ...prev, [name]: fieldValue }))
+	// }
 
 	const updateEvent = () => {
 		console.log(newState)
 		console.log('in updateEvent')
-			onDataChange?.({
-				type: 'events',
-				CRUD: 'PUT',
-				id: event.id,
-				updates: newState
-			})
+		onDataChange?.({
+			type: 'events',
+			CRUD: 'PUT',
+			id: event.id,
+			updates: newState
+		})
 		disableEditMode(Number(event.id))		
-	}
-
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setNewState(prev => ({ ...prev, [name]: value }))
 	}
 
 	const onCancel = () => {
@@ -67,18 +85,17 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 				)
 			}
     } else {
-
-			if(!newState.tags.map(t => t.toLowerCase()).includes(newTag.toLowerCase())) {
-				updatedTags = [...newState.tags, newTag]
-			} else {
-				updatedTags = newState.tags.map(t =>
-				t.toLowerCase() === newTag.toLowerCase()
-					? t === newTag
-						? t
-						: newTag
-					: t
-			)}
-		}
+		if(!newState.tags.map(t => t.toLowerCase()).includes(newTag.toLowerCase())) {
+			updatedTags = [...newState.tags, newTag]
+		} else {
+			updatedTags = newState.tags.map(t =>
+			t.toLowerCase() === newTag.toLowerCase()
+				? t === newTag
+					? t
+					: newTag
+				: t
+		)}
+	}
 
 		//Den tycks komma hit även om newTag = ""
 		//Detta körs en gång per tag istället för endast vid rop
@@ -88,6 +105,7 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 	}
 
 	const removeTag = (tag: string) => {
+		//använd handlechange
   setNewState(prev => ({ ...prev, tags: prev.tags.filter(t => t !== tag) }));
 	}
 
@@ -110,15 +128,14 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 					type='text'
 					name='title' 
 					className='event-title' 
-					defaultValue={newState.title}
+					value={newState.title}
 					onChange={handleChange}/>
-
-				<div className='dates'>
-					<DateDisplay 
-						start={event.start} 
-						end={event.end} 
-						allDay={event.allDay} />
-				</div>
+				
+				<DateToggle 
+					start={newState.start} 
+					end={newState.end}
+					allDay={newState.allDay}
+					handleChange={handleChange} />
 
 				<div className='event-item-btns'>
 					<StandardButton
@@ -149,7 +166,7 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 				<FormControl 
 					as='textarea'
 					name='content' 
-					defaultValue={newState.content} 
+					value={newState.content} 
 					onChange={handleChange}/>
 				{/* <Button onClick={onCancel} variant='Secondary'>Cancel</Button> */}
 			</div>

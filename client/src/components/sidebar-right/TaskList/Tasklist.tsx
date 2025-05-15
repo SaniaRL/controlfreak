@@ -1,12 +1,14 @@
+import { useEffect, useState } from 'react'
+import { Form } from 'react-bootstrap'
+
 import TaskListItem from './TaskListItem'
 import { UpdatePayload } from '../../../types/data/UpdatePayload'
 
 import CreateTask from './CreateTask'
 
-import './TaskList.css'
 import { TaskData } from '../../../types/data/TaskData'
-import { Form } from 'react-bootstrap'
-import { useEffect, useState } from 'react'
+
+import './TaskList.css'
 
 //Inte void få response? Promise<void>?
 function TaskList({ tasks, onDataChange } 
