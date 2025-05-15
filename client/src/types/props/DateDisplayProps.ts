@@ -1,5 +1,5 @@
 export interface DateDisplayProps {
     start: Date
-    end?: Date | undefined
+    end?: Date
     allDay: boolean
 }

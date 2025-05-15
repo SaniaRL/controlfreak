@@ -8,6 +8,8 @@ namespace API.Utils
     {
         public static EventDTO MapEventToEventDTO(EventItem eventItem)
         {
+            var categoryDTO = MapCategoryToCategoryDTO(eventItem.Category);
+
             var eventDTO = new EventDTO
             {
                 Id = eventItem.Id,
@@ -16,7 +18,8 @@ namespace API.Utils
                 Content = eventItem.Content,
                 End = eventItem.End,
                 AllDay = eventItem.AllDay,
-                Category = MapCategoryToCategoryDTO(eventItem.Category),
+                CategoryId = eventItem.CategoryId,
+                Category = categoryDTO,
                 Tags = eventItem.Tags,
                 Rrule = eventItem.RRule
             };
@@ -24,20 +27,20 @@ namespace API.Utils
             return eventDTO;
         }
 
-        public static EventItem MapEventDTOToEvent(EventDTO evenDTO)
-        {
-            var eventItem = new EventItem(
-                title: evenDTO.Title,
-                content: evenDTO.Content,
-                start: evenDTO.Start,
-                end: evenDTO.End,
-                allDay: evenDTO.AllDay,
-                categoryId: evenDTO.Category.Id.Value,
-                tags: evenDTO.Tags,
-                rRule: evenDTO.Rrule);
+        //public static EventItem MapEventDTOToEvent(EventDTO evenDTO)
+        //{
+        //    var eventItem = new EventItem(
+        //        title: evenDTO.Title,
+        //        content: evenDTO.Content,
+        //        start: evenDTO.Start,
+        //        end: evenDTO.End,
+        //        allDay: evenDTO.AllDay,
+        //        categoryId: evenDTO.CategoryId,
+        //        tags: evenDTO.Tags,
+        //        rRule: evenDTO.Rrule);
 
-            return eventItem;
-        }
+        //    return eventItem;
+        //}
 
 
         public static EventItem MapToEntity(EventItem eventItem, PartialEventDTO partial)
@@ -62,6 +65,10 @@ namespace API.Utils
             {
                 eventItem.SetAllday(partial.AllDay.Value);
             }
+            //if (partial.CategoryId != null && partial.CategoryId.HasValue)
+            //{
+            //    eventItem.SetCategory(partial.CategoryId.Value);
+            //}
             if (partial.Category != null && partial.Category.Id.HasValue)
             {
                 eventItem.SetCategory(partial.Category.Id.Value);

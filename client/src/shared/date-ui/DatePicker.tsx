@@ -1,5 +1,4 @@
-import { useMemo } from 'react'
-import { Form, FormControl } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 import DateTimePicker from 'react-flatpickr'
 
 import { DatePickerProps } from '../../types/props/DatePickerProps'
@@ -33,16 +32,21 @@ export default function DatePicker({start, end, allDay, handleChange}: DatePicke
         }}
         onChange={onDateChange('start')}/>
 
-      <DateTimePicker 
-        value={end}
-        required={false}
-        options={{
-          enableTime: true,
-          time_24hr: true,
-          dateFormat: 'Y-m-d H:i',
-          minDate: start
-        }}
-        onChange={onDateChange('end')}/>
+      { !allDay 
+      ? <DateTimePicker 
+          value={end}
+          required={false}
+          placeholder='----------'
+          options={{
+            enableTime: true,
+            time_24hr: true,
+            dateFormat: 'Y-m-d H:i',
+            minDate: start,
+          }}
+          onChange={onDateChange('end')}/>
+      : <div></div>
+      }
+
       <div className='allDay-input'>
         <Form.Check
           name='allDay' 

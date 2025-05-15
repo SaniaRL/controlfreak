@@ -1,13 +1,11 @@
 import { useState } from 'react'
 
-import { DateDisplayProps } from '../../types/props/DateDisplayProps'
-
 import DateIconButton from './DateIconButton'
 import DateDisplay from './DateDisplay'
 import DatePicker from './DatePicker'
+import { DatePickerProps } from '../../types/props/DatePickerProps'
 
 import './DateDisplay.css'
-import { DatePickerProps } from '../../types/props/DatePickerProps'
 
 export default function DateToggle({start, end, allDay, handleChange}: DatePickerProps) {
   const[editMode, setEditMode] = useState(false)
@@ -24,9 +22,9 @@ export default function DateToggle({start, end, allDay, handleChange}: DatePicke
           handleChange={handleChange}
         />
       : <DateDisplay 
-          start={start} 
+          start={start as Date} 
           end={end} 
-          allDay={allDay} />
+          allDay={allDay as boolean} />
       }
     </div>
   )

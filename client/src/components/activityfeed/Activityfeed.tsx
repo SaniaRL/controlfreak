@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import CreateEvent from './create-activity/CreateEvent.tsx'
 import ActivityFilterPanel from './filter-components/ActivityFilterPanel.tsx'
 import ActivityList from './activity-list/ActivityList.tsx'
 
@@ -8,6 +7,7 @@ import { ActivityfeedProps } from '../../types/props/ActivityfeedProps.ts'
 import { EventData } from '../../types/data/EventData.ts'
 
 import './ActivityFeed.css'
+import CreateEvent from '../events/CreateEvent.tsx'
 
 export default function ActivityfeedComponent(props: ActivityfeedProps) {
 	const [displayEvents, setDisplayEvents] = useState<EventData[]>([])
@@ -28,7 +28,7 @@ export default function ActivityfeedComponent(props: ActivityfeedProps) {
 	return (
 		<div className='activityfeed'>
 			<ActivityFilterPanel onSearch={handleSearchResults}/>
-			<CreateEvent onDataChange={props.onDataChange}/>
+			<CreateEvent categories={props.categories} onDataChange={props.onDataChange}/>
 			<ActivityList events={displayEvents} categories={props.categories} onDataChange={props.onDataChange}/>
 		</div>
 	)

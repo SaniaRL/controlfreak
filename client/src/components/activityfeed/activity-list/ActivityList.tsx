@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import EventItem from './event-item/EventItem'
-import EditEventItem from './event-item/EditEventItem'
+import EventItem from '../../events/EventItem'
+import EditEventItem from '../../events/EditEventItem'
 import { ActivityfeedProps } from '../../../types/props/ActivityfeedProps'
 
 import '../ActivityFeed.css'
@@ -10,9 +10,6 @@ export default function ActivityList({events, categories, onDataChange}
 	: ActivityfeedProps) {
 		const [editMode, setEditMode] = useState(false)
 		const [editableEvents, setEditableEvents] = useState<number[]>([])
-
-
-		//TODO är det mer safe med number än string
 		
 		const addEditableEvent = (id?: number) => {
 			if(id) {

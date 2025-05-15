@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react'
 
 import ActivityfeedComponent from './activityfeed/Activityfeed'
-import { API, BASE_URL } from '../constants/api'
 import Calendar from './calendar/Calendar'
 import { Category } from '../types/data/Category'
 import { EventData } from '../types/data/EventData'
@@ -13,6 +12,7 @@ import { UpdatePayload } from '../types/data/UpdatePayload'
 import { mapTasks } from '../utils/mapper'
 import { updateList } from '../utils/listUtils'
 import { apiEndpoint, apiProperty, apiValue} from '../utils/crud'
+import UpdateButton from '../shared/UpdateButton'
 
 export default function MainContent({ view }: { view: string }) {
   const [error, setError] = useState()
@@ -29,11 +29,16 @@ export default function MainContent({ view }: { view: string }) {
       const eventResponse = await executeCRUD({type: 'events', CRUD: 'GET'})
       if(eventResponse?.ok) setEvents(await eventResponse.json() as EventData[])
 
-        const taskResponse = await executeCRUD({type: 'tasks', CRUD: 'GET'})
+      const taskResponse = await executeCRUD({type: 'tasks', CRUD: 'GET'})
       if(taskResponse?.ok) setTasks(mapTasks(await taskResponse.json() as TaskData[]))
     }
     fetchData()
   }, [])
+
+  useEffect(() => {
+            console.log(events)
+
+  }, [events])
 
   async function onDataChange(data: UpdatePayload | undefined) {
     console.log('IN ON DATA CHANGE!!!')
@@ -68,6 +73,13 @@ export default function MainContent({ view }: { view: string }) {
                     break
                   case 'categories':
                     setCategories(updateList(updatedItem, categories))
+                    setEvents(prev => prev.map(event => 
+                      event.category.id === updatedItem.id 
+                        ? { ...event, category: updatedItem } 
+                        : event
+                    )
+                  )
+
                 }
               break
               case 'POST':
@@ -114,6 +126,9 @@ export default function MainContent({ view }: { view: string }) {
   const executeCRUD = async (x: UpdatePayload) => {
     setIsLoading(true)
 
+    console.log('UpdatePayLoad')
+    console.log(x)
+
     const value = apiValue(x)
 
     try {
@@ -126,15 +141,6 @@ export default function MainContent({ view }: { view: string }) {
         }
         : undefined
         
-      //   const response = await fetch(apiEndpoint(x), x.CRUD !== 'GET' 
-      //   ? {
-      //     method: x.CRUD,
-      //     headers: { 'Content-Type': 'application/json', },
-      //     body: JSON.stringify(value),
-      //   }
-      //   : undefined
-      // )
-
       const response = await fetch(apiEndpoint(x), options)
 
       return response

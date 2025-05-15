@@ -26,7 +26,7 @@ const displayTimesTogether = (start: Date, end: Date) => {
 export const getDisplayedDates = ({start, end, allDay}: DateDisplayProps): string  => {
  const startDate = typeof start === 'string' ? new Date(start) : start;
   const endDate = end && typeof end === 'string' ? new Date(end) : end;
-
+  
   if (allDay) {
     return displayDateOnly(startDate);
   }
