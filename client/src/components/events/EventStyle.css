@@ -1,6 +1,7 @@
 /* CLEAN CSS */
 .event-item,
-.edit-event-item {
+.edit-event-item,
+.create-event {
     display: grid;
     grid-template-rows: 40px auto 40px;
     padding: 10px 20px 20px 20px;
@@ -93,6 +94,49 @@
     display: flex;
     gap: 10px;
 }
+
+/*FROM CREATE EVENT:*/
+
+.create-event {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem 0.45rem;
+}
+
+.create-event .head {
+    display: flex;
+    flex-direction: row;
+}
+
+.create-event .footer {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    gap: 0.5rem;
+}
+
+.create-event-btn,
+.create-event-btn:hover,
+.create-event-btn:active {
+    position: absolute;
+    top: 23px;
+    right: -1px;
+    height: 70px;
+    width: 70px;
+    background: transparent;
+    border: none;
+}
+
+.create-event-btn:hover img {
+    opacity: 50%;
+    background: transparent;
+    transform: scale(1.1);
+}
+
+.create-event-btn img {
+    height: 70%;
+    transition: opacity 0.3s ease;
+}
+
 
 
 

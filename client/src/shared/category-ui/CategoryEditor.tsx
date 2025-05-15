@@ -3,7 +3,7 @@ import { Button, Form, Stack } from 'react-bootstrap'
 
 import { Category } from '../../types/data/Category'
 import { UpdatePayload } from '../../types/data/UpdatePayload'
-import { defaultCategory } from '../../constants/defaults'
+import { defaultCategoryData } from '../../constants/defaults'
 
 import './Category.css'
 
@@ -12,7 +12,7 @@ export default function CategoryEditor({category, onDataChange, setEditMode}: {
     category?: Category
     onDataChange: (update?: UpdatePayload) => void
     setEditMode: (editMode: boolean) => void }) {
-      const[newState, setNewState] = useState<Category>(defaultCategory)
+      const[newState, setNewState] = useState<Category>(defaultCategoryData)
 
       useEffect(() => {
         if(category) {
@@ -36,7 +36,7 @@ export default function CategoryEditor({category, onDataChange, setEditMode}: {
 			})
 
       setEditMode(false)
-      setNewState(defaultCategory)
+      setNewState(defaultCategoryData)
     }
 
     const onDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -54,7 +54,7 @@ export default function CategoryEditor({category, onDataChange, setEditMode}: {
       }
 
       setEditMode(false)
-      setNewState(defaultCategory)
+      setNewState(defaultCategoryData)
     }
 
 

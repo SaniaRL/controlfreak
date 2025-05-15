@@ -1,15 +1,14 @@
 import { useLayoutEffect, useRef, useState } from 'react'
-
-import { EventData } from '../../../../types/data/EventData'
-import { UpdatePayload } from '../../../../types/data/UpdatePayload'
-
-import CategoryDisplay from '../../../../shared/category-ui/CategoryDisplay'
-import DateDisplay from '../../../../shared/date-ui/DateDisplay'
-import StandardButton from '../../../../shared/StandardButton'
-import TagDisplay from '../../../../shared/tag-ui/TagDisplay'
-
-import './EventItem.css'
 import { Collapse } from 'react-bootstrap'
+
+import { EventData } from '../../types/data/EventData'
+import { UpdatePayload } from '../../types/data/UpdatePayload'
+import CategoryDisplay from '../../shared/category-ui/CategoryDisplay'
+import DateDisplay from '../../shared/date-ui/DateDisplay'
+import StandardButton from '../../shared/StandardButton'
+import TagDisplay from '../../shared/tag-ui/TagDisplay'
+
+import './EventStyle.css'
 
 export default function EventItem({event, onDataChange, enableEditMode}
 	: {event: EventData, 

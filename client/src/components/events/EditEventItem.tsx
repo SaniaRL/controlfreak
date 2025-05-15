@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react'
 import { Button, Form, FormControl } from 'react-bootstrap'
 
-import CategoryPicker from '../../../../shared/category-ui/CategoryPicker'
-import DateToggle from '../../../../shared/date-ui/DateToggle'
-import StandardButton from '../../../../shared/StandardButton'
-import TagDisplay from '../../../../shared/tag-ui/TagDisplay'
+import CategoryPicker from '../../shared/category-ui/CategoryPicker'
+import DateToggle from '../../shared/date-ui/DateToggle'
+import StandardButton from '../../shared/StandardButton'
+import TagDisplay from '../../shared/tag-ui/TagDisplay'
 
-import { Category } from '../../../../types/data/Category'
-import { EventItemProps } from '../../../../types/props/EventItemProps'
+import { Category } from '../../types/data/Category'
+import { EventItemProps } from '../../types/props/EventItemProps'
 
-import './EventItem.css'
-import { toLocalISOString } from '../../../../utils/dateUtils'
+import './EventStyle.css'
 
 export default function EditEventItem({ event, categories, onDataChange, disableEditMode }: EventItemProps) {
 	const[newState, setNewState] = useState(event)
 	const[isDirty, setIsDirty] = useState(false)
-	const[isValid, setIsValid] = useState(false)
+	// const[isValid, setIsValid] = useState(false)
 
 	useEffect(() => {
   	setNewState(event)
@@ -31,7 +30,7 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 		//Kolla att ingen tom knapp är med
 
 
-		const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | { target: { name: string; value: Date } }) => {
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | { target: { name: string; value: Date } }) => {
     const target = e.target as HTMLInputElement
     const { name, type, value, checked } = target
 
@@ -42,16 +41,7 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 		}
 
     setNewState(prev => ({ ...prev, [name]: fieldValue }))
-}
-	// const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-	// 	const target = e.target as HTMLInputElement
-	// 	const { name, type, value, checked } = target
-	// 	const fieldValue = type === 'checkbox' ? checked : value
-	// 	const startDateTime = type === 'datetime-local' 
-	// 		? new Date(value + 'Z').toLocaleString('sv-SE'/*, { timeZone: 'Europe/Stockholm', hour12: false }*/).replace(',', '').slice(0, 16) 
-	// 		: value
-	// 	setNewState(prev => ({ ...prev, [name]: fieldValue }))
-	// }
+	}
 
 	const updateEvent = () => {
 		console.log(newState)
@@ -168,7 +158,6 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 					name='content' 
 					value={newState.content} 
 					onChange={handleChange}/>
-				{/* <Button onClick={onCancel} variant='Secondary'>Cancel</Button> */}
 			</div>
 
 			<div className='edit-event-item-footer'>
@@ -179,11 +168,11 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 				onDataChange={onDataChange}
 				/>
 
-				{newState.tags && <TagDisplay 
+				<TagDisplay 
 					tags={newState.tags} 
 					tagEditProps={{
 						onDelete: removeTag, 
-						onEdit: editTag}} />}
+						onEdit: editTag}} />
 
 				<Button 
 					disabled={!isDirty} 
@@ -192,7 +181,6 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 						save
 				</Button>
 			</div>
-			{/* HIDDEN CONTROLS */}
 			<Form.Control type='hidden' value={newState.tags}/>
 		</Form>
 	)
