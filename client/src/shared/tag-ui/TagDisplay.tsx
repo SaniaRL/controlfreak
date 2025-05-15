@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button } from 'react-bootstrap'
 
-import { TagEditProps } from '../../../../types/props/TagEditProps'
+import { TagEditProps } from '../../types/props/TagEditProps'
 import Tag from './Tag'
 
 import './TagDisplay.css'

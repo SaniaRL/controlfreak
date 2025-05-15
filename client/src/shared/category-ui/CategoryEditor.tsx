@@ -1,22 +1,18 @@
 import { useEffect, useState } from 'react'
 import { Button, Form, Stack } from 'react-bootstrap'
 
-import { Category } from '../../../../types/data/Category'
-import { UpdatePayload } from '../../../../types/data/UpdatePayload'
+import { Category } from '../../types/data/Category'
+import { UpdatePayload } from '../../types/data/UpdatePayload'
+import { defaultCategory } from '../../constants/defaults'
 
 import './Category.css'
 
-const defaultValue = {
-  name: 'text', 
-  backgroundColor: '#ffffff',
-  textColor: '#000000'
-}
 
-export default function CreateCategory({category, onDataChange, setEditMode}: {
+export default function CategoryEditor({category, onDataChange, setEditMode}: {
     category?: Category
     onDataChange: (update?: UpdatePayload) => void
     setEditMode: (editMode: boolean) => void }) {
-      const[newState, setNewState] = useState<Category>(defaultValue)
+      const[newState, setNewState] = useState<Category>(defaultCategory)
 
       useEffect(() => {
         if(category) {
@@ -24,14 +20,13 @@ export default function CreateCategory({category, onDataChange, setEditMode}: {
         } 
       }, [])
 
-
     const handleOnDataChange = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault()
       
 	  	console.log('in Category data change')
   		console.log(newState)
 
-      const newCategory = newState.id === 0
+      const newCategory = !newState.id
 
 			onDataChange?.({
 				type: 'categories',
@@ -41,7 +36,7 @@ export default function CreateCategory({category, onDataChange, setEditMode}: {
 			})
 
       setEditMode(false)
-      setNewState(defaultValue)
+      setNewState(defaultCategory)
     }
 
     const onDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -59,7 +54,7 @@ export default function CreateCategory({category, onDataChange, setEditMode}: {
       }
 
       setEditMode(false)
-      setNewState(defaultValue)
+      setNewState(defaultCategory)
     }
 
 
@@ -72,6 +67,7 @@ export default function CreateCategory({category, onDataChange, setEditMode}: {
           value={newState.name}
           onMouseDown={(e) => e.stopPropagation()}
           onChange={(e) => setNewState(prev => ({ ...prev, name: e.target.value }))}
+          onFocus={(e) => e.target.value = ''}
           spellCheck={false}
           required
           style={{

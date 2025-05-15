@@ -1,9 +1,11 @@
 /* CLEAN CSS */
 
 .sidebar-right {
+    /* display: grid;
+    grid-template-rows: auto auto auto; */
     display: flex;
     flex-direction: column;
-    padding: 1.5rem;
+    padding: 5px 0;
 }
 
 .show-preset-button {

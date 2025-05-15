@@ -1,0 +1,40 @@
+.date-toggle {
+    display: grid;
+    grid-template-columns: 25px 300px;
+    align-items: center;
+}
+
+.date-display-wrapper {
+    display: grid;
+    font-size: 12px;
+    width: 271px;
+}
+
+.date-picker-wrapper {
+    display: grid;
+    grid-template-columns: 122px 114px 100px;
+    align-items: center;
+    gap: 5px;
+}
+
+.date-icon-button {
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+.date-icon-button:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+.flatpickr-input {
+    font-size: 12px;
+    width: 112px;
+}
+
+.allDay-input {
+    display: grid;
+    grid-template-columns: 25px auto;
+    align-content: center;
+    align-items: center;
+}

@@ -44,7 +44,8 @@ export default function Calendar({events, tasks, onDataChange}: CalendarProps) {
 							type: 'tasks',
 							CRUD: 'PUT',
 							id: entry.id,
-							updates: { completed: !entry.extendedProps.completed }
+							updates: { completed: !entry.extendedProps.completed },
+							includePropertyInUrl: true,
 						})}
 					/>
 		  </div>

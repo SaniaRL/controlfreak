@@ -16,7 +16,7 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("GET")]
         public ActionResult<List<EventDTO>> GetAll()
         {
             try

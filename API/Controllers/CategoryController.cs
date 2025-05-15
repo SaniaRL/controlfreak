@@ -18,7 +18,7 @@ namespace API.Controllers
         }
 
 
-        [HttpGet()]
+        [HttpGet("GET")]
         public ActionResult<List<CategoryDTO>> GetAll()
         {
             try
@@ -95,6 +95,8 @@ namespace API.Controllers
                 return NotFound();
             }
 
+            //TODO olika felmeddelanden?
+
             var categoryExistsOnEvents = _context.Events.Any(e => e.CategoryId == id);
 
             if (categoryExistsOnEvents)
@@ -102,6 +104,10 @@ namespace API.Controllers
                 return BadRequest("Category in use");
             }
 
+            if (id == 1)
+            {
+                return BadRequest("Default category cannot be removed");
+            }
 
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();

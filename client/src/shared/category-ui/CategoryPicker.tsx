@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Dropdown, DropdownButton } from 'react-bootstrap'
 
-import { Category } from '../../../../types/data/Category'
-import { CategoryProps } from '../../../../types/props/CategoryProps'
-import CreateCategory from './CreateCategory'
+import { Category } from '../../types/data/Category'
+import { CategoryProps } from '../../types/props/CategoryProps'
+import CategoryEditor from './CategoryEditor'
 
 import './Category.css'
 
@@ -36,7 +36,7 @@ export default function CategoryPicker({category, categories, onChange, onDataCh
 					backgroundColor: selectedCategory.backgroundColor,
 					color: selectedCategory.textColor}}>
 				{editMode
-					? <CreateCategory category={editCategory} onDataChange={onDataChange} setEditMode={setEditMode}/>
+					? <CategoryEditor category={editCategory} onDataChange={onDataChange} setEditMode={setEditMode}/>
 					: <div className='category-picker-wrapper'>
 						<Dropdown.Item
 							className='category-item'

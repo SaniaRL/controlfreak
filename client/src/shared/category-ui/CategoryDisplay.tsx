@@ -1,6 +1,6 @@
 
 import { useEffect } from 'react'
-import { Category } from '../../../../types/data/Category'
+import { Category } from '../../types/data/Category'
 
 import './Category.css'
 
