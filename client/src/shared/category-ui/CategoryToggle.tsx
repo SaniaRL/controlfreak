@@ -1,3 +1,4 @@
+import { Form } from 'react-bootstrap'
 import { CategoryToggleProps } from '../../types/props/CategoryToggleProps'
 
 export default function CategoryToggle({category, active, toggleActive}: CategoryToggleProps) {
@@ -7,9 +8,11 @@ export default function CategoryToggle({category, active, toggleActive}: Categor
       style={{
         background: category.backgroundColor,
         color: category.textColor
-      }}
-      onClick={toggleActive}>
-      {category.name}
+      }}>
+        <Form.Check 
+          checked={active} 
+          onChange={toggleActive} />
+        {category.name}
     </div>
   )
 }

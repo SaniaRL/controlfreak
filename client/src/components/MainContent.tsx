@@ -11,8 +11,7 @@ import { TaskData } from '../types/dto/TaskData'
 import { UpdatePayload } from '../types/data/UpdatePayload'
 import { mapTasks } from '../utils/mapper'
 import { updateList } from '../utils/listUtils'
-import { apiEndpoint, apiProperty, apiValue} from '../utils/crud'
-import UpdateButton from '../shared/UpdateButton'
+import { apiEndpoint, apiValue} from '../utils/crud'
 
 export default function MainContent({ view }: { view: string }) {
   const [error, setError] = useState()
@@ -20,6 +19,7 @@ export default function MainContent({ view }: { view: string }) {
   const [events, setEvents] = useState<EventData[]>([])
   const [tasks, setTasks] = useState<TaskData[]>([])
   const [categories, setCategories] = useState<Category[]>([])
+  const [activeCategories, setActiveCategories] = useState<Category[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -147,17 +147,37 @@ export default function MainContent({ view }: { view: string }) {
     }
   }
 
+  useEffect(() => {
+    setActiveCategories(categories)
+  }, [categories])
+
+  const setActiveCategory = (id: number, active: boolean) => {
+    setActiveCategories(active
+      ? activeCategories.some(c => c.id === id)
+        ? activeCategories
+        : [...activeCategories, categories.find(c => c.id === id)!]
+      : activeCategories.filter(c => c.id !== id)
+    )
+  }
+
+  const filteredEvents = events.filter(e => 
+    activeCategories.some(c => c.id === e.category.id)
+  )
+
   return(
     <div className='main-content'>
-      <LSidebarComponent />
+      <LSidebarComponent 
+        categories={categories}
+        activeCategories={activeCategories}
+        setActiveCategory={setActiveCategory}/>
       { view === 'activity'
         ? <ActivityfeedComponent 
-            events={events} 
+            events={filteredEvents} 
             categories={categories} 
             onDataChange={onDataChange} 
           />
         : <Calendar 
-            events={events} 
+            events={filteredEvents} 
             tasks={tasks} 
             categories={categories} 
             onDataChange={onDataChange}

@@ -120,3 +120,18 @@
     background-color: transparent !important;
 }
 
+.category-toggle-wrapper {
+    display: grid;
+    grid-template-columns: 20px auto;
+    margin: 15px 10px;
+    padding: 5px 6px;
+}
+
+.category-toggle-wrapper
+.form-check-input:checked {
+    background-color: #868686;
+}
+
+/* .inactive-toggle {
+} */
+
