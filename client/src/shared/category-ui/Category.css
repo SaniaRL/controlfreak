@@ -120,3 +120,13 @@
     background-color: transparent !important;
 }
 
+.category-toggle-wrapper {
+    display: grid;
+    grid-template-columns: 20px auto;
+    margin: 15px 10px;
+    padding: 5px 6px;
+}
+
+/* .inactive-toggle {
+} */
+
