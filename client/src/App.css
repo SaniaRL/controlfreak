@@ -23,6 +23,11 @@ body {
   height: 42px;
 }
 
+.highlight {
+  color: blue;
+  font-weight: 800;
+}
+
 
 /* NOT CLEAN AND OK CSS: */
 

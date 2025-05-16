@@ -44,7 +44,7 @@ export default function ActivityfeedComponent(props: ActivityfeedProps) {
 			{ createEvent &&
 				<CreateEvent categories={props.categories} onDataChange={props.onDataChange} closeOnSave={() => setCreateEvent(false)}/>
 			}
-			<ActivityList events={filteredEvents} categories={props.categories} onDataChange={props.onDataChange}/>
+			<ActivityList searchTerm={searchTerm} events={filteredEvents} categories={props.categories} onDataChange={props.onDataChange}/>
 		</div>
 	)
 }

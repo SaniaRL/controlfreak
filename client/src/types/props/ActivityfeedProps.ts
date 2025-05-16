@@ -9,4 +9,5 @@ export interface ActivityfeedProps {
     categories: Category[]
     tags?: string[]
     onDataChange: (update?: UpdatePayload) => void
+    searchTerm: string
 }

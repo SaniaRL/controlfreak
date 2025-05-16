@@ -1,20 +1,17 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { Collapse } from 'react-bootstrap'
 
-import { EventData } from '../../types/dto/EventData'
-import { UpdatePayload } from '../../types/data/UpdatePayload'
 import CategoryDisplay from '../../shared/category-ui/CategoryDisplay'
 import DateDisplay from '../../shared/date-ui/DateDisplay'
+import { EventItemProps } from '../../types/props/EventItemProps'
 import StandardButton from '../../shared/StandardButton'
 import TagDisplay from '../../shared/tag-ui/TagDisplay'
+import highlightMatch from '../../utils/highlight'
 
 import './EventStyle.css'
 
-export default function EventItem({event, onDataChange, enableEditMode}
-	: {event: EventData, 
-		onDataChange: (updates?: UpdatePayload) => void,
-		enableEditMode: (id?: number) => void
-	}) {
+export default function EventItem({event, onDataChange, toggleEditMode, searchTerm}
+	: EventItemProps) {
 	const[canExpand, setCanExpand] = useState(false)
 	const[expanded, setExpanded] = useState(false)
 
@@ -41,7 +38,7 @@ export default function EventItem({event, onDataChange, enableEditMode}
 	return(
 		<div className='event-item'>
 			<div className='event-item-head'>
-				<div className='event-title'>{event.title}</div>
+				<div className='event-title'>{highlightMatch(event.title, searchTerm)}</div>
 				<div className='dates'>
 					<DateDisplay
 						start={event.start}
@@ -54,7 +51,7 @@ export default function EventItem({event, onDataChange, enableEditMode}
 							key: event.id,
 							id: event.id,
 							buttonProps: { content: {src: '/icons/edit_black.png', alt: 'edit button'}, className: 'edit-event-button'},
-							onClick: () => enableEditMode(Number(event.id)) }}/>
+							onClick: () => toggleEditMode(Number(event.id)) }}/>
 					<StandardButton
 						props= {{
 							key: event.id,
@@ -74,7 +71,7 @@ export default function EventItem({event, onDataChange, enableEditMode}
 							: 'event-item-body'} 
 						ref={contentRef}
 						onClick={canExpand ? () => setExpanded(!expanded) : () => {}}>
-						<p>{event.content}</p>
+						<p>{event.content ? highlightMatch(event.content, searchTerm) : ''}</p>
 					</div>			
 				</Collapse>
 			</div>

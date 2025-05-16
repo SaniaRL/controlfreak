@@ -6,7 +6,7 @@ import { ActivityfeedProps } from '../../../types/props/ActivityfeedProps'
 
 import '../ActivityFeed.css'
 
-export default function ActivityList({events, categories, onDataChange}
+export default function ActivityList({events, categories, onDataChange, searchTerm}
 	: ActivityfeedProps) {
 		const [editMode, setEditMode] = useState(false)
 		const [editableEvents, setEditableEvents] = useState<number[]>([])
@@ -34,14 +34,15 @@ export default function ActivityList({events, categories, onDataChange}
 								key={event.id} 
 								event={event} 
 								categories={categories} 
-								disableEditMode={addEditableEvent} 
+								toggleEditMode={addEditableEvent} 
 								onDataChange={onDataChange}
 							/>
 						: <EventItem 
 								key={event.id} 
 								event={event} 
-								enableEditMode={addEditableEvent} 
-								onDataChange={onDataChange} 
+								toggleEditMode={addEditableEvent} 
+								onDataChange={onDataChange}
+								searchTerm={searchTerm}
 							/>}				
 				</div>
 			)}
