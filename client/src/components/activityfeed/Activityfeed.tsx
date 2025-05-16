@@ -53,11 +53,22 @@ export default function ActivityfeedComponent(props: ActivityfeedProps) {
         editMode={editMode} 
         setEditMode={setEditMode} 
 			/>
-			<CreateEventToggle onToggle={() => setCreateEvent(!createEvent)} />
+			<CreateEventToggle 
+				onToggle={() => setCreateEvent(!createEvent)} />
 			{ createEvent &&
-				<CreateEvent categories={props.categories} onDataChange={props.onDataChange} closeOnSave={() => setCreateEvent(false)}/>
+				<CreateEvent 
+					categories={props.categories} 
+					onDataChange={props.onDataChange} 
+					closeOnSave={() => setCreateEvent(false)}
+				/>
 			}
-			<ActivityList searchTerm={searchTerm} events={displayEvents} categories={props.categories} onDataChange={props.onDataChange}/>
+			<ActivityList 
+				searchTerm={searchTerm} 
+				events={displayEvents} 
+				categories={props.categories} 
+				onDataChange={props.onDataChange}
+				editMode={editMode}
+			/>
 		</div>
 	)
 }

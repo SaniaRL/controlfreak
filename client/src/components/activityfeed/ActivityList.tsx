@@ -1,27 +1,34 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import EventItem from '../events/EventItem'
 import EditEventItem from '../events/EditEventItem'
-import { ActivityfeedProps } from '../../types/props/ActivityfeedProps'
+import { ActivityListProps } from '../../types/props/ActivityListProps'
 
 import './ActivityFeed.css'
 
-export default function ActivityList({events, categories, onDataChange, searchTerm}
-	: ActivityfeedProps) {
-		const [editMode, setEditMode] = useState(false)
-		const [editableEvents, setEditableEvents] = useState<number[]>([])
-		
-		const addEditableEvent = (id?: number) => {
-			if(id) {
-				setEditableEvents(prevEditableEvents =>
-					prevEditableEvents.includes(id)
-						? prevEditableEvents.filter(x => x !== id)
-						: [...prevEditableEvents, id]
-				)	
-			} else {
-				console.log('addEditableEvent: no valid id')
-			}
+export default function ActivityList({events, categories, onDataChange, searchTerm, editMode}: ActivityListProps) 
+{
+	const [editableEvents, setEditableEvents] = useState<number[]>([])
+
+	useEffect(() => {
+		if (editMode) {
+			setEditableEvents(events.map(event => Number(event.id)))
+		} else {
+			setEditableEvents([])
 		}
+	}, [editMode, events])
+	
+	const addEditableEvent = (id?: number) => {
+		if(id) {
+			setEditableEvents(prevEditableEvents =>
+				prevEditableEvents.includes(id)
+					? prevEditableEvents.filter(x => x !== id)
+					: [...prevEditableEvents, id]
+			)	
+		} else {
+			console.log('addEditableEvent: no valid id')
+		}
+	}
 
 		//TODO: setEditMode
 
