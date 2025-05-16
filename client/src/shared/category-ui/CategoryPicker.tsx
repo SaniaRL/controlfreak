@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Dropdown, DropdownButton } from 'react-bootstrap'
 
-import { Category } from '../../types/data/Category'
+import { Category } from '../../types/dto/Category'
 import { CategoryProps } from '../../types/props/CategoryProps'
 import CategoryEditor from './CategoryEditor'
 

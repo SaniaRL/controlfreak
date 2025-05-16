@@ -23,6 +23,13 @@ body {
   height: 42px;
 }
 
+.highlight {
+  background-color: rgb(227, 227, 227);
+  font-size: larger;
+  box-shadow: 0 0 8px rgba(0,0,0,0.15);
+  padding: 0 1px;
+}
+
 
 /* NOT CLEAN AND OK CSS: */
 
@@ -40,8 +47,6 @@ body {
     background: transparent;
     transform: scale(1.1);
 }
-
-
 
 .sidebar {
   /* width: 20vw; */
@@ -89,34 +94,6 @@ body {
   box-shadow: 1px 2px 14px -10px rgba(0, 0, 0, 0.75);
 }
 
-.activity-filter-panel {
-  width: calc(100% - 15px);
-  display: flex;
-  gap: 1rem;
-  justify-content: space-between;
-  padding: 10px 0;
-}
-
-.activity-filter-panel .item {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.activity-filter-panel .form-control {
-  width: 200px;
-}
-
-.activity-filter-panel .dropdown-toggle {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .active-view {
   opacity: 50%;
-}
-
-.activity-filter-panel .form-control {
-  width: 350px;
 }

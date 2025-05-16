@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Card, Form } from 'react-bootstrap'
 
-import { TaskData } from '../../../types/data/TaskData'
+import { TaskData } from '../../../types/dto/TaskData'
 import { UpdatePayload } from '../../../types/data/UpdatePayload'
 import StandardButton from '../../../shared/StandardButton'
 

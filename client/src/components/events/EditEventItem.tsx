@@ -6,12 +6,12 @@ import DateToggle from '../../shared/date-ui/DateToggle'
 import StandardButton from '../../shared/StandardButton'
 import TagDisplay from '../../shared/tag-ui/TagDisplay'
 
-import { Category } from '../../types/data/Category'
-import { EventItemProps } from '../../types/props/EventItemProps'
+import { Category } from '../../types/dto/Category'
+import { EditEventItemProps } from '../../types/props/EditEventItemProps'
 
 import './EventStyle.css'
 
-export default function EditEventItem({ event, categories, onDataChange, disableEditMode }: EventItemProps) {
+export default function EditEventItem({ event, categories, onDataChange, toggleEditMode }: EditEventItemProps) {
 	const[newState, setNewState] = useState(event)
 	const[isDirty, setIsDirty] = useState(false)
 	// const[isValid, setIsValid] = useState(false)
@@ -52,11 +52,11 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 			id: event.id,
 			updates: newState
 		})
-		disableEditMode(Number(event.id))		
+		toggleEditMode(Number(event.id))		
 	}
 
 	const onCancel = () => {
-		disableEditMode(Number(event.id))
+		toggleEditMode(Number(event.id))
 	}
 
 	const editTag = (newTag: string, prevTag?: string) => {
@@ -137,7 +137,7 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 										src: '/icons/edit_black.png', 
 										alt: 'edit button'}, 
 										className: 'edit-event-button'},
-								onClick: () => disableEditMode(Number(event.id)) }} />
+								onClick: () => toggleEditMode(Number(event.id)) }} />
 
 					<StandardButton
 						props= {{
@@ -163,7 +163,7 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 			<div className='edit-event-item-footer'>
 				<CategoryPicker 
 				category={newState.category} 
-				categories={categories}
+				categories={categories!}
 				onChange={handleCategoryChange}
 				onDataChange={onDataChange}
 				/>
@@ -172,7 +172,8 @@ export default function EditEventItem({ event, categories, onDataChange, disable
 					tags={newState.tags} 
 					tagEditProps={{
 						onDelete: removeTag, 
-						onEdit: editTag}} />
+						onEdit: editTag}} 
+				/>
 
 				<Button 
 					disabled={!isDirty} 

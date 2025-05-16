@@ -6,7 +6,7 @@ import { UpdatePayload } from '../../../types/data/UpdatePayload'
 
 import CreateTask from './CreateTask'
 
-import { TaskData } from '../../../types/data/TaskData'
+import { TaskData } from '../../../types/dto/TaskData'
 
 import './TaskList.css'
 

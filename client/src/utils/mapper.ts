@@ -1,4 +1,4 @@
-import { TaskData } from '../types/data/TaskData'
+import { TaskData } from '../types/dto/TaskData'
 
 export const mapTasks = (tasks: TaskData[]): TaskData[] => {
   return tasks.map(task => {

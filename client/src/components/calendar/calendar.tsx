@@ -9,7 +9,7 @@ import { CalendarProps } from '../../types/props/CalendarProps'
 
 import './Calendar.css'
 import { useEffect, useState } from 'react'
-import { EventData } from '../../types/data/EventData'
+import { EventData } from '../../types/dto/EventData'
 
 export default function Calendar({events, tasks, onDataChange}: CalendarProps) {
 	const [calendarEvents, setCalendarEvents] = useState<EventData[] | undefined>([])

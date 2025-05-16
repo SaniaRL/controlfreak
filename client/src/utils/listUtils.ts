@@ -1,6 +1,6 @@
-import { Category } from '../types/data/Category'
-import { EventData } from '../types/data/EventData'
-import { TaskData } from '../types/data/TaskData'
+import { Category } from '../types/dto/Category'
+import { EventData } from '../types/dto/EventData'
+import { TaskData } from '../types/dto/TaskData'
 
 export function updateList(item: Category, list: Category[]): Category[]
 export function updateList(item: EventData, list: EventData[]): EventData[]

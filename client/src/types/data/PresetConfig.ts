@@ -1,6 +1,6 @@
 import { ButtonProps } from '../props/ButtonProps'
-import { EventData } from './EventData'
-import { TaskData } from './TaskData'
+import { EventData } from '../dto/EventData'
+import { TaskData } from '../dto/TaskData'
 
 export interface PresetConfig {
     id: string | number
