@@ -127,6 +127,11 @@
     padding: 5px 6px;
 }
 
+.category-toggle-wrapper
+.form-check-input:checked {
+    background-color: #868686;
+}
+
 /* .inactive-toggle {
 } */
 

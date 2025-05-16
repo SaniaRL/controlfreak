@@ -173,13 +173,13 @@ export default function MainContent({ view }: { view: string }) {
       { view === 'activity'
         ? <ActivityfeedComponent 
             events={filteredEvents} 
-            categories={activeCategories} 
+            categories={categories} 
             onDataChange={onDataChange} 
           />
         : <Calendar 
             events={filteredEvents} 
             tasks={tasks} 
-            categories={activeCategories} 
+            categories={categories} 
             onDataChange={onDataChange}
           /> 
       }
