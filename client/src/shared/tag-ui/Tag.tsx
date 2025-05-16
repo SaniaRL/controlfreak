@@ -4,12 +4,15 @@ import { CloseButton, Form } from 'react-bootstrap'
 import { TagEditProps } from '../../types/props/TagEditProps'
 
 import './TagDisplay.css'
+import highlightMatch from '../../utils/highlight'
 
-export default function Tag({ tag: prevState, editProps, autofocus, cantClose }: {
+export default function Tag({ tag: prevState, editProps, autofocus, cantClose, searchTerm }: {
   autofocus?: boolean
   tag: string
   cantClose?: boolean
-  editProps?: TagEditProps}) {
+  editProps?: TagEditProps
+  searchTerm?: string
+}) {
     const [newState, setNewState] = useState<string>(prevState)
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +57,7 @@ export default function Tag({ tag: prevState, editProps, autofocus, cantClose }:
             onChange={handleInputChange}
           />
         </div>
-        : <div>{prevState}</div>}
+        : <div>{searchTerm ? highlightMatch(prevState, searchTerm) : prevState}</div>}
 
     </div>                                                                                                                                                                                                                                                      
   )

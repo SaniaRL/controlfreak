@@ -6,9 +6,10 @@ import Tag from './Tag'
 
 import './TagDisplay.css'
 
-export default function TagDisplay({tags, tagEditProps}: {
+export default function TagDisplay({tags, tagEditProps, searchTerm}: {
   tags?: string[]
   tagEditProps?: TagEditProps
+  searchTerm?: string
 }) {
   const [open, setOpen] = useState(false)
 
@@ -39,7 +40,9 @@ export default function TagDisplay({tags, tagEditProps}: {
           <Tag 
             key={t}
             tag={t}
-            {...(tagEditProps && { editProps: tagEditProps })}/>
+            {...(tagEditProps && { editProps: tagEditProps })}
+            searchTerm={searchTerm}
+            />
         )}
       </div>
     </div>

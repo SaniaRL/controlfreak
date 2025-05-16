@@ -78,7 +78,7 @@ export default function EventItem({event, onDataChange, toggleEditMode, searchTe
 
 			<div className='event-item-footer'>
 				<CategoryDisplay category={event.category}/>
-				<TagDisplay tags={event.tags} />
+				<TagDisplay tags={event.tags} searchTerm={searchTerm} />
 			</div>
 		</div>
 	)

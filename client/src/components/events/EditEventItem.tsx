@@ -172,7 +172,8 @@ export default function EditEventItem({ event, categories, onDataChange, toggleE
 					tags={newState.tags} 
 					tagEditProps={{
 						onDelete: removeTag, 
-						onEdit: editTag}} />
+						onEdit: editTag}} 
+				/>
 
 				<Button 
 					disabled={!isDirty} 
