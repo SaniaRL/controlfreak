@@ -1,14 +1,25 @@
 import Searchbar from './Searchbar'
 import FilterPanel from './FilterPanel'
-import { FilterPanelProps } from '../../../types/props/FilterPanelProps'
 
-export default function SearchFilterPanel({ onSearch }
-  : {onSearch: (term: string) => void }){
+import './SearchFilterPanel.css'
+
+export default function SearchFilterPanel({ onSearch, showPastEvents, setShowPastEvents, editMode, setEditMode }: {
+  onSearch: (term: string) => void 
+  showPastEvents: boolean
+  setShowPastEvents: (checked: boolean) => void
+  editMode: boolean
+  setEditMode: (checked: boolean) => void
+}){
 
   return(
     <div className='activity-filter-panel'>
       <Searchbar onSearch={onSearch}/>
-      <FilterPanel />
+      <FilterPanel 
+        showPastEvents={showPastEvents} 
+        setShowPastEvents={setShowPastEvents} 
+        editMode={editMode} 
+        setEditMode={setEditMode} 
+      />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import ActivityList from './activity-list/ActivityList.tsx'
+import ActivityList from './ActivityList.tsx'
 import CreateEvent from '../events/CreateEvent.tsx'
 import CreateEventToggle from '../events/CreateEventToggle.tsx'
 import SearchFilterPanel from './filter-components/SearchFilterPanel.tsx'
@@ -22,7 +22,8 @@ const searchFilterConfig: SearchFilterConfig = {
 }
 
 export default function ActivityfeedComponent(props: ActivityfeedProps) {
-	// const [showPastEvents, setShowPastEvents] = useState(false)
+	const [showPastEvents, setShowPastEvents] = useState(false)
+	const [editMode, setEditMode] = useState(false)
   const [createEvent, setCreateEvent] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [displayEvents, setDisplayEvents] = useState<EventData[]>([])
@@ -34,17 +35,29 @@ export default function ActivityfeedComponent(props: ActivityfeedProps) {
   }
 
 	useEffect(() => {
-		setDisplayEvents(props.events.sort())
-	}, [props.events])
+	  setDisplayEvents(filterAndSortEvents(filteredEvents, showPastEvents))
+	}, [filteredEvents, showPastEvents])
+
+	const filterAndSortEvents = (events: EventData[], showPastEvents: boolean): EventData[] => {
+		return events
+			.filter(e => showPastEvents || new Date(e.end ?? new Date(new Date(e.start).setHours(23,59,59,999))) >= new Date())
+			.slice().sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
+	}
 
 	return (
 		<div className='activityfeed'>
-			<SearchFilterPanel onSearch={handleSearchInput}/>
+			<SearchFilterPanel 
+				onSearch={handleSearchInput}
+				showPastEvents={showPastEvents}
+        setShowPastEvents={setShowPastEvents} 
+        editMode={editMode} 
+        setEditMode={setEditMode} 
+			/>
 			<CreateEventToggle onToggle={() => setCreateEvent(!createEvent)} />
 			{ createEvent &&
 				<CreateEvent categories={props.categories} onDataChange={props.onDataChange} closeOnSave={() => setCreateEvent(false)}/>
 			}
-			<ActivityList searchTerm={searchTerm} events={filteredEvents} categories={props.categories} onDataChange={props.onDataChange}/>
+			<ActivityList searchTerm={searchTerm} events={displayEvents} categories={props.categories} onDataChange={props.onDataChange}/>
 		</div>
 	)
 }

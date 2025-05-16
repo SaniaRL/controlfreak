@@ -1,0 +1,40 @@
+.activity-filter-panel {
+  width: calc(100% - 15px);
+  display: grid;
+  grid-template-columns: 350px auto;
+  gap: 1rem;
+  padding: 10px 0;
+}
+
+.activity-filter-panel .item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.activity-filter-panel .form-control {
+  width: 200px;
+}
+
+.activity-filter-panel .dropdown-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.activity-filter-panel .form-control {
+  width: 350px;
+}
+
+.filter-panel-wrapper {
+  display: grid;
+  grid-template-columns: 150px 150px;
+}
+
+.filter-item {
+  display: grid;
+  grid-template-columns: 20px 220px;
+  margin-right: 10px;
+  align-content: end;
+}

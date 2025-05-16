@@ -1,10 +1,10 @@
 import { useState } from 'react'
 
-import EventItem from '../../events/EventItem'
-import EditEventItem from '../../events/EditEventItem'
-import { ActivityfeedProps } from '../../../types/props/ActivityfeedProps'
+import EventItem from '../events/EventItem'
+import EditEventItem from '../events/EditEventItem'
+import { ActivityfeedProps } from '../../types/props/ActivityfeedProps'
 
-import '../ActivityFeed.css'
+import './ActivityFeed.css'
 
 export default function ActivityList({events, categories, onDataChange, searchTerm}
 	: ActivityfeedProps) {
