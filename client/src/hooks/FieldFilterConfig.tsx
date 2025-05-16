@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { SearchFilterConfig } from '../types/config/SearchFilterConfig'
 
 export function useSearchFilter<T>(
@@ -15,20 +15,23 @@ export function useSearchFilter<T>(
     }
 
     const loweredSearch = searchTerm.toLowerCase()
+      console.log('results and stuff')
 
     const results = data.filter(item =>
       filterConfig.fieldsToSearch.some(field => {
-        if (field.type !== 'string') return false
+        if (field.type !== 'string' && field.type != 'string[]') return false
 
         const value = (item as any)[field.key]
 
-        if (Array.isArray(value)) {
-          return value.some((v: string) => v.toLowerCase().includes(loweredSearch))
+        if (typeof value === 'string') {
+          return value.toLowerCase().includes(loweredSearch)
         }
 
-        if (typeof value !== 'string') return false
+        if (Array.isArray(value) && value.every(v => typeof v === 'string')) {
+          return value.some(v => v.toLowerCase().includes(loweredSearch))
+        }
 
-        return value.toLowerCase().includes(loweredSearch)
+        return false
       })
     )
 

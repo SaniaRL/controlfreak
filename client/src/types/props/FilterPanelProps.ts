@@ -1,4 +1,4 @@
 export interface FilterPanelProps {
-  includePassed: boolean,
-
+  setIncludePast: () => void
+  onSearch: (searchTerm: string) => void
 }
