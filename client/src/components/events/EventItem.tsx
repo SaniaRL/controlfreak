@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { Collapse } from 'react-bootstrap'
 
-import { EventData } from '../../types/data/EventData'
+import { EventData } from '../../types/dto/EventData'
 import { UpdatePayload } from '../../types/data/UpdatePayload'
 import CategoryDisplay from '../../shared/category-ui/CategoryDisplay'
 import DateDisplay from '../../shared/date-ui/DateDisplay'

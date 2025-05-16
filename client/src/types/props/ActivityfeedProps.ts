@@ -1,6 +1,6 @@
-import { Category } from '../data/Category'
-import { EventData } from '../data/EventData'
-import { TaskData } from '../data/TaskData'
+import { Category } from '../dto/Category'
+import { EventData } from '../dto/EventData'
+import { TaskData } from '../dto/TaskData'
 import { UpdatePayload } from '../data/UpdatePayload'
 
 export interface ActivityfeedProps {

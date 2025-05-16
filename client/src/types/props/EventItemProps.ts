@@ -1,5 +1,5 @@
-import { Category } from '../data/Category'
-import { EventData } from '../data/EventData'
+import { Category } from '../dto/Category'
+import { EventData } from '../dto/EventData'
 import { UpdatePayload } from '../data/UpdatePayload'
 
 export interface EventItemProps {

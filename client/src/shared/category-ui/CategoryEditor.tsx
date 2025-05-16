@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Button, Form, Stack } from 'react-bootstrap'
 
-import { Category } from '../../types/data/Category'
+import { Category } from '../../types/dto/Category'
 import { UpdatePayload } from '../../types/data/UpdatePayload'
 import { defaultCategoryData } from '../../constants/defaults'
 

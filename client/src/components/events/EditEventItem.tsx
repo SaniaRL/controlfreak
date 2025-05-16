@@ -6,7 +6,7 @@ import DateToggle from '../../shared/date-ui/DateToggle'
 import StandardButton from '../../shared/StandardButton'
 import TagDisplay from '../../shared/tag-ui/TagDisplay'
 
-import { Category } from '../../types/data/Category'
+import { Category } from '../../types/dto/Category'
 import { EventItemProps } from '../../types/props/EventItemProps'
 
 import './EventStyle.css'

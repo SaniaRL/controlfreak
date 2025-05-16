@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Button, Form, FormControl } from 'react-bootstrap'
 
-import { Category } from '../../types/data/Category'
+import { Category } from '../../types/dto/Category'
 import { CreateEventProps } from '../../types/props/CreateEventProps'
 import { defaultCategory, defaultEvent } from '../../constants/defaults'
 import { EventDataNullable } from '../../types/data/EventDataNullable'

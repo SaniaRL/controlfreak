@@ -1,4 +1,4 @@
-import { Category } from '../data/Category'
+import { Category } from '../dto/Category'
 import { UpdatePayload } from '../data/UpdatePayload'
 
 export interface CreateEventProps {

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { TaskData } from '../../types/data/TaskData'
+import { TaskData } from '../../types/dto/TaskData'
 import { UpdatePayload } from '../../types/data/UpdatePayload'
 import PresetPanel from './preset-panel/PresetPanel'
 import TaskList from './tasklist/Tasklist'
