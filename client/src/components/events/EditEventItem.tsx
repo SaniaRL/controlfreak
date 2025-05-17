@@ -87,8 +87,6 @@ export default function EditEventItem({ event, categories, onDataChange, toggleE
 		)}
 	}
 
-		//Den tycks komma hit även om newTag = ""
-		//Detta körs en gång per tag istället för endast vid rop
 		setNewState(prev => ({...prev, tags: updatedTags}))
 		console.log(`new state tags ${newState.id}:`)
 		console.log(newState.tags)
@@ -102,8 +100,6 @@ export default function EditEventItem({ event, categories, onDataChange, toggleE
 	const handleCategoryChange = (selectedCategory: Category) => {
   setNewState(prev => ({ ...prev, category: selectedCategory }))
  	}
-
-	//TODO: autofocus
 
 	return(
 		<Form 
@@ -175,6 +171,8 @@ export default function EditEventItem({ event, categories, onDataChange, toggleE
 						onEdit: editTag}} 
 				/>
 
+				{//Villkor om alla kan raaderas
+				}
 				<Button 
 					disabled={!isDirty} 
 					type='submit'

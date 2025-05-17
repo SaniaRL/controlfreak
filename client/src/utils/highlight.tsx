@@ -13,7 +13,7 @@ export default function highlightMatch(text: string, search: string): JSX.Elemen
   return (
     <>
       {before}
-      <span className="highlight">{match}</span>
+      <span className='highlight'>{match}</span>
       {after}
     </>
   )

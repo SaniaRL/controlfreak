@@ -82,7 +82,7 @@ namespace API.Controllers
                 deadline: taskData.DeadLine,
                 isStackable: taskData.IsStackable,
                 tags: null,
-                rRule: taskData.RRule);
+                rRule: taskData.Rrule);
 
             _context.Tasks.Add(task);
             await _context.SaveChangesAsync();

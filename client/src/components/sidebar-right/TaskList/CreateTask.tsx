@@ -20,17 +20,19 @@ export default function CreateTask({ onDataChange }: {onDataChange : (updates?: 
       date.setHours(23, 59, 59, 999)
     }
     setDeadline(date)
+    console.log(deadline)
   }  
 
-  function CreateRRule(freq: Frequency, until: Date | null) {
-    const rule: RRule = new RRule({
-      dtstart: deadline ? deadline : new Date(),
+  const CreateRRule = (freq: Frequency, until: Date | null) => {
+    if (!deadline) return
+
+    const rule = new RRule({
+      dtstart: deadline,
       freq: freq,
-      until: until
+      until: until ?? undefined,
     })
 
-    const rruleString: string = rule.toString()
-
+    const rruleString = rule.toString()
     setRecurrence(rruleString)
     setShowRRPicker(false)
   }
@@ -39,7 +41,7 @@ export default function CreateTask({ onDataChange }: {onDataChange : (updates?: 
     const data = {
       title: title,
       deadline: deadline,
-      recurrence: recurrence
+      rrule: recurrence
     }
 
     onDataChange?.({
@@ -91,7 +93,7 @@ export default function CreateTask({ onDataChange }: {onDataChange : (updates?: 
 
       </InputGroup>
 
-      {showRRPicker &&
+      {deadline && showRRPicker &&
           <div 
           className='rr-picker-container'>
             <RRPicker 
