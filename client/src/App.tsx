@@ -5,12 +5,19 @@ import NavbarComponent from './components/navbar/NavbarComponent'
 
 export default function App() {
   const [view, setView] = useState('activity')
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   return (
     <>
-      <NavbarComponent currentView={view} setView={setView} />
+      <NavbarComponent 
+        currentView={view} 
+        setView={setView} />
 
-      <MainContent view={view} />
+      <MainContent 
+        view={view} 
+        setIsLoading={setIsLoading} 
+        setError={setError}/>
 
       {/* Footer for loading */}
     </>

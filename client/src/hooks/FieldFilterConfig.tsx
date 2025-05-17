@@ -9,6 +9,7 @@ export function useSearchFilter<T>(
   const [filteredData, setFilteredData] = useState<T[]>(data)
 
   useEffect(() => {
+    
     if (!searchTerm) {
       setFilteredData(data)
       return
@@ -40,3 +41,5 @@ export function useSearchFilter<T>(
 
   return filteredData
 }
+
+

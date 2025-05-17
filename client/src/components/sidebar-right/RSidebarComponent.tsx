@@ -7,9 +7,13 @@ import TaskList from './tasklist/Tasklist'
 import StandardButton from '../../shared/StandardButton'
 
 import './RSidebarComponent.css'
+import { EventTemplate } from '../../types/dto/EventTemplate'
 
-function RSidebarComponent( { tasks, onDataChange }
-	: { tasks: TaskData[], onDataChange: (updates?: UpdatePayload) => void } ) {
+function RSidebarComponent( { tasks, onDataChange, eventTemplates }: { 
+	tasks: TaskData[] 
+	onDataChange: (updates?: UpdatePayload) => void 
+	eventTemplates: EventTemplate[]
+} ) {
 	const [showPresetPanel, setShowPresetPanel] = useState(false)
 			
 	return(
@@ -18,7 +22,7 @@ function RSidebarComponent( { tasks, onDataChange }
             buttonProps: { content: 'Quick', variant: 'light', className: 'show-preset-button'},
             onClick: () => setShowPresetPanel(!showPresetPanel)}} />
 		{showPresetPanel &&
-		<PresetPanel />}               
+		<PresetPanel eventTemplates={eventTemplates}/>}               
 		<TaskList tasks={tasks} onDataChange={onDataChange}/>
 		</div>
 	)

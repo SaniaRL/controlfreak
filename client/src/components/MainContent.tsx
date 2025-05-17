@@ -12,25 +12,43 @@ import { UpdatePayload } from '../types/data/UpdatePayload'
 import { mapTasks } from '../utils/mapper'
 import { updateList } from '../utils/listUtils'
 import { apiEndpoint, apiValue} from '../utils/crud'
+import { MainContentProps } from '../types/props/MainContentProps'
+import { EventTemplate } from '../types/dto/EventTemplate'
 
-export default function MainContent({ view }: { view: string }) {
-  const [error, setError] = useState()
-  const [isLoading, setIsLoading] = useState(false)
+export default function MainContent({ view, setError, setIsLoading}: MainContentProps) {
   const [events, setEvents] = useState<EventData[]>([])
   const [tasks, setTasks] = useState<TaskData[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [activeCategories, setActiveCategories] = useState<Category[]>([])
+  const [eventTemplates, setEventTemplates] = useState<EventTemplate[]>([]) 
+
+  useEffect(() => {
+    console.log(eventTemplates)
+  }, [eventTemplates])
 
   useEffect(() => {
     const fetchData = async () => {
-      const categoryResponse = await executeCRUD({type:'categories', CRUD: 'GET'})
-      if(categoryResponse?.ok) setCategories(await categoryResponse.json() as Category[])
+      setIsLoading(true)
+      try {
+        const categoryResponse = await executeCRUD({type:'categories', CRUD: 'GET'})
+        if(categoryResponse?.ok) setCategories(await categoryResponse.json() as Category[])
 
-      const eventResponse = await executeCRUD({type: 'events', CRUD: 'GET'})
-      if(eventResponse?.ok) setEvents(await eventResponse.json() as EventData[])
+        const eventResponse = await executeCRUD({type: 'events', CRUD: 'GET'})    
+        if(eventResponse?.ok) setEvents(await eventResponse.json() as EventData[])
 
-      const taskResponse = await executeCRUD({type: 'tasks', CRUD: 'GET'})
-      if(taskResponse?.ok) setTasks(mapTasks(await taskResponse.json() as TaskData[]))
+        const taskResponse = await executeCRUD({type: 'tasks', CRUD: 'GET'})
+        if(taskResponse?.ok) setTasks(mapTasks(await taskResponse.json() as TaskData[]))
+
+        const eventTemplateResponse = await executeCRUD({type: 'eventTemplates', CRUD: 'GET'})
+        if(eventTemplateResponse?.ok) setEventTemplates(await eventTemplateResponse.json() as EventTemplate[])
+
+      }  catch (e: any) {
+          typeof e === 'string' 
+          ? setError(e)
+          : console.log(e)
+      } finally {
+        setIsLoading(false)
+      }
     }
     fetchData()
   }, [])
@@ -47,9 +65,6 @@ export default function MainContent({ view }: { view: string }) {
         const response = await executeCRUD(data)
           if(response?.ok) {
             switch(data.CRUD) {
-              case 'GET':
-                console.log('onDataChange: GET')
-                break
               case 'PUT':
                 const updatedItem = await response.json()
                 switch(data.type) {
@@ -185,7 +200,8 @@ export default function MainContent({ view }: { view: string }) {
       }
       <RSidebarComponent 
         tasks={tasks} 
-        onDataChange={onDataChange} 
+        onDataChange={onDataChange}
+        eventTemplates={eventTemplates} 
       />
     </div>
   )

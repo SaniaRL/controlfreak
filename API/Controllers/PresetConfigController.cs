@@ -1,10 +1,12 @@
 ﻿using API.DTO;
+using API.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
     [ApiController]
-    [Route("APIv1/presets")]
+    [Route("APIv1/eventTemplates")]
 
     public class PresetConfigController : ControllerBase
     {
@@ -17,49 +19,29 @@ namespace API.Controllers
 
 
         [HttpGet]
-        public ActionResult<List<PresetConfigDTO>> getAll()
+        public async Task<ActionResult<List<EventTemplateDTO>>> GetAll()
         {
             try
             {
-                //var events = _context.Events.ToList();
+                var eventTemplates = await _context.EventTemplates
+                    .Include(e => e.Category)
+                    .Include(e => e.ButtonProps)
+                    .ToListAsync();
 
-                var presetConfigVMs = new List<PresetConfigDTO>
-                {
-                    new PresetConfigDTO
-                    {
-                        Id = 1,
-                        DefaultTask =
-                        {
-                            Title = "Tvättid",
-                            StartTime = new TimeOnly(7, 0),
-                            EndTime = new TimeOnly(14, 0),
-                            AllDay = false,
-                            IsStackable = false,
-                        },
-                        ButtonProps =
-                        {
-                            Variant = "Secondary",
-                            IconProps =
-                            {
-                                Src = "",
-                                Alt = "Laundry machine button"
-                            }
-                        }
-                        
+                var rootTemplates = eventTemplates.Where(et => et.ParentId == null).ToList();
 
+                List<EventTemplateDTO> eventTemplateDTOs = rootTemplates.Select(x => EventTemplateDTO.FromEntityWithChildren(x)).ToList();
 
-                    }
-                };
-                return Ok(presetConfigVMs);
+                return Ok(eventTemplateDTOs);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {e.Message}");
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
-
-
         }
 
 
     }
+
+
 }

@@ -5,10 +5,9 @@ export const apiEndpoint = (updates: UpdatePayload): string => {
 
   const type = updates.type
   const id = updates.id
-  const method = updates.CRUD
   const property = apiProperty(updates)
 
-  const segments = [ BASE_URL, API, type, method, id, property ].filter(Boolean)
+  const segments = [ BASE_URL, API, type, id, property ].filter(Boolean)
 
   return segments.join('/')
 }
