@@ -14,6 +14,7 @@ import './Calendar.css'
 export default function Calendar({events, tasks, onDataChange, handleDateClick}: CalendarProps ) {
 		
 	const [calendarEvents, setCalendarEvents] = useState<EventData[] | TaskData[] | undefined>([])
+	const [clickedElement, setClickedElement] = useState<HTMLElement | null>(null)
 
 	useEffect(() => {
 		const mappedEvents = events?.map(event => {
@@ -54,6 +55,10 @@ export default function Calendar({events, tasks, onDataChange, handleDateClick}:
 	}
 
 	const onDateClick = (arg: DateClickArg) => {
+		if(clickedElement)
+			clickedElement.classList.remove('clicked-element')
+		arg.dayEl.classList.add('clicked-element')
+		setClickedElement(arg.dayEl)
 		handleDateClick(arg.date)
 	}
 	
@@ -64,7 +69,7 @@ export default function Calendar({events, tasks, onDataChange, handleDateClick}:
 			eventContent={renderEventContent}
 			initialView='dayGridMonth'
 			firstDay={1}
-			height={'90vh'}
+			height='calc(100vh - 80px)'
 			headerToolbar={{
 				start:'today, prev, next',
 				center:'title',

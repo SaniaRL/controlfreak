@@ -12,7 +12,7 @@ import TagDisplay from '../../shared/tag-ui/TagDisplay'
 
 import './EventStyle.css'
 
-export default function CreateEvent({categories, onDataChange, closeOnSave, eventTemplate}
+export default function CreateEvent({categories, onDataChange, closeOnSave, eventTemplate, setCurrentEventTemplate}
   : CreateEventProps) {
     const [hasRequiredFields, setHasRequiredFields] = useState(false)
     const [newEvent, setNewEvent] = useState<EventDataNullable>(defaultEvent)
@@ -116,7 +116,8 @@ export default function CreateEvent({categories, onDataChange, closeOnSave, even
 	return(
     <Form className='edit-event-item' onSubmit= {(e) => {
       e.preventDefault() 
-      createEvent()}}>
+      createEvent()
+      setCurrentEventTemplate(null)}}>
         <div className='edit-event-item-head'>
           <FormControl 
             type='text'

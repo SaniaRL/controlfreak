@@ -191,6 +191,7 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
             categories={categories} 
             onDataChange={onDataChange} 
             currentEventTemplate={currentEventTemplate}
+            setCurrentEventTemplate={setCurrentEventTemplate}
           />
         : <Calendar 
             events={filteredEvents} 

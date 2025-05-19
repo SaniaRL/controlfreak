@@ -11,4 +11,5 @@ export interface ActivityfeedProps {
     tags?: string[]
     onDataChange: (update?: UpdatePayload) => void
     currentEventTemplate: EventDataNullable | null
+    setCurrentEventTemplate: (template: EventDataNullable | null) => void
 }
