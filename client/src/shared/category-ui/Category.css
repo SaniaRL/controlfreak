@@ -132,6 +132,7 @@
     background-color: #868686;
 }
 
-/* .inactive-toggle {
-} */
-
+.override-bs-color {
+  --bs-btn-color: red !important;
+  color: var(--bs-btn-color) !important;
+}

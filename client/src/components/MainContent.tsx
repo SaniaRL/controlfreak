@@ -14,13 +14,16 @@ import { updateList } from '../utils/listUtils'
 import { apiEndpoint, apiValue} from '../utils/crud'
 import { MainContentProps } from '../types/props/MainContentProps'
 import { EventTemplate } from '../types/dto/EventTemplate'
+import { EventDataNullable } from '../types/data/EventDataNullable'
 
-export default function MainContent({ view, setError, setIsLoading}: MainContentProps) {
+export default function MainContent({ view, setError, setIsLoading, setView}: MainContentProps) {
   const [events, setEvents] = useState<EventData[]>([])
   const [tasks, setTasks] = useState<TaskData[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [activeCategories, setActiveCategories] = useState<Category[]>([])
-  const [eventTemplates, setEventTemplates] = useState<EventTemplate[]>([]) 
+  const [eventTemplates, setEventTemplates] = useState<EventTemplate[]>([])
+  const [calendarClickDate, setCalendarClickDate] = useState<Date | null>(null)
+  const [currentEventTemplate, setCurrentEventTemplate] = useState<EventDataNullable | null>(null)
 
   useEffect(() => {
     console.log(eventTemplates)
@@ -137,24 +140,16 @@ export default function MainContent({ view, setError, setIsLoading}: MainContent
 
   const executeCRUD = async (x: UpdatePayload) => {
     setIsLoading(true)
-
-    console.log('UpdatePayLoad')
-    console.log(x)
-
     const value = apiValue(x)
-
     try {
-
        const options = x.CRUD !== 'GET'
         ? {
           method: x.CRUD,
           headers: { 'Content-Type': 'application/json' },
           body: value !== undefined ? JSON.stringify(value) : undefined,
         }
-        : undefined
-        
+        : undefined        
       const response = await fetch(apiEndpoint(x), options)
-
       return response
 
     } catch (error: any) {
@@ -179,6 +174,11 @@ export default function MainContent({ view, setError, setIsLoading}: MainContent
     activeCategories.some(c => c.id === e.category.id)
   )
 
+  const createEventFromTemplate = (event: EventDataNullable) => {
+    setView('activity')
+    setCurrentEventTemplate(event)
+  }
+
   return(
     <div className='main-content'>
       <LSidebarComponent 
@@ -190,18 +190,22 @@ export default function MainContent({ view, setError, setIsLoading}: MainContent
             events={filteredEvents} 
             categories={categories} 
             onDataChange={onDataChange} 
+            currentEventTemplate={currentEventTemplate}
           />
         : <Calendar 
             events={filteredEvents} 
             tasks={tasks} 
             categories={categories} 
             onDataChange={onDataChange}
+            handleDateClick={setCalendarClickDate}
           /> 
       }
       <RSidebarComponent 
         tasks={tasks} 
         onDataChange={onDataChange}
-        eventTemplates={eventTemplates} 
+        eventTemplates={eventTemplates}
+        calendarDate={calendarClickDate}
+        createEventFromTemplate={createEventFromTemplate}
       />
     </div>
   )

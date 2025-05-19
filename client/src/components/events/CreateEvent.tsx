@@ -12,10 +12,16 @@ import TagDisplay from '../../shared/tag-ui/TagDisplay'
 
 import './EventStyle.css'
 
-export default function CreateEvent({categories, onDataChange, closeOnSave}
+export default function CreateEvent({categories, onDataChange, closeOnSave, eventTemplate}
   : CreateEventProps) {
     const [hasRequiredFields, setHasRequiredFields] = useState(false)
-    const [newEvent, setNewEvent] = useState<EventDataNullable>(defaultEvent)  
+    const [newEvent, setNewEvent] = useState<EventDataNullable>(defaultEvent)
+
+  useEffect(() => {
+    if(eventTemplate) {
+      setNewEvent(eventTemplate)
+    }
+  }, [eventTemplate])
   
   useEffect(() => {
     if(!newEvent.category) {
@@ -82,7 +88,7 @@ export default function CreateEvent({categories, onDataChange, closeOnSave}
 				)
 			}
     } else {
-      if(!newEvent.tags.map(t => t.toLowerCase()).includes(newTag.toLowerCase())) {
+      if(!newEvent.tags.includes(newTag)) {
         updatedTags = [...newEvent.tags, newTag]
       } else {
         updatedTags = newEvent.tags.map(t =>

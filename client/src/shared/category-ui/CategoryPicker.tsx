@@ -34,7 +34,8 @@ export default function CategoryPicker({category, categories, onChange, onDataCh
 				onToggle={(isOpen) => { if (!isOpen) setEditMode(false) }}
 				style={{
 					backgroundColor: selectedCategory.backgroundColor,
-					color: selectedCategory.textColor}}>
+					color: selectedCategory.textColor
+				}}>
 				{editMode
 					? <CategoryEditor category={editCategory} onDataChange={onDataChange} setEditMode={setEditMode}/>
 					: <div className='category-picker-wrapper'>

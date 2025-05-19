@@ -43,6 +43,7 @@ export default function ActivityList({events, categories, onDataChange, searchTe
 								categories={categories} 
 								toggleEditMode={addEditableEvent} 
 								onDataChange={onDataChange}
+								globalEditMode={editMode}
 							/>
 						: <EventItem 
 								key={event.id} 

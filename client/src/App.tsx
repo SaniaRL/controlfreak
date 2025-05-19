@@ -17,7 +17,8 @@ export default function App() {
       <MainContent 
         view={view} 
         setIsLoading={setIsLoading} 
-        setError={setError}/>
+        setError={setError}
+        setView={setView}/>
 
       {/* Footer for loading */}
     </>

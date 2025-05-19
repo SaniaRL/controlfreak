@@ -94,3 +94,7 @@ body {
 .active-view {
   opacity: 50%;
 }
+
+.main-content-preset-panel {
+  position: absolute;
+}

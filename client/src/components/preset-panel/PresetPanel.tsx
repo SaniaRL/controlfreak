@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react'
 import { Col, Collapse, Container, Row } from 'react-bootstrap'
-import { EventTemplate } from '../../../types/dto/EventTemplate'
-import StandardButton from '../../../shared/StandardButton'
+import { EventTemplate } from '../../types/dto/EventTemplate'
+import { mapEventTemplateToNullableEvent } from '../../utils/mapper'
+import { EventDataNullable } from '../../types/data/EventDataNullable'
+import StandardButton from '../../shared/StandardButton'
 
 import './PresetPanel.css'
 
-export default function PresetPanel({ eventTemplates }: { eventTemplates: EventTemplate[] }) {
+export default function PresetPanel({ eventTemplates, calendarDate, createEventFromTemplate }: { 
+	eventTemplates: EventTemplate[],
+	calendarDate: Date | null,
+	createEventFromTemplate: (event: EventDataNullable) => void
+}) {
   const [openId, setOpenId] = useState<number | null>(null)
   const [roots, setRoots] = useState<EventTemplate[]>([])
 
@@ -17,10 +23,6 @@ export default function PresetPanel({ eventTemplates }: { eventTemplates: EventT
 
     setRoots(rootTemplates)
   }, [eventTemplates])
-
-  function onClick() {
-    console.log('clicked')
-  }
 
   return (
 		<Container className='preset-panel-container'>
@@ -54,7 +56,7 @@ export default function PresetPanel({ eventTemplates }: { eventTemplates: EventT
 											variant: 'light',
 											className: 'preset-panel-btn preset-panel-parent'
 										},
-										onClick: onClick,
+										onClick: () => createEventFromTemplate(mapEventTemplateToNullableEvent(child, calendarDate)),
 									}}
 								/>
 							</Col>

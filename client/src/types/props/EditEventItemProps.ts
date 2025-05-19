@@ -4,8 +4,8 @@ import { UpdatePayload } from '../data/UpdatePayload'
 
 export interface EditEventItemProps {
     event: EventData
-    categories: Category[] //Optonal för samma props till EditEventItem
+    categories: Category[]
     onDataChange: (updates?: UpdatePayload) => void
     toggleEditMode: (id?: number) => void
-    // searchTerm: string
+    globalEditMode: boolean
 }

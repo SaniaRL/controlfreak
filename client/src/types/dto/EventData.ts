@@ -10,7 +10,6 @@ export interface EventData {
     textColor: string
     allDay: boolean
     editable: boolean
-    // categoryId: number
     category: Category
     rrule?: string
     tags: string[] 

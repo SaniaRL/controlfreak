@@ -11,7 +11,7 @@ import { EditEventItemProps } from '../../types/props/EditEventItemProps'
 
 import './EventStyle.css'
 
-export default function EditEventItem({ event, categories, onDataChange, toggleEditMode }: EditEventItemProps) {
+export default function EditEventItem({ event, categories, onDataChange, toggleEditMode, globalEditMode }: EditEventItemProps) {
 	const[newState, setNewState] = useState(event)
 	const[isDirty, setIsDirty] = useState(false)
 	// const[isValid, setIsValid] = useState(false)
@@ -93,7 +93,7 @@ export default function EditEventItem({ event, categories, onDataChange, toggleE
 	}
 
 	const removeTag = (tag: string) => {
-		//använd handlechange
+		//använd handlechange?
   setNewState(prev => ({ ...prev, tags: prev.tags.filter(t => t !== tag) }));
 	}
 
@@ -132,8 +132,9 @@ export default function EditEventItem({ event, categories, onDataChange, toggleE
 									content: {
 										src: '/icons/edit_black.png', 
 										alt: 'edit button'}, 
-										className: 'edit-event-button'},
-								onClick: () => toggleEditMode(Number(event.id)) }} />
+										className: `edit-event-button ${globalEditMode ? 'invisible' : ''}`},
+								onClick: () => toggleEditMode(Number(event.id)) }}
+					/>
 
 					<StandardButton
 						props= {{

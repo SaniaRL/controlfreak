@@ -1,7 +1,7 @@
 
 interface SearchField {
   key: string
-  type: 'string' | 'number' | 'string[]'
+  type: 'string' | 'string[]'
 }
 
 export interface SearchFilterConfig {

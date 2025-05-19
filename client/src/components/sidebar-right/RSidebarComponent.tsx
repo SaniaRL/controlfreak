@@ -1,18 +1,21 @@
 import { useState } from 'react'
 
+import { EventDataNullable } from '../../types/data/EventDataNullable'
+import { EventTemplate } from '../../types/dto/EventTemplate'
 import { TaskData } from '../../types/dto/TaskData'
 import { UpdatePayload } from '../../types/data/UpdatePayload'
-import PresetPanel from './preset-panel/PresetPanel'
-import TaskList from './tasklist/Tasklist'
+import PresetPanel from '../preset-panel/PresetPanel'
 import StandardButton from '../../shared/StandardButton'
+import TaskList from './tasklist/Tasklist'
 
 import './RSidebarComponent.css'
-import { EventTemplate } from '../../types/dto/EventTemplate'
 
-function RSidebarComponent( { tasks, onDataChange, eventTemplates }: { 
+export default function RSidebarComponent( { tasks, onDataChange, eventTemplates, calendarDate, createEventFromTemplate}: { 
 	tasks: TaskData[] 
 	onDataChange: (updates?: UpdatePayload) => void 
 	eventTemplates: EventTemplate[]
+	calendarDate: Date | null
+	createEventFromTemplate: (event: EventDataNullable) => void
 } ) {
 	const [showPresetPanel, setShowPresetPanel] = useState(false)
 			
@@ -22,10 +25,8 @@ function RSidebarComponent( { tasks, onDataChange, eventTemplates }: {
             buttonProps: { content: 'Quick', variant: 'light', className: 'show-preset-button'},
             onClick: () => setShowPresetPanel(!showPresetPanel)}} />
 		{showPresetPanel &&
-		<PresetPanel eventTemplates={eventTemplates}/>}               
+		<PresetPanel eventTemplates={eventTemplates} calendarDate={calendarDate} createEventFromTemplate={createEventFromTemplate}/>}               
 		<TaskList tasks={tasks} onDataChange={onDataChange}/>
 		</div>
 	)
 }
-
-export default RSidebarComponent
