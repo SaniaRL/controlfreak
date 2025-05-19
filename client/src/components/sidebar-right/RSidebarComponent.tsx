@@ -6,7 +6,7 @@ import { TaskData } from '../../types/dto/TaskData'
 import { UpdatePayload } from '../../types/data/UpdatePayload'
 import PresetPanel from '../preset-panel/PresetPanel'
 import StandardButton from '../../shared/StandardButton'
-import TaskList from './tasklist/Tasklist'
+import TaskList from '../tasks/Tasklist'
 
 import './RSidebarComponent.css'
 

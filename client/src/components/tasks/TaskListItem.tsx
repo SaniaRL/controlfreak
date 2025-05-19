@@ -1,17 +1,15 @@
-import { useEffect } from 'react'
 import { Card, Form } from 'react-bootstrap'
 
-import { TaskData } from '../../../types/dto/TaskData'
-import { UpdatePayload } from '../../../types/data/UpdatePayload'
-import StandardButton from '../../../shared/StandardButton'
+import { TaskData } from '../../types/dto/TaskData'
+import { UpdatePayload } from '../../types/data/UpdatePayload'
+import StandardButton from '../../shared/StandardButton'
 
 import './TaskList.css'
 
-export default function TaskListItem({ task, onDataChange } : { task: TaskData, onDataChange: (updates?: UpdatePayload) => void }) {
-
-	useEffect(() => {
-		console.log('TaskListItem received task:', task)
-	}, [task])
+export default function TaskListItem({ task, onDataChange } : { 
+	task: TaskData, 
+	onDataChange: (updates?: UpdatePayload) => void 
+}) {
 
 	function deleteTask(){
 		onDataChange?.({
