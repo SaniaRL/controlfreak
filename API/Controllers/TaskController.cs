@@ -16,14 +16,14 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet("GET")]
-        public ActionResult<List<TaskDTO>> GetTasks()
+        [HttpGet]
+        public async Task<ActionResult<List<TaskDTO>>> GetTasks()
         {
             try
             {
-                var tasks = _context.Tasks.ToList();
+                var tasks = await _context.Tasks.ToListAsync();
 
-                var taskVMs = tasks.Select(x => new TaskDTO
+                var taskDTOs = tasks.Select(x => new TaskDTO
                 {
                     Id = x.Id,
                     Title = x.Title,
@@ -34,7 +34,7 @@ namespace API.Controllers
                     Rrule = x.RRule
                 }).ToList();
 
-                return Ok(taskVMs);
+                return Ok(taskDTOs);
             }
             catch (Exception ex)
             {
@@ -42,14 +42,17 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("GET/{id}")]
-        public ActionResult<TaskDTO> GetTask(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TaskDTO>> GetTask(int id)
         {
             try
             {
-                var task = _context.Tasks.First(x => x.Id == id);
+                var task = await _context.Tasks.FirstOrDefaultAsync(x => x.Id == id);
 
-                var taskVM = new TaskDTO
+                if (task == null)
+                    return NotFound();
+
+                var taskDTO = new TaskDTO
                 {
                     Id = task.Id,
                     Title = task.Title,
@@ -60,7 +63,7 @@ namespace API.Controllers
                     Rrule = task.RRule
                 };
 
-                return Ok(taskVM);
+                return Ok(taskDTO);
             }
             catch (Exception ex)
             {
@@ -68,20 +71,39 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("POST")]
-        public async Task<ActionResult<Task>> CreateTask([FromBody] CreateTask taskData)
+        [HttpPost]
+        public async Task<ActionResult<TaskDTO>> CreateTask([FromBody] CreateTask taskData)
         {
-            //TAGS ÄR NULL
-            var task = new TaskItem(title: taskData.Title, deadline: taskData.DeadLine, isStackable: taskData.IsStackable, tags: null, rRule: taskData.RRule);
+            if (taskData == null)
+                return BadRequest();
 
-            _context.Add(task);
+            var task = new TaskItem(
+                title: taskData.Title,
+                deadline: taskData.DeadLine,
+                isStackable: taskData.IsStackable,
+                tags: null,
+                rRule: taskData.Rrule);
+
+            _context.Tasks.Add(task);
             await _context.SaveChangesAsync();
 
-            return Ok(task);
+            var taskDTO = new TaskDTO
+            {
+                Id = task.Id,
+                Title = task.Title,
+                Completed = task.Completed,
+                CompletedWhen = task.CompletedWhen,
+                Deadline = task.DeadLine,
+                IsStackable = task.IsStackable,
+                Rrule = task.RRule
+            };
+
+            return CreatedAtAction(nameof(GetTask), new { id = task.Id }, taskDTO);
         }
 
-        [HttpDelete("DELETE/{id}")]
-        public async Task<ActionResult<Task>> DeleteTask(int id)
+        [HttpPut("{id}/completed")]
+        public async Task<ActionResult<TaskDTO>> UpdateCompletionStatus(int id,
+        [FromBody] bool isCompleted)
         {
             var task = await _context.Tasks.FindAsync(id);
 
@@ -90,28 +112,38 @@ namespace API.Controllers
                 return NotFound();
             }
 
+            task.SetCompleted(isCompleted);
+            await _context.SaveChangesAsync();
+
+            var taskDTO = new TaskDTO
+            {
+                Id = task.Id,
+                Title = task.Title,
+                Completed = task.Completed,
+                CompletedWhen = task.CompletedWhen,
+                Deadline = task.DeadLine,
+                IsStackable = task.IsStackable,
+                Rrule = task.RRule
+            };
+
+            return Ok(taskDTO);
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> RemoveTask(int id)
+        {
+            var task = await _context.Tasks.FindAsync(id);
+
+            if (task == null)
+            return NotFound();
+            
+
             _context.Tasks.Remove(task);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        [HttpPut("PUT/{id}/completed")]
-        public async Task<ActionResult<Task>> UpdateCompletionStatus(int id,
-            [FromBody] bool isCompleted)
-        {
-            var task = _context.Tasks.FirstOrDefault(x => x.Id == id);
-
-            if (task == null)
-            {
-                return NotFound();
-            }
-
-            task.SetCompleted(isCompleted);
-
-            await _context.SaveChangesAsync();
-
-            return Ok(task);
-        }
     }
 }

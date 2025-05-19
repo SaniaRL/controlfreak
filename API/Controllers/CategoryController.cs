@@ -18,31 +18,31 @@ namespace API.Controllers
         }
 
 
-        [HttpGet("GET")]
-        public ActionResult<List<CategoryDTO>> GetAll()
+        [HttpGet]
+        public async Task<ActionResult<List<CategoryDTO>>> GetAll()
         {
             try
             {
-                var Categories = _context.Categories.ToList();
-                var CategoryDTOs = Categories.Select(c => EntityHelper.MapCategoryToCategoryDTO(c)).ToList();
-
-                return Ok(CategoryDTOs);
-            } catch (Exception ex)
+                var categories = await _context.Categories.ToListAsync();
+                var categoryDTOs = categories.Select(c => EntityHelper.MapCategoryToCategoryDTO(c)).ToList();
+                return Ok(categoryDTOs);
+            }
+            catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
 
-        [HttpGet("GET/{id}")]
-        public ActionResult<CategoryDTO> GetCategory(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
         {
             try
             {
-                var Category = _context.Categories.Find(id);
-
-                var CategoryDTO = EntityHelper.MapCategoryToCategoryDTO(Category);
-
-                return Ok(CategoryDTO);
+                var category = await _context.Categories.FindAsync(id);
+                if (category == null)
+                    return NotFound();
+                var categoryDTO = EntityHelper.MapCategoryToCategoryDTO(category);
+                return Ok(categoryDTO);
             }
             catch (Exception ex)
             {
@@ -51,7 +51,7 @@ namespace API.Controllers
         }
 
 
-        [HttpPost("POST")]
+        [HttpPost]
         public async Task<ActionResult<Task>> PostCategory([FromBody] CategoryDTO categoryDTO)
         {
             var category = EntityHelper.MapCategoryDTOToCategory(categoryDTO);
@@ -62,7 +62,7 @@ namespace API.Controllers
             return Ok(EntityHelper.MapCategoryToCategoryDTO(category));
         }
 
-        [HttpPut("PUT/{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult<Task>> UpdateCategory(int id,
         [FromBody] CategoryDTO partial)
         {
@@ -85,7 +85,7 @@ namespace API.Controllers
         }
 
 
-        [HttpDelete("DELETE/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<Task>> DeleteCategory(int id)
         {
             var category = await _context.Categories.FindAsync(id);

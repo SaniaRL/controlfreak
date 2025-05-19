@@ -55,11 +55,13 @@ export default function ActivityfeedComponent(props: ActivityfeedProps) {
 			/>
 			<CreateEventToggle 
 				onToggle={() => setCreateEvent(!createEvent)} />
-			{ createEvent &&
+			{ (createEvent || props.currentEventTemplate) &&
 				<CreateEvent 
 					categories={props.categories} 
 					onDataChange={props.onDataChange} 
-					closeOnSave={() => setCreateEvent(false)}
+					closeOnSave={() => {setCreateEvent(false)}}
+					eventTemplate={props.currentEventTemplate}
+					setCurrentEventTemplate={props.setCurrentEventTemplate}
 				/>
 			}
 			<ActivityList 

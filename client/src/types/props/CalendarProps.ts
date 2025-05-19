@@ -9,4 +9,5 @@ export interface CalendarProps {
     categories: Category[]
     tags?: string[]
     onDataChange?: (update?: UpdatePayload) => void
+    handleDateClick: (date: Date) => void
 }

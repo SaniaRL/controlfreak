@@ -8,7 +8,7 @@ export default function StandardButton({ props }
 		<Button 
 		className={`standard-button ${props.buttonProps.className}`}
 		variant={props.buttonProps.variant}
-		onClick={() => props.onClick()}
+		onClick={props.onClick}
 		onMouseEnter={props.onMouseEnter}
 		onMouseLeave={props.onMouseLeave}>
 			{ typeof props.buttonProps.content === 'string'

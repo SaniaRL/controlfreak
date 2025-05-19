@@ -1,6 +1,5 @@
 import { Category } from '../types/dto/Category'
 import { EventDataNullable } from '../types/data/EventDataNullable'
-import { SearchFilterConfig } from '../types/config/SearchFilterConfig'
 
 export const defaultCategoryData: Category = {
   name: 'text', 
@@ -29,8 +28,3 @@ export const defaultCategory = (categories: Category[]): Category => {
   return category!
 }
 
-// export const defaultSearchFilterConfig: SearchFilterConfig = {
-//   searchResult: '',
-//   activeCategories: [],
-//   includeInSearch: {key:'', value:[]}, 
-// }

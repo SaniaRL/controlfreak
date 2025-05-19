@@ -62,7 +62,9 @@
 }
 
 .expanded {
-    overflow: hidden;
+    overflow: auto;
+    scrollbar-width: none;
+    max-height: 200px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     cursor: pointer;

@@ -8,6 +8,6 @@ namespace API.DTO
         public DateTime? Start { get; set; }
         public DateTime? DeadLine { get; set; }
         public bool IsStackable { get; set; }
-        public string? RRule { get; set; }
+        public string? Rrule { get; set; }
     }
 }

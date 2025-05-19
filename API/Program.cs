@@ -1,4 +1,5 @@
 using API;
+using API.Entities;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,18 +44,19 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
-    if (!db.Categories.Any())
+    var events = db.EventTemplates.Where(x => x.Id == 1 || x.Id == 2).ToList();
+    var parent = db.EventTemplates.Find(3);
+    if (events.Count() == 2)
     {
-        db.CreateBaseCategory();
+        foreach (var e in events)
+        {
+            e.Parent = parent;
+            db.EventTemplates.Update(e);
+            db.SaveChanges();
+        }
+
     }
-    if (!db.Tasks.Any())
-    {
-        db.CreateBaseTasks();
-    }
-    if (!db.Events.Any())
-    {
-        db.CreateBaseEvents();
-    }
+
 }
 
 

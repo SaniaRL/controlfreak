@@ -17,7 +17,7 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet("GET")]
+        [HttpGet]
         public async Task<ActionResult<List<EventDTO>>> GetAll()
         {
             try
@@ -34,7 +34,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("GET/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<EventDTO>> GetEvent(int id)
         {
             try
@@ -54,7 +54,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("POST")]
+        [HttpPost]
         public async Task<ActionResult<EventDTO>> CreateEvent([FromBody] EventDTO eventDTO)
         {
             try
@@ -75,11 +75,6 @@ namespace API.Controllers
                     tags: eventDTO.Tags,
                     rRule: eventDTO.Rrule
                 );
-
-                if(eventItem == null)
-                {
-                    return BadRequest();
-                }
 
                 _context.Events.Add(eventItem);
                 await _context.SaveChangesAsync();
@@ -121,7 +116,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("PUT/{id}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult<EventDTO>> UpdateEvent(int id, [FromBody] PartialEventDTO partial)
         {
             if (partial == null)
@@ -129,6 +124,7 @@ namespace API.Controllers
 
             //Kanske inte behöver includa kanske kan gå på id.
             var eventItem = await _context.Events.Include(e => e.Category).FirstOrDefaultAsync(x => x.Id == id);
+
             if (eventItem == null)
             {
                 return NotFound();
@@ -144,7 +140,7 @@ namespace API.Controllers
             return Ok(eventDTO);
         }
 
-        [HttpDelete("DELETE/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteEvent(int id)
         {
             var eventItem = await _context.Events.FindAsync(id);

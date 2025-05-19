@@ -38,26 +38,32 @@ export default function EventItem({event, onDataChange, toggleEditMode, searchTe
 	return(
 		<div className='event-item'>
 			<div className='event-item-head'>
+
 				<div className='event-title'>{highlightMatch(event.title, searchTerm)}</div>
+				
 				<div className='dates'>
 					<DateDisplay
 						start={event.start}
 						end={event.end}
 						allDay={event.allDay}/>
 				</div>
+
 				<div className='event-item-btns'>
 					<StandardButton
 						props= {{
 							key: event.id,
 							id: event.id,
 							buttonProps: { content: {src: '/icons/edit_black.png', alt: 'edit button'}, className: 'edit-event-button'},
-							onClick: () => toggleEditMode(Number(event.id)) }}/>
+							onClick: () => toggleEditMode(Number(event.id)) }}
+						/>
+
 					<StandardButton
 						props= {{
 							key: event.id,
 							id: event.id,
 							buttonProps: { content: {src: '/icons/bin_black.png', alt: 'garbage bin delete button'}, className: 'edit-event-button'},
-							onClick: deleteEvent }}/>
+							onClick: deleteEvent }}
+					/>
 				</div>
 			</div>
 

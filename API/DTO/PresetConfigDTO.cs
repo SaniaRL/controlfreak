@@ -1,23 +1,23 @@
 ﻿namespace API.DTO
 {
-    public class PresetConfigDTO
-    {
-        public int Id {  get; set; }
-        public PresetTaskDTO? DefaultTask { get; set; }
-        public EventDTO? DefaultEvent { get; set; }
-        public ButtonProps ButtonProps { get; set; }
-    }
+    //public class PresetConfigDTO
+    //{
+    //    public int Id {  get; set; }
+    //    public PresetTaskDTO? DefaultTask { get; set; }
+    //    public EventDTO? DefaultEvent { get; set; }
+    //    public ButtonProps ButtonProps { get; set; }
+    //}
 
     // LISTOR KANSKE SEN WTF
 
-    public class ButtonProps
-    {
-        public string? Variant { get; set; }
-        public string? Label { get; set; }
-        public IconProps? IconProps { get; set; }
-        public string? ClassName { get; set; }
+    //public class ButtonProps
+    //{
+    //    public string? Variant { get; set; }
+    //    public string? Label { get; set; }
+    //    public IconProps? IconProps { get; set; }
+    //    public string? ClassName { get; set; }
 
-    }
+    //}
     public class IconProps
     {
         public string Src { get; set; }

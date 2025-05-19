@@ -12,10 +12,16 @@ import TagDisplay from '../../shared/tag-ui/TagDisplay'
 
 import './EventStyle.css'
 
-export default function CreateEvent({categories, onDataChange, closeOnSave}
+export default function CreateEvent({categories, onDataChange, closeOnSave, eventTemplate, setCurrentEventTemplate}
   : CreateEventProps) {
     const [hasRequiredFields, setHasRequiredFields] = useState(false)
-    const [newEvent, setNewEvent] = useState<EventDataNullable>(defaultEvent)  
+    const [newEvent, setNewEvent] = useState<EventDataNullable>(defaultEvent)
+
+  useEffect(() => {
+    if(eventTemplate) {
+      setNewEvent(eventTemplate)
+    }
+  }, [eventTemplate])
   
   useEffect(() => {
     if(!newEvent.category) {
@@ -82,7 +88,7 @@ export default function CreateEvent({categories, onDataChange, closeOnSave}
 				)
 			}
     } else {
-      if(!newEvent.tags.map(t => t.toLowerCase()).includes(newTag.toLowerCase())) {
+      if(!newEvent.tags.includes(newTag)) {
         updatedTags = [...newEvent.tags, newTag]
       } else {
         updatedTags = newEvent.tags.map(t =>
@@ -110,7 +116,8 @@ export default function CreateEvent({categories, onDataChange, closeOnSave}
 	return(
     <Form className='edit-event-item' onSubmit= {(e) => {
       e.preventDefault() 
-      createEvent()}}>
+      createEvent()
+      setCurrentEventTemplate(null)}}>
         <div className='edit-event-item-head'>
           <FormControl 
             type='text'

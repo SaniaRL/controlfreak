@@ -11,7 +11,7 @@ import { EditEventItemProps } from '../../types/props/EditEventItemProps'
 
 import './EventStyle.css'
 
-export default function EditEventItem({ event, categories, onDataChange, toggleEditMode }: EditEventItemProps) {
+export default function EditEventItem({ event, categories, onDataChange, toggleEditMode, globalEditMode }: EditEventItemProps) {
 	const[newState, setNewState] = useState(event)
 	const[isDirty, setIsDirty] = useState(false)
 	// const[isValid, setIsValid] = useState(false)
@@ -87,23 +87,19 @@ export default function EditEventItem({ event, categories, onDataChange, toggleE
 		)}
 	}
 
-		//Den tycks komma hit även om newTag = ""
-		//Detta körs en gång per tag istället för endast vid rop
 		setNewState(prev => ({...prev, tags: updatedTags}))
 		console.log(`new state tags ${newState.id}:`)
 		console.log(newState.tags)
 	}
 
 	const removeTag = (tag: string) => {
-		//använd handlechange
+		//använd handlechange?
   setNewState(prev => ({ ...prev, tags: prev.tags.filter(t => t !== tag) }));
 	}
 
 	const handleCategoryChange = (selectedCategory: Category) => {
   setNewState(prev => ({ ...prev, category: selectedCategory }))
  	}
-
-	//TODO: autofocus
 
 	return(
 		<Form 
@@ -136,8 +132,9 @@ export default function EditEventItem({ event, categories, onDataChange, toggleE
 									content: {
 										src: '/icons/edit_black.png', 
 										alt: 'edit button'}, 
-										className: 'edit-event-button'},
-								onClick: () => toggleEditMode(Number(event.id)) }} />
+										className: `edit-event-button ${globalEditMode ? 'invisible' : ''}`},
+								onClick: () => toggleEditMode(Number(event.id)) }}
+					/>
 
 					<StandardButton
 						props= {{
@@ -175,6 +172,8 @@ export default function EditEventItem({ event, categories, onDataChange, toggleE
 						onEdit: editTag}} 
 				/>
 
+				{//Villkor om alla kan raaderas
+				}
 				<Button 
 					disabled={!isDirty} 
 					type='submit'

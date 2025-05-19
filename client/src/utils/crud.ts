@@ -1,28 +1,26 @@
 import { UpdatePayload } from '../types/data/UpdatePayload'
 import { API, BASE_URL } from '../constants/api'
 
-export const apiEndpoint = (updates: UpdatePayload): string => {
+export const apiEndpoint = (x: UpdatePayload): string => {
+  const type = x.type
+  const id = x.id
+  const property = apiProperty(x)
 
-  const type = updates.type
-  const id = updates.id
-  const method = updates.CRUD
-  const property = apiProperty(updates)
-
-  const segments = [ BASE_URL, API, type, method, id, property ].filter(Boolean)
+  const segments = [ BASE_URL, API, type, id, property ].filter(Boolean)
 
   return segments.join('/')
 }
 
-export const apiValue = (updates: UpdatePayload) => {
-  return updates.includePropertyInUrl 
-    ? updates.updates 
-      ? Object.values(updates.updates)[0] 
+export const apiValue = (x: UpdatePayload) => {
+  return x.includePropertyInUrl 
+    ? x.updates 
+      ? Object.values(x.updates)[0] 
       : undefined
-    : updates.updates
+    : x.updates
 }
 
-export const apiProperty = (updates: UpdatePayload) => {
-  return updates.includePropertyInUrl
-    ? updates.updates ? Object.keys(updates.updates)[0] : undefined
+export const apiProperty = (x: UpdatePayload) => {
+  return x.includePropertyInUrl
+    ? x.updates ? Object.keys(x.updates)[0] : undefined
     : undefined
 }
