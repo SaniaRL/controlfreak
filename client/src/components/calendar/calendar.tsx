@@ -80,7 +80,7 @@ export default function Calendar({events, tasks, onDataChange, handleDateClick}:
 				eventContent={renderEventContent}
 				initialView='dayGridMonth'
 				firstDay={1}
-				height='calc(100vh - 80px)'
+				height='calc(100vh - 120px)'
 				headerToolbar={{
 					start:'today, prev, next',
 					center:'title',

@@ -20,15 +20,12 @@ import { completeTaskWithRRule } from '../utils/taskUtils'
 export default function MainContent({ view, setError, setIsLoading, setView}: MainContentProps) {
   const [events, setEvents] = useState<EventData[]>([])
   const [tasks, setTasks] = useState<TaskData[]>([])
+  const [todayTasks, setTodayTasks] = useState<TaskData[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [activeCategories, setActiveCategories] = useState<Category[]>([])
   const [eventTemplates, setEventTemplates] = useState<EventTemplate[]>([])
   const [calendarClickDate, setCalendarClickDate] = useState<Date | null>(null)
   const [currentEventTemplate, setCurrentEventTemplate] = useState<EventDataNullable | null>(null)
-
-  useEffect(() => {
-    console.log(eventTemplates)
-  }, [eventTemplates])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,11 +58,9 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
     if(data === undefined)
       return
 
-      const shouldCreateNewTaskInstance = data.type === 'tasks' && data.CRUD === 'PUT' && data.taskContext && data.taskContext.rrule
+      const shouldCreateNewTaskInstance = data.type === 'tasks' 
+      && data.CRUD === 'PUT' && data.taskContext && data.taskContext.rrule
 
-      console.log(`should create new task: ${shouldCreateNewTaskInstance}`)
-      console.log(data.taskContext)
-      console.log(data.instanceDate)
       if (shouldCreateNewTaskInstance) {
         const [postPayload, putPayload] = completeTaskWithRRule(data)
         await onDataChange(postPayload)
@@ -104,6 +99,7 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
                   )
                 }
               break
+
               case 'POST':
                 switch(data.type) {
                   case 'tasks':
@@ -112,8 +108,6 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
                     break
                   case 'events':
                     const newEvent: EventData = await response.json()
-                    console.log('newEvent')
-                    console.log(newEvent)
                     setEvents(prev => newEvent ? [newEvent, ...prev] : prev)
                     break
                   case 'categories':
@@ -122,6 +116,7 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
                   break
                 }
               break
+
               case 'DELETE':
                 if (response?.ok) {
                   switch(data.type) {
@@ -135,7 +130,7 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
                       setCategories(prev => prev.filter(category => category.id !== data.id))
                   }
                 } else {
-                  console.log('onDataChange task POST response not ok')
+                  console.log('onDataChange task DELETE response not ok')
                 }
             }
           }
@@ -143,11 +138,8 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
         setError(e)
       } finally {
         setIsLoading(false)
-      }
-
-
-      }
-
+      } 
+    }
   }
 
   const executeCRUD = async (x: UpdatePayload) => {
@@ -168,6 +160,15 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
       console.error("Något gick fel i executeCRUD")
     }
   }
+
+  useEffect(() => {
+    const today = new Date().getDate()
+    setTodayTasks(tasks.filter(t =>
+      (!t.deadline && !t.completed) ||
+      (t.deadline && new Date(t.deadline).getDate() === today) ||
+      (t.deadline && !t.completed && new Date(t.deadline).getDate() <= today)
+    ))
+  }, [tasks])
 
   useEffect(() => {
     setActiveCategories(categories)
@@ -214,7 +215,7 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
           /> 
       }
       <RSidebarComponent 
-        tasks={tasks} 
+        tasks={todayTasks} 
         onDataChange={onDataChange}
         eventTemplates={eventTemplates}
         calendarDate={calendarClickDate}
