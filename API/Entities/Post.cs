@@ -12,14 +12,15 @@ namespace API.Entities
         public DateTime UpdatedWhen { get; private set; }
         public string[]? Tags { get; private set; }
 
-
         public string? RRule{ get; private set; }
+        public DateTime[] ExDates { get; private set; } = Array.Empty<DateTime>();
 
-        public Post(string title, string[]? tags, string rRule)
+        public Post(string title, string[]? tags, string rRule, DateTime[] exDates)
         {
             Title = title;
             Tags = tags;
             RRule = rRule;
+            ExDates = exDates;
         }
         public void Update()
         {
@@ -47,6 +48,31 @@ namespace API.Entities
             Update();
         }
 
+        public void SetExDates(DateTime[] exDates) 
+        { 
+            ExDates = exDates; 
+            
+            Update();
+        
+        }
+
+        public void AddExDate(DateTime exDate)
+        {
+            if (!ExDates.Contains(exDate))
+            {
+                ExDates = ExDates.Append(exDate).ToArray();
+                Update();
+            }
+        }
+
+        public void RemoveExDate(DateTime exDate)
+        {
+            if (ExDates.Contains(exDate))
+            {
+                ExDates = ExDates.Where(d => d != exDate).ToArray();
+                Update();
+            }
+        }
 
     }
 }

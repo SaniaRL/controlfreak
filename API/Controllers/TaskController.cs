@@ -31,7 +31,8 @@ namespace API.Controllers
                     CompletedWhen = x.CompletedWhen,
                     Deadline = x.DeadLine,
                     IsStackable = x.IsStackable,
-                    Rrule = x.RRule
+                    Rrule = x.RRule,
+                    ExDates = x.ExDates ?? Array.Empty<DateTime>()
                 }).ToList();
 
                 return Ok(taskDTOs);
@@ -60,7 +61,8 @@ namespace API.Controllers
                     CompletedWhen = task.CompletedWhen,
                     Deadline = task.DeadLine,
                     IsStackable = task.IsStackable,
-                    Rrule = task.RRule
+                    Rrule = task.RRule,
+                    ExDates = task.ExDates ?? Array.Empty<DateTime>()
                 };
 
                 return Ok(taskDTO);
@@ -81,8 +83,12 @@ namespace API.Controllers
                 title: taskData.Title,
                 deadline: taskData.DeadLine,
                 isStackable: taskData.IsStackable,
-                tags: null,
-                rRule: taskData.Rrule);
+                tags: [],
+                rRule: taskData.Rrule,
+                exDates: Array.Empty<DateTime>()
+            );
+
+            task.SetCompleted(taskData.Completed);
 
             _context.Tasks.Add(task);
             await _context.SaveChangesAsync();
@@ -95,11 +101,35 @@ namespace API.Controllers
                 CompletedWhen = task.CompletedWhen,
                 Deadline = task.DeadLine,
                 IsStackable = task.IsStackable,
-                Rrule = task.RRule
+                Rrule = task.RRule,
+                ExDates = Array.Empty<DateTime>()
             };
 
             return CreatedAtAction(nameof(GetTask), new { id = task.Id }, taskDTO);
         }
+
+        [HttpPut("{id}/rrule")]
+        public async Task<ActionResult<TaskDTO>> UpdateTask(int id, [FromBody] string rrule)
+        {
+            var task = await _context.Tasks.FindAsync(id);
+
+            task.SetRRule(rrule);
+
+            await _context.SaveChangesAsync();
+
+            var updatedDto = new TaskDTO
+            {
+                Id = task.Id,
+                Title = task.Title,
+                Completed = task.Completed,
+                CompletedWhen = task.CompletedWhen,
+                Deadline = task.DeadLine,
+                Rrule = task.RRule,
+            };
+
+            return Ok(updatedDto);
+        }
+
 
         [HttpPut("{id}/completed")]
         public async Task<ActionResult<TaskDTO>> UpdateCompletionStatus(int id,
@@ -123,7 +153,8 @@ namespace API.Controllers
                 CompletedWhen = task.CompletedWhen,
                 Deadline = task.DeadLine,
                 IsStackable = task.IsStackable,
-                Rrule = task.RRule
+                Rrule = task.RRule,
+                ExDates = task.ExDates
             };
 
             return Ok(taskDTO);

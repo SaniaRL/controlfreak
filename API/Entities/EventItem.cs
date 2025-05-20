@@ -15,8 +15,8 @@ namespace API.Entities
 
         public Category Category { get; set; } = null!;
 
-        public EventItem(string title, string content, DateTime start, DateTime? end, bool allDay, int categoryId, string? rRule, string[]? tags) 
-            : base(title, tags, rRule)
+        public EventItem(string title, string content, DateTime start, DateTime? end, bool allDay, int categoryId, string? rRule, string[]? tags, DateTime[] exDates) 
+            : base(title, tags, rRule, exDates)
         {
             Content = content;
             Start = start;

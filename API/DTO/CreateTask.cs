@@ -9,5 +9,8 @@ namespace API.DTO
         public DateTime? DeadLine { get; set; }
         public bool IsStackable { get; set; }
         public string? Rrule { get; set; }
+
+        public bool Completed { get; set; }
+        public DateTime CompletedWhen { get; set; }
     }
 }

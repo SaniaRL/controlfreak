@@ -11,9 +11,11 @@ namespace API.DTO
         public bool Completed { get; set; }
         public DateTime? CompletedWhen { get; set; }
         public DateTime? Deadline { get; set; }
-        public bool IsStackable { get; set; }
+        public bool IsStackable { get; set; } = true ;
 
         public string? Rrule { get; set; } = null;
+
+        public DateTime[] ExDates { get; set; } = [];
 
     }
 }

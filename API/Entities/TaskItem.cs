@@ -10,12 +10,12 @@ namespace API.Entities
         public DateTime? DeadLine { get; private set; }
         public bool IsStackable { get; set; } = true;
 
-        public TaskItem(string title, DateTime? deadline, bool isStackable, string[] tags, string? rRule) : base(title, tags, rRule)
+        public TaskItem(string title, DateTime? deadline, bool isStackable, string[] tags, string? rRule, DateTime[] exDates) : base(title, tags, rRule, exDates)
         {
             DeadLine = deadline;
             IsStackable = isStackable;
         }
-        public TaskItem(string title, string[] tags, string? rRule) : base(title, tags, rRule) { }
+        public TaskItem(string title, string[] tags, string? rRule, DateTime[] exDates) : base(title, tags, rRule, exDates) { }
 
         public void SetCompleted(bool completed)
         {

@@ -23,7 +23,7 @@ namespace API.Entities
         public int ButtonPropsId { get; set; }
         public ButtonProps ButtonProps { get; set; }
 
-        public virtual List<EventTemplate> EventTemplates { get; set; }
+        public virtual List<EventTemplate> Children { get; set; }
         public EventTemplate() { }
         public EventTemplate(string title, string[]? tags, bool allDay, int? categoryId, int buttonPropsId)
         {

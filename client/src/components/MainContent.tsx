@@ -15,6 +15,7 @@ import { apiEndpoint, apiValue} from '../utils/crud'
 import { MainContentProps } from '../types/props/MainContentProps'
 import { EventTemplate } from '../types/dto/EventTemplate'
 import { EventDataNullable } from '../types/data/EventDataNullable'
+import { completeTaskWithRRule } from '../utils/taskUtils'
 
 export default function MainContent({ view, setError, setIsLoading, setView}: MainContentProps) {
   const [events, setEvents] = useState<EventData[]>([])
@@ -57,13 +58,22 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
   }, [])
 
   async function onDataChange(data: UpdatePayload | undefined) {
-    console.log('IN ON DATA CHANGE!!!')
-    console.log(data)
-    if(data === undefined) {
-      //Gör nåt???
-      console.log('Data is undefined')
-    } else {
-      setIsLoading(true)
+    if(data === undefined)
+      return
+
+      const shouldCreateNewTaskInstance = data.type === 'tasks' && data.CRUD === 'PUT' && data.taskContext && data.taskContext.rrule
+
+      console.log(`should create new task: ${shouldCreateNewTaskInstance}`)
+      console.log(data.taskContext)
+      console.log(data.instanceDate)
+      if (shouldCreateNewTaskInstance) {
+        const [postPayload, putPayload] = completeTaskWithRRule(data)
+        await onDataChange(postPayload)
+        await onDataChange(putPayload)
+        return
+      } else {
+              setIsLoading(true)
+      
       try {
         const response = await executeCRUD(data)
           if(response?.ok) {
@@ -92,7 +102,6 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
                         : event
                     )
                   )
-
                 }
               break
               case 'POST':
@@ -135,7 +144,10 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
       } finally {
         setIsLoading(false)
       }
-    }
+
+
+      }
+
   }
 
   const executeCRUD = async (x: UpdatePayload) => {

@@ -73,7 +73,8 @@ namespace API.Controllers
                     allDay: eventDTO.AllDay,
                     categoryId: eventDTO.Category.Id ?? 1,
                     tags: eventDTO.Tags,
-                    rRule: eventDTO.Rrule
+                    rRule: eventDTO.Rrule,
+                    exDates: eventDTO.ExDates ?? Array.Empty<DateTime>()
                 );
 
                 _context.Events.Add(eventItem);
@@ -104,6 +105,7 @@ namespace API.Controllers
                     },
                     Tags = eventItem.Tags,
                     Rrule = eventItem.RRule,
+                    ExDates = eventItem.ExDates ?? Array.Empty<DateTime>()
                 };
 
                 return Ok(createdEventDTO);

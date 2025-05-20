@@ -15,6 +15,7 @@ namespace API.DTO
         public CategoryDTO Category { get; set; }
         public string[]? Tags { get; set; }
         public string? Rrule{ get; set; }
+        public DateTime[] ExDates { get; set; } = [];
 
     }
 }
