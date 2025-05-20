@@ -13,45 +13,55 @@ import './Calendar.css'
 
 export default function Calendar({events, tasks, onDataChange, handleDateClick}: CalendarProps ) {
 		
-	const [calendarEvents, setCalendarEvents] = useState<EventData[] | TaskData[] | undefined>([])
+	const [mappedEvents, setMappedEvents] = useState<EventData[] | undefined>([])
+	const [mappedTasks, setMappedTasks] = useState<TaskData[] | undefined>([])
+
 	const [clickedElement, setClickedElement] = useState<HTMLElement | null>(null)
 
 	useEffect(() => {
-		const mappedEvents = events?.map(event => {
-			return {
-				...event,
-				textColor: event.category.textColor,
-				backgroundColor: event.category.backgroundColor
-			}
-		})
-		setCalendarEvents(mappedEvents)
+		const mappedEvents = events?.map(event => ({
+			...event,
+			textColor: event.category.textColor,
+			backgroundColor: event.category.backgroundColor
+		}))
+		setMappedEvents(mappedEvents)
 	}, [events])
 
-	//RRule
+	useEffect(() => {
+		console.log(tasks)
+		const mappedTasks = tasks?.map(task => ({
+			...task,
+			fullTask: task
+		}))
+		console.log(mappedTasks)
+
+		setMappedTasks(mappedTasks)
+	}, [tasks])
 
 	const renderEventContent = (eventInfo : any) => {
-		const entry = eventInfo.event
-
-		if(entry.extendedProps.completed !== undefined) {
+		const event = eventInfo.event	
+		if(event.extendedProps.completed !== undefined) {
 			return(
 				<div className='event-content'>
-					<span>{entry.title}</span>
+					<span>{event.title}</span>
 					<input 
 						className='calendar-completed-checkbox'
 						type='checkbox'
-						checked={entry.extendedProps.completed}
-						onChange={() => onDataChange?.({
+						checked={event.extendedProps.completed}
+						onChange={() => {console.log(eventInfo.event.start); onDataChange?.({	
 							type: 'tasks',
 							CRUD: 'PUT',
-							id: entry.id,
-							updates: { completed: !entry.extendedProps.completed },
+							id: event.id,
+							updates: {completed: !event.extendedProps.completed},							
 							includePropertyInUrl: true,
-						})}
+							taskContext: event.extendedProps.fullTask,
+							instanceDate: eventInfo.event.start,
+						})}}
 					/>
 		  </div>
 			)
 		}
-		return <span>{entry.title}</span>
+		return <span>{event.title}</span>
 	}
 
 	const onDateClick = (arg: DateClickArg) => {
@@ -64,23 +74,24 @@ export default function Calendar({events, tasks, onDataChange, handleDateClick}:
 	
 	return(
 		<div className='calendar-container'>
-			<FullCalendar 
-			plugins={[dayGridPlugin, rrulePlugin, timeGridPlugin, interactionPlugin]}
-			eventContent={renderEventContent}
-			initialView='dayGridMonth'
-			firstDay={1}
-			height='calc(100vh - 80px)'
-			headerToolbar={{
-				start:'today, prev, next',
-				center:'title',
-				end:'dayGridMonth, timeGridWeek, timeGridDay'
-			}}
-			eventSources={[
-				{ events: calendarEvents },
-				{ events: tasks }
-			]}
-			dateClick={onDateClick}
-			dayMaxEvents={3}
+			<FullCalendar
+				timeZone='UTC'
+				plugins={[dayGridPlugin, rrulePlugin, timeGridPlugin, interactionPlugin]}
+				eventContent={renderEventContent}
+				initialView='dayGridMonth'
+				firstDay={1}
+				height='calc(100vh - 120px)'
+				headerToolbar={{
+					start:'today, prev, next',
+					center:'title',
+					end:'dayGridMonth, timeGridWeek, timeGridDay'
+				}}
+				eventSources={[
+					{ events: mappedEvents },
+					{ events: mappedTasks }
+				]}
+				dateClick={onDateClick}
+				dayMaxEvents={3}
 			/>
 		</div>
 	)

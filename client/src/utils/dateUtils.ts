@@ -67,3 +67,9 @@ export const toLocalISOString = (dateString: string): string => {
   date.setTime(date.getTime() - date.getTimezoneOffset() * 60 * 1000)
   return date.toISOString().slice(0, 16)
 }
+
+export function setEndOfDay(date: Date): Date {
+  const d = new Date(date)
+  d.setHours(23, 59, 59, 999)
+  return d
+}

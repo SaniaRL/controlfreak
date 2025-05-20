@@ -1,59 +1,60 @@
-import { useState } from 'react'
-import { Button, Form, FormControl, InputGroup } from 'react-bootstrap'
-import { Frequency, RRule } from 'rrule'
-
-import { UpdatePayload } from '../../../types/data/UpdatePayload'
+import { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
-import RRPicker from '../../../shared/RRPicker/RRPicker'
+import { Button, Form, FormControl, InputGroup } from 'react-bootstrap'
+import { Frequency} from 'rrule'
+
+import { UpdatePayload } from '../../types/data/UpdatePayload'
+import { buildRRule, changeDtStart } from '../../utils/rruleUtils'
+import { NewTaskPayload } from '../../types/data/NewTaskPayload'
+import RRPicker from '../../shared/RRPicker/RRPicker'
+import { setEndOfDay } from '../../utils/dateUtils'
 
 import 'react-datepicker/dist/react-datepicker.css'
 import './TaskList.css'
 
-export default function CreateTask({ onDataChange }: {onDataChange : (updates?: UpdatePayload) => void}) {
-  const [ title, setDescription ] = useState('')
-  const [ deadline, setDeadline ] = useState<Date | null>(null)
-  const [ recurrence, setRecurrence ] = useState<string | undefined>(undefined)
+export default function CreateTask({ onDataChange }: {
+  onDataChange : (updates?: UpdatePayload) => void}) {
+  const [title, setTitle] = useState('')
+  const [deadline, setDeadline] = useState<Date | null>(null)
+  const [rrule, setRRule] = useState<string | undefined>(undefined)  
   const [ showRRPicker, setShowRRPicker ] = useState(false)
 
+  useEffect(() => {
+  if (deadline && rrule) {
+    const updatedRRule = changeDtStart(rrule, deadline)
+    setRRule(updatedRRule)
+  }
+  }, [deadline])
+
   const setDate = (date: Date | null) => {
-    if(date != null) {
-      date.setHours(23, 59, 59, 999)
-    }
-    setDeadline(date)
-    console.log(deadline)
+    if(date != null) 
+      setDeadline(setEndOfDay(date))
   }  
 
   const CreateRRule = (freq: Frequency, until: Date | null) => {
     if (!deadline) return
 
-    const rule = new RRule({
-      dtstart: deadline,
-      freq: freq,
-      until: until ?? undefined,
-    })
-
-    const rruleString = rule.toString()
-    setRecurrence(rruleString)
-    setShowRRPicker(false)
+    const rruleString = buildRRule(deadline, freq, until)
+    setRRule(rruleString)
+    setShowRRPicker(false)  
   }
 
   function postTask() {
-    const data = {
+    const data: NewTaskPayload = {
       title: title,
       deadline: deadline,
-      rrule: recurrence
+      rrule: rrule
     }
 
     onDataChange?.({
       type: 'tasks',
       CRUD: 'POST',
       updates: data
-    })   
-    
-    //egentligen ska den sen bara rensan om post går bra annars kanske feedback med röd border idk i nuläget men ska fixa sen
-    setDescription('')
+    })    
+  
+    setTitle('')
     setDeadline(null)
-    setRecurrence(undefined)
+    setRRule(undefined)
   }
 
   return(
@@ -68,7 +69,7 @@ export default function CreateTask({ onDataChange }: {onDataChange : (updates?: 
           className='task-input'
           type='text'
           value={title}
-          onChange={(e) => setDescription(e.target.value)}/>
+          onChange={(e) => setTitle(e.target.value)}/>
 
           <DatePicker
           selected={deadline}
@@ -84,7 +85,7 @@ export default function CreateTask({ onDataChange }: {onDataChange : (updates?: 
           />
 
           <Button 
-          className={`create-task-btn ${recurrence ? 'active-rrule' : ''}`}
+          className={`create-task-btn ${rrule ? 'active-rrule' : ''}`}
           variant='outline-secondary' 
           onClick={() => setShowRRPicker(!showRRPicker)}>
             <img src='/icons/recurrence_icon.png' alt='recurrence picker icon' />            
@@ -97,10 +98,10 @@ export default function CreateTask({ onDataChange }: {onDataChange : (updates?: 
           <div 
           className='rr-picker-container'>
             <RRPicker 
-              savedState={recurrence}
+              savedState={rrule}
               onSave={(freq: Frequency, until: Date | null) => CreateRRule(freq, until)}
               onDelete={() => {
-                setRecurrence(undefined)
+                setRRule(undefined)
                 setShowRRPicker(false)
               }}
               onCancel={() => setShowRRPicker(false)} 

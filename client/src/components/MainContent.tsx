@@ -15,19 +15,17 @@ import { apiEndpoint, apiValue} from '../utils/crud'
 import { MainContentProps } from '../types/props/MainContentProps'
 import { EventTemplate } from '../types/dto/EventTemplate'
 import { EventDataNullable } from '../types/data/EventDataNullable'
+import { completeTaskWithRRule } from '../utils/taskUtils'
 
 export default function MainContent({ view, setError, setIsLoading, setView}: MainContentProps) {
   const [events, setEvents] = useState<EventData[]>([])
   const [tasks, setTasks] = useState<TaskData[]>([])
+  const [todayTasks, setTodayTasks] = useState<TaskData[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [activeCategories, setActiveCategories] = useState<Category[]>([])
   const [eventTemplates, setEventTemplates] = useState<EventTemplate[]>([])
   const [calendarClickDate, setCalendarClickDate] = useState<Date | null>(null)
   const [currentEventTemplate, setCurrentEventTemplate] = useState<EventDataNullable | null>(null)
-
-  useEffect(() => {
-    console.log(eventTemplates)
-  }, [eventTemplates])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,13 +55,20 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
   }, [])
 
   async function onDataChange(data: UpdatePayload | undefined) {
-    console.log('IN ON DATA CHANGE!!!')
-    console.log(data)
-    if(data === undefined) {
-      //Gör nåt???
-      console.log('Data is undefined')
-    } else {
-      setIsLoading(true)
+    if(data === undefined)
+      return
+
+      const shouldCreateNewTaskInstance = data.type === 'tasks' 
+      && data.CRUD === 'PUT' && data.taskContext && data.taskContext.rrule
+
+      if (shouldCreateNewTaskInstance) {
+        const [postPayload, putPayload] = completeTaskWithRRule(data)
+        await onDataChange(postPayload)
+        await onDataChange(putPayload)
+        return
+      } else {
+              setIsLoading(true)
+      
       try {
         const response = await executeCRUD(data)
           if(response?.ok) {
@@ -92,9 +97,9 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
                         : event
                     )
                   )
-
                 }
               break
+
               case 'POST':
                 switch(data.type) {
                   case 'tasks':
@@ -103,8 +108,6 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
                     break
                   case 'events':
                     const newEvent: EventData = await response.json()
-                    console.log('newEvent')
-                    console.log(newEvent)
                     setEvents(prev => newEvent ? [newEvent, ...prev] : prev)
                     break
                   case 'categories':
@@ -113,6 +116,7 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
                   break
                 }
               break
+
               case 'DELETE':
                 if (response?.ok) {
                   switch(data.type) {
@@ -126,7 +130,7 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
                       setCategories(prev => prev.filter(category => category.id !== data.id))
                   }
                 } else {
-                  console.log('onDataChange task POST response not ok')
+                  console.log('onDataChange task DELETE response not ok')
                 }
             }
           }
@@ -134,7 +138,7 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
         setError(e)
       } finally {
         setIsLoading(false)
-      }
+      } 
     }
   }
 
@@ -156,6 +160,15 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
       console.error("Något gick fel i executeCRUD")
     }
   }
+
+  useEffect(() => {
+    const today = new Date().getDate()
+    setTodayTasks(tasks.filter(t =>
+      (!t.deadline && !t.completed) ||
+      (t.deadline && new Date(t.deadline).getDate() === today) ||
+      (t.deadline && !t.completed && new Date(t.deadline).getDate() <= today)
+    ))
+  }, [tasks])
 
   useEffect(() => {
     setActiveCategories(categories)
@@ -202,7 +215,7 @@ export default function MainContent({ view, setError, setIsLoading, setView}: Ma
           /> 
       }
       <RSidebarComponent 
-        tasks={tasks} 
+        tasks={todayTasks} 
         onDataChange={onDataChange}
         eventTemplates={eventTemplates}
         calendarDate={calendarClickDate}

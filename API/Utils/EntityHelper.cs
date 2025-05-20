@@ -21,28 +21,12 @@ namespace API.Utils
                 CategoryId = eventItem.CategoryId,
                 Category = categoryDTO,
                 Tags = eventItem.Tags,
-                Rrule = eventItem.RRule
+                Rrule = eventItem.RRule,
+                ExDates = eventItem.ExDates ?? Array.Empty<DateTime>()
             };
 
             return eventDTO;
         }
-
-        //public static EventItem MapEventDTOToEvent(EventDTO evenDTO)
-        //{
-        //    var eventItem = new EventItem(
-        //        title: evenDTO.Title,
-        //        content: evenDTO.Content,
-        //        start: evenDTO.Start,
-        //        end: evenDTO.End,
-        //        allDay: evenDTO.AllDay,
-        //        categoryId: evenDTO.CategoryId,
-        //        tags: evenDTO.Tags,
-        //        rRule: evenDTO.Rrule);
-
-        //    return eventItem;
-        //}
-
-
         public static EventItem MapToEntity(EventItem eventItem, PartialEventDTO partial)
         {
             if (partial.Title != null)
@@ -65,10 +49,6 @@ namespace API.Utils
             {
                 eventItem.SetAllday(partial.AllDay.Value);
             }
-            //if (partial.CategoryId != null && partial.CategoryId.HasValue)
-            //{
-            //    eventItem.SetCategory(partial.CategoryId.Value);
-            //}
             if (partial.Category != null && partial.Category.Id.HasValue)
             {
                 eventItem.SetCategory(partial.Category.Id.Value);

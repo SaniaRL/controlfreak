@@ -12,5 +12,6 @@ export interface EventData {
     editable: boolean
     category: Category
     rrule?: string
-    tags: string[] 
+    tags: string[]
+    exDates?: Date[] | undefined
 }

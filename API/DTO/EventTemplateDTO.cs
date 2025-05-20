@@ -41,7 +41,7 @@ namespace API.DTO
         public static EventTemplateDTO FromEntityWithChildren(EventTemplate entity)
         {
             var dto = FromEntity(entity);
-            dto.Children = entity.EventTemplates?.Select(FromEntityWithChildren).ToList();
+            dto.Children = entity.Children?.Select(FromEntityWithChildren).ToList();
             return dto;
         }
     }
